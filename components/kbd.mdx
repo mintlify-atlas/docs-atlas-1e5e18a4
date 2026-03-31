@@ -1,0 +1,111 @@
+---
+title: Kbd
+description: A typography component for displaying keyboard keys and shortcuts in a styled, readable format.
+---
+
+`Kbd` renders a `<kbd>` element styled to look like a physical keyboard key. It supports size and variant props via the `kbd` recipe from Panda CSS, making it easy to display keyboard shortcuts inline.
+
+## Import
+
+```tsx
+import { Kbd } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Kbd>Ctrl</Kbd>
+```
+
+## Examples
+
+### Keyboard shortcuts
+
+Combine multiple `Kbd` elements with a separator to show key combinations:
+
+```tsx
+<HStack gap="1" align="center">
+  <Kbd>Ctrl</Kbd>
+  <Text as="span">+</Text>
+  <Kbd>S</Kbd>
+</HStack>
+```
+
+```tsx
+<Text>
+  Press <Kbd>Cmd</Kbd> + <Kbd>K</Kbd> to open the command palette.
+</Text>
+```
+
+### Sizes
+
+```tsx
+<HStack gap="4" align="center">
+  <Kbd size="sm">Esc</Kbd>
+  <Kbd size="md">Enter</Kbd>
+  <Kbd size="lg">Space</Kbd>
+</HStack>
+```
+
+### Variants
+
+<Tabs>
+  <Tab title="Subtle">
+    ```tsx
+    <Kbd variant="subtle">Tab</Kbd>
+    ```
+  </Tab>
+  <Tab title="Solid">
+    ```tsx
+    <Kbd variant="solid">Tab</Kbd>
+    ```
+  </Tab>
+  <Tab title="Outline">
+    ```tsx
+    <Kbd variant="outline">Tab</Kbd>
+    ```
+  </Tab>
+</Tabs>
+
+### Color palette
+
+```tsx
+<HStack gap="3">
+  <Kbd colorPalette="gray">Del</Kbd>
+  <Kbd colorPalette="blue">F1</Kbd>
+  <Kbd colorPalette="green">Enter</Kbd>
+  <Kbd colorPalette="red">Esc</Kbd>
+  <Kbd colorPalette="purple">Ctrl</Kbd>
+  <Kbd colorPalette="orange">Alt</Kbd>
+</HStack>
+```
+
+## Props
+
+<ParamField path="size" type='"sm" | "md" | "lg"' default='"md"'>
+  Controls the size of the keyboard key display.
+</ParamField>
+
+<ParamField path="variant" type='"solid" | "subtle" | "outline"' default='"subtle"'>
+  Defines the visual style of the key.
+</ParamField>
+
+<ParamField path="colorPalette" type='"red" | "blue" | "green" | "purple" | "orange" | "gray"' default='"gray"'>
+  Sets the color palette applied to the component.
+</ParamField>
+
+<ParamField path="as" type="React.ElementType">
+  The underlying HTML element to render. Defaults to `kbd`.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  When true, merges props with the child element and uses the child as the rendered element.
+</ParamField>
+
+<ParamField path="unstyled" type="boolean" default="false">
+  When true, removes all component styles, rendering the bare element.
+</ParamField>
+
+<ParamField path="children" type="React.ReactNode">
+  The label displayed inside the key, typically the key name or symbol.
+</ParamField>

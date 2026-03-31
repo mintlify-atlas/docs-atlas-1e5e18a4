@@ -1,0 +1,151 @@
+---
+title: Avatar
+description: A graphical representation of a user, supporting images, initials fallback, and multiple sizes and shapes.
+---
+
+The `Avatar` component displays a user's profile image. When no image is available it falls back to the user's initials derived from a `name` prop, and when no name is provided it renders a generic person icon.
+
+## Import
+
+```tsx
+import { Avatar } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Avatar.Root>
+  <Avatar.Fallback name="Grace Hopper" />
+  <Avatar.Image src="/grace.jpg" alt="Grace Hopper" />
+</Avatar.Root>
+```
+
+## Examples
+
+### Sizes
+
+Use the `size` prop on `Avatar.Root` to scale the avatar.
+
+```tsx
+<Avatar.Root size="2xs">
+  <Avatar.Fallback name="Ada" />
+  <Avatar.Image src="/ada.jpg" alt="Ada" />
+</Avatar.Root>
+
+<Avatar.Root size="sm">
+  <Avatar.Fallback name="Ada" />
+  <Avatar.Image src="/ada.jpg" alt="Ada" />
+</Avatar.Root>
+
+<Avatar.Root size="md">
+  <Avatar.Fallback name="Ada" />
+  <Avatar.Image src="/ada.jpg" alt="Ada" />
+</Avatar.Root>
+
+<Avatar.Root size="xl">
+  <Avatar.Fallback name="Ada" />
+  <Avatar.Image src="/ada.jpg" alt="Ada" />
+</Avatar.Root>
+```
+
+### Shapes
+
+Use the `shape` prop to change the avatar outline.
+
+```tsx
+{/* Default — fully circular */}
+<Avatar.Root shape="full">
+  <Avatar.Fallback name="Alan Turing" />
+</Avatar.Root>
+
+{/* Slightly rounded corners */}
+<Avatar.Root shape="rounded">
+  <Avatar.Fallback name="Alan Turing" />
+</Avatar.Root>
+
+{/* Square */}
+<Avatar.Root shape="square">
+  <Avatar.Fallback name="Alan Turing" />
+</Avatar.Root>
+```
+
+### Fallback
+
+When the image fails to load — or when `src` is omitted — the `Fallback` renders the user's initials. When neither `name` nor `children` are provided, a generic icon is shown instead.
+
+```tsx
+{/* Initials from name */}
+<Avatar.Root>
+  <Avatar.Fallback name="John Doe" />
+</Avatar.Root>
+
+{/* Generic icon (no name) */}
+<Avatar.Root>
+  <Avatar.Fallback />
+</Avatar.Root>
+
+{/* Custom children */}
+<Avatar.Root>
+  <Avatar.Fallback>JD</Avatar.Fallback>
+</Avatar.Root>
+```
+
+### Color palette
+
+```tsx
+<Avatar.Root colorPalette="blue">
+  <Avatar.Fallback name="Blue User" />
+</Avatar.Root>
+
+<Avatar.Root colorPalette="green">
+  <Avatar.Fallback name="Green User" />
+</Avatar.Root>
+
+<Avatar.Root colorPalette="purple">
+  <Avatar.Fallback name="Purple User" />
+</Avatar.Root>
+```
+
+## Props
+
+### Root
+
+<ParamField path="size" type='"full" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl"' default="md">
+  Controls the dimensions of the avatar.
+</ParamField>
+
+<ParamField path="shape" type='"full" | "rounded" | "square"' default="full">
+  Controls the border-radius of the avatar.
+</ParamField>
+
+<ParamField path="colorPalette" type="string" default="gray">
+  Color palette applied to the fallback background.
+</ParamField>
+
+<ParamField path="onStatusChange" type="(details: StatusChangeDetails) => void">
+  Called whenever the image loading status changes.
+</ParamField>
+
+---
+
+### Fallback
+
+<ParamField path="name" type="string">
+  The user's full name. Initials are derived automatically. When omitted, a generic icon is displayed.
+</ParamField>
+
+---
+
+### Image
+
+<ParamField path="src" type="string">
+  URL or path of the avatar image.
+</ParamField>
+
+<ParamField path="alt" type="string">
+  Accessible description of the image.
+</ParamField>
+
+<Note>
+  `Avatar.Image` and `Avatar.Fallback` accept `asChild` to swap the underlying element for any custom component.
+</Note>

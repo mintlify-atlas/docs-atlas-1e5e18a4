@@ -1,0 +1,214 @@
+---
+title: Select
+description: A dropdown that lets users choose one or more values from a list, with support for groups, controlled state, and custom positioning.
+---
+
+`Select` is a compound component built on Ark UI. It composes a trigger, a floating content panel, and item lists. Use `createListCollection` to build the item collection.
+
+## Import
+
+```tsx
+import { Select } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+import { createListCollection, Select, Portal } from '@fidely-ui/react'
+
+const frameworks = createListCollection({
+  items: [
+    { label: 'React', value: 'react' },
+    { label: 'Vue', value: 'vue' },
+    { label: 'Svelte', value: 'svelte' },
+  ],
+})
+
+export function BasicSelect() {
+  return (
+    <Select.Root collection={frameworks} positioning={{ sameWidth: true }} maxW="350px">
+      <Select.Label>Framework</Select.Label>
+      <Select.Control>
+        <Select.Trigger>
+          <Select.ValueText placeholder="Select a framework" />
+          <Select.Indicator />
+        </Select.Trigger>
+        <Select.ClearTrigger />
+      </Select.Control>
+      <Portal>
+        <Select.Positioner>
+          <Select.Content>
+            <Select.ItemGroup>
+              <Select.ItemGroupLabel>Frameworks</Select.ItemGroupLabel>
+              {frameworks.items.map((item) => (
+                <Select.Item key={item.value} item={item}>
+                  <Select.ItemText>{item.label}</Select.ItemText>
+                  <Select.ItemIndicator>✓</Select.ItemIndicator>
+                </Select.Item>
+              ))}
+            </Select.ItemGroup>
+          </Select.Content>
+        </Select.Positioner>
+      </Portal>
+      <Select.HiddenSelect />
+    </Select.Root>
+  )
+}
+```
+
+## Sizes
+
+```tsx
+<Select.Root collection={frameworks} size="sm">...</Select.Root>
+<Select.Root collection={frameworks} size="md">...</Select.Root>
+<Select.Root collection={frameworks} size="lg">...</Select.Root>
+```
+
+## Variants
+
+```tsx
+<Select.Root collection={frameworks} variant="outline">...</Select.Root>
+<Select.Root collection={frameworks} variant="subtle">...</Select.Root>
+```
+
+## Controlled usage
+
+Use `value` and `onValueChange` together to manage the selection externally.
+
+```tsx
+import { useState } from 'react'
+
+function ControlledSelect() {
+  const [value, setValue] = useState<string[]>([])
+
+  return (
+    <Select.Root
+      collection={frameworks}
+      value={value}
+      onValueChange={(details) => setValue(details.value)}
+    >
+      {/* ... */}
+    </Select.Root>
+  )
+}
+```
+
+## Multiple selection
+
+```tsx
+<Select.Root collection={frameworks} multiple>
+  {/* ... */}
+</Select.Root>
+```
+
+## Option groups
+
+Use `Select.ItemGroup` and `Select.ItemGroupLabel` to organize related options.
+
+```tsx
+<Select.Content>
+  <Select.ItemGroup>
+    <Select.ItemGroupLabel>Frontend</Select.ItemGroupLabel>
+    <Select.Item item={{ label: 'React', value: 'react' }}>
+      <Select.ItemText>React</Select.ItemText>
+    </Select.Item>
+    <Select.Item item={{ label: 'Vue', value: 'vue' }}>
+      <Select.ItemText>Vue</Select.ItemText>
+    </Select.Item>
+  </Select.ItemGroup>
+  <Select.ItemGroup>
+    <Select.ItemGroupLabel>Backend</Select.ItemGroupLabel>
+    <Select.Item item={{ label: 'Django', value: 'django' }}>
+      <Select.ItemText>Django</Select.ItemText>
+    </Select.Item>
+  </Select.ItemGroup>
+</Select.Content>
+```
+
+## Disabled
+
+```tsx
+<Select.Root collection={frameworks} disabled>
+  {/* ... */}
+</Select.Root>
+```
+
+## Invalid state
+
+```tsx
+<Select.Root collection={frameworks} invalid>
+  {/* ... */}
+</Select.Root>
+```
+
+## Props
+
+### Root
+
+<ParamField body="collection" type="ListCollection<T>" required>
+  The collection of items to display.
+</ParamField>
+
+<ParamField body="value" type="string[]">
+  The controlled selected values.
+</ParamField>
+
+<ParamField body="defaultValue" type="string[]" default="[]">
+  The default selected values for uncontrolled usage.
+</ParamField>
+
+<ParamField body="onValueChange" type="(details: ValueChangeDetails) => void">
+  Called when the selected value changes.
+</ParamField>
+
+<ParamField body="multiple" type="boolean" default="false">
+  Allows multiple items to be selected.
+</ParamField>
+
+<ParamField body="open" type="boolean">
+  Controlled open state of the dropdown.
+</ParamField>
+
+<ParamField body="defaultOpen" type="boolean">
+  Whether the dropdown is open by default.
+</ParamField>
+
+<ParamField body="onOpenChange" type="(details: OpenChangeDetails) => void">
+  Called when the open state changes.
+</ParamField>
+
+<ParamField body="disabled" type="boolean">
+  Disables the entire select component.
+</ParamField>
+
+<ParamField body="invalid" type="boolean">
+  Marks the select as invalid. Adds `data-invalid` and `aria-invalid`.
+</ParamField>
+
+<ParamField body="required" type="boolean">
+  Marks the selection as required before form submission.
+</ParamField>
+
+<ParamField body="closeOnSelect" type="boolean">
+  Whether the dropdown closes after an item is selected.
+</ParamField>
+
+<ParamField body="loop" type="boolean" default="true">
+  Whether keyboard navigation wraps from last to first item.
+</ParamField>
+
+<ParamField body="positioning" type="Positioning">
+  Floating UI positioning options for the dropdown.
+</ParamField>
+
+<ParamField body="name" type="string">
+  The `name` attribute for form submission.
+</ParamField>
+
+<ParamField body="form" type="string">
+  The associated form element ID.
+</ParamField>
+
+<ParamField body="asChild" type="boolean">
+  Merges styles and behavior onto the child element.
+</ParamField>

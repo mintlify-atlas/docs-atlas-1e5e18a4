@@ -1,0 +1,270 @@
+---
+title: Accordion
+description: A vertically stacked set of collapsible sections, each containing a trigger and expandable content panel.
+---
+
+Accordion organizes content into collapsible items. Users expand an item by clicking its trigger. By default only one item is open at a time, but `multiple` mode allows several items to be open simultaneously.
+
+## Import
+
+```tsx
+import { Accordion } from '@fidely-ui/react'
+```
+
+Sub-components: `Accordion.Root`, `Accordion.Item`, `Accordion.ItemTrigger`, `Accordion.ItemIndicator`, `Accordion.ItemContent`, `Accordion.RootProvider`
+
+## Basic usage
+
+```tsx
+<Accordion.Root>
+  <Accordion.Item value="item-1">
+    <Accordion.ItemTrigger>
+      What is Fidely UI?
+      <Accordion.ItemIndicator />
+    </Accordion.ItemTrigger>
+    <Accordion.ItemContent>
+      Fidely UI is a React component library built on Ark UI and Panda CSS.
+    </Accordion.ItemContent>
+  </Accordion.Item>
+
+  <Accordion.Item value="item-2">
+    <Accordion.ItemTrigger>
+      How do I install it?
+      <Accordion.ItemIndicator />
+    </Accordion.ItemTrigger>
+    <Accordion.ItemContent>
+      Run <code>npm install @fidely-ui/react</code> in your project.
+    </Accordion.ItemContent>
+  </Accordion.Item>
+</Accordion.Root>
+```
+
+## Examples
+
+### Default open item
+
+Use `defaultValue` to expand one or more items on first render.
+
+```tsx
+<Accordion.Root defaultValue={['item-1']}>
+  <Accordion.Item value="item-1">
+    <Accordion.ItemTrigger>
+      Open by default
+      <Accordion.ItemIndicator />
+    </Accordion.ItemTrigger>
+    <Accordion.ItemContent>
+      This item is expanded on mount.
+    </Accordion.ItemContent>
+  </Accordion.Item>
+
+  <Accordion.Item value="item-2">
+    <Accordion.ItemTrigger>
+      Collapsed by default
+      <Accordion.ItemIndicator />
+    </Accordion.ItemTrigger>
+    <Accordion.ItemContent>
+      This item starts collapsed.
+    </Accordion.ItemContent>
+  </Accordion.Item>
+</Accordion.Root>
+```
+
+### Allow multiple items open
+
+Set `multiple` to let more than one item be expanded at the same time.
+
+```tsx
+<Accordion.Root multiple>
+  <Accordion.Item value="section-a">
+    <Accordion.ItemTrigger>
+      Section A
+      <Accordion.ItemIndicator />
+    </Accordion.ItemTrigger>
+    <Accordion.ItemContent>Content A.</Accordion.ItemContent>
+  </Accordion.Item>
+
+  <Accordion.Item value="section-b">
+    <Accordion.ItemTrigger>
+      Section B
+      <Accordion.ItemIndicator />
+    </Accordion.ItemTrigger>
+    <Accordion.ItemContent>Content B.</Accordion.ItemContent>
+  </Accordion.Item>
+</Accordion.Root>
+```
+
+### Collapsible (all items can close)
+
+By default, at least one item stays open. Set `collapsible` to allow every item to be closed.
+
+```tsx
+<Accordion.Root collapsible defaultValue={['faq-1']}>
+  <Accordion.Item value="faq-1">
+    <Accordion.ItemTrigger>
+      Can all items be closed?
+      <Accordion.ItemIndicator />
+    </Accordion.ItemTrigger>
+    <Accordion.ItemContent>
+      Yes — click the open item again to collapse it.
+    </Accordion.ItemContent>
+  </Accordion.Item>
+</Accordion.Root>
+```
+
+### Controlled
+
+Use `value` and `onValueChange` to manage open state externally.
+
+```tsx
+function ControlledAccordion() {
+  const [value, setValue] = React.useState(['panel-1'])
+
+  return (
+    <Accordion.Root
+      value={value}
+      onValueChange={(e) => setValue(e.value)}
+      multiple
+    >
+      <Accordion.Item value="panel-1">
+        <Accordion.ItemTrigger>
+          Panel 1
+          <Accordion.ItemIndicator />
+        </Accordion.ItemTrigger>
+        <Accordion.ItemContent>Content for panel 1.</Accordion.ItemContent>
+      </Accordion.Item>
+
+      <Accordion.Item value="panel-2">
+        <Accordion.ItemTrigger>
+          Panel 2
+          <Accordion.ItemIndicator />
+        </Accordion.ItemTrigger>
+        <Accordion.ItemContent>Content for panel 2.</Accordion.ItemContent>
+      </Accordion.Item>
+    </Accordion.Root>
+  )
+}
+```
+
+### Custom indicator
+
+Pass any React node as a child of `Accordion.ItemIndicator` to replace the default chevron.
+
+```tsx
+<Accordion.Root>
+  <Accordion.Item value="custom-icon">
+    <Accordion.ItemTrigger>
+      Custom indicator
+      <Accordion.ItemIndicator>
+        <PlusIcon />
+      </Accordion.ItemIndicator>
+    </Accordion.ItemTrigger>
+    <Accordion.ItemContent>
+      The indicator above uses a custom icon.
+    </Accordion.ItemContent>
+  </Accordion.Item>
+</Accordion.Root>
+```
+
+### Disabled item
+
+Set `disabled` on `Accordion.Item` to prevent interaction with that item.
+
+```tsx
+<Accordion.Root>
+  <Accordion.Item value="active">
+    <Accordion.ItemTrigger>
+      Active item
+      <Accordion.ItemIndicator />
+    </Accordion.ItemTrigger>
+    <Accordion.ItemContent>This item is interactive.</Accordion.ItemContent>
+  </Accordion.Item>
+
+  <Accordion.Item value="locked" disabled>
+    <Accordion.ItemTrigger>
+      Locked item
+      <Accordion.ItemIndicator />
+    </Accordion.ItemTrigger>
+    <Accordion.ItemContent>This item cannot be opened.</Accordion.ItemContent>
+  </Accordion.Item>
+</Accordion.Root>
+```
+
+### Sizes and variants
+
+Use `size` for spacing and `variant` for visual style.
+
+<CodeGroup>
+
+```tsx size
+<Accordion.Root size="sm">...</Accordion.Root>
+<Accordion.Root size="md">...</Accordion.Root>
+<Accordion.Root size="lg">...</Accordion.Root>
+```
+
+```tsx variant
+<Accordion.Root variant="flush">...</Accordion.Root>
+<Accordion.Root variant="outline">...</Accordion.Root>
+<Accordion.Root variant="subtle">...</Accordion.Root>
+```
+
+</CodeGroup>
+
+## Props
+
+### Accordion.Root
+
+<ParamField path="value" type="string[]">
+  The controlled value of the currently expanded item(s).
+</ParamField>
+
+<ParamField path="defaultValue" type="string[]">
+  The item value(s) to expand by default (uncontrolled).
+</ParamField>
+
+<ParamField path="onValueChange" type="(details: { value: string[] }) => void">
+  Callback fired when the expanded items change.
+</ParamField>
+
+<ParamField path="multiple" type="boolean" default="false">
+  Allows more than one item to be open at once.
+</ParamField>
+
+<ParamField path="collapsible" type="boolean" default="false">
+  Allows all items to be closed so none are open.
+</ParamField>
+
+<ParamField path="size" type='"sm" | "md" | "lg"' default='"md"'>
+  Controls the overall size (padding, font size) of the accordion.
+</ParamField>
+
+<ParamField path="variant" type='"subtle" | "outline" | "flush"' default='"subtle"'>
+  The visual style of the accordion.
+</ParamField>
+
+### Accordion.Item
+
+<ParamField path="value" type="string" required>
+  A unique value that identifies this item within the accordion.
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default="false">
+  Disables interaction for this item.
+</ParamField>
+
+### Accordion.ItemTrigger
+
+<ParamField path="disabled" type="boolean" default="false">
+  Disables interaction with the trigger button.
+</ParamField>
+
+### Accordion.ItemIndicator
+
+<ParamField path="children" type="ReactNode">
+  Custom icon or element to display as the open/close indicator. Defaults to a chevron.
+</ParamField>
+
+### Accordion.ItemContent
+
+<ParamField path="children" type="ReactNode">
+  The content displayed when the accordion item is expanded.
+</ParamField>

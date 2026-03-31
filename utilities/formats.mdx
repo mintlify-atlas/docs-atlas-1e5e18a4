@@ -1,0 +1,173 @@
+---
+title: Formats
+description: Components for formatting byte values, numbers, and relative timestamps into human-readable strings.
+---
+
+Fidely UI ships three format components — `FormatByte`, `FormatNumber`, and `FormatRelativeTime` — that convert raw values into locale-aware, human-readable output. They read the active locale from the nearest [`LocaleProvider`](/utilities/locale-provider) when one is present.
+
+## Installation
+
+```bash
+npm install @fidely-ui/react
+```
+
+## Import
+
+```tsx
+import { FormatByte, FormatNumber, FormatRelativeTime } from '@fidely-ui/react'
+```
+
+---
+
+## FormatByte
+
+Converts a raw byte value into a human-readable size string such as `1.95 MB`.
+
+### Basic usage
+
+```tsx
+<FormatByte value={2048000} />
+{/* Output: 1.95 MB */}
+```
+
+### Examples
+
+<CodeGroup>
+
+```tsx Bytes (default)
+<FormatByte value={1024} />
+{/* Output: 1 KB */}
+```
+
+```tsx Bits
+<FormatByte value={1024} unit="bit" />
+{/* Output: 1 Kb */}
+```
+
+</CodeGroup>
+
+### Props
+
+<ParamField path="value" type="number" required>
+  The raw byte value to format.
+</ParamField>
+
+<ParamField path="unit" type='"bit" | "bytes"' default='"bytes"'>
+  The base unit to start formatting from.
+</ParamField>
+
+---
+
+## FormatNumber
+
+Formats a numeric value using locale-aware rules, with control over notation, style, and decimal precision.
+
+### Basic usage
+
+```tsx
+<FormatNumber value={1234567} />
+{/* Output: 1,234,567 */}
+```
+
+### Examples
+
+<CodeGroup>
+
+```tsx Compact notation
+<FormatNumber value={1500000} notation="compact" />
+{/* Output: 1.5M */}
+```
+
+```tsx Currency
+<FormatNumber value={9.99} style="currency" unit="USD" />
+{/* Output: $9.99 */}
+```
+
+```tsx Scientific notation
+<FormatNumber value={0.000123} notation="scientific" />
+{/* Output: 1.23E-4 */}
+```
+
+```tsx Controlled decimals
+<FormatNumber value={3.14159} minimumFractionDigits={2} maximumFractionDigits={2} />
+{/* Output: 3.14 */}
+```
+
+</CodeGroup>
+
+### Props
+
+<ParamField path="value" type="number" required>
+  The numeric value to format.
+</ParamField>
+
+<ParamField path="style" type="string">
+  The formatting style. Common values include `"decimal"`, `"currency"`, `"percent"`, and `"unit"`.
+</ParamField>
+
+<ParamField path="unit" type="string">
+  The unit to display when `style` is `"unit"` (e.g. `"kilometer"`, `"liter"`, `"celsius"`). Also used for the currency code when `style` is `"currency"`.
+</ParamField>
+
+<ParamField path="notation" type='"standard" | "compact" | "scientific" | "engineering"' default='"standard"'>
+  Controls how numbers are displayed. Use `"compact"` for abbreviated output (`1K`, `2.5M`) or `"scientific"` for exponential form (`1.23E+4`).
+</ParamField>
+
+<ParamField path="minimumFractionDigits" type="number" default="0">
+  Minimum number of decimal places to show.
+</ParamField>
+
+<ParamField path="maximumFractionDigits" type="number" default="2">
+  Maximum number of decimal places to show.
+</ParamField>
+
+---
+
+## FormatRelativeTime
+
+Displays a date or timestamp as a relative time string such as `"3 minutes ago"` or `"yesterday"`.
+
+### Basic usage
+
+```tsx
+<FormatRelativeTime value={new Date(Date.now() - 60 * 1000)} />
+{/* Output: 1 minute ago */}
+```
+
+### Examples
+
+<CodeGroup>
+
+```tsx Auto (default)
+<FormatRelativeTime value={new Date(Date.now() - 86400 * 1000)} />
+{/* Output: yesterday */}
+```
+
+```tsx Always numeric
+<FormatRelativeTime value={new Date(Date.now() - 86400 * 1000)} numeric="always" />
+{/* Output: 1 day ago */}
+```
+
+```tsx From a timestamp
+<FormatRelativeTime value={1700000000000} />
+```
+
+```tsx From a date string
+<FormatRelativeTime value="2024-01-01T00:00:00Z" />
+```
+
+</CodeGroup>
+
+<Tip>
+  `FormatRelativeTime` uses `Intl.RelativeTimeFormat` under the hood and automatically picks the best time unit (seconds, minutes, hours, days, etc.) based on the difference from now.
+</Tip>
+
+### Props
+
+<ParamField path="value" type="Date | string | number" required>
+  The date or timestamp to format relative to the current time. Accepts a `Date` object, an ISO date string, or a Unix timestamp in milliseconds.
+</ParamField>
+
+<ParamField path="numeric" type='"always" | "auto"' default='"auto"'>
+  Controls whether relative terms are used when available. `"auto"` outputs `"yesterday"` instead of `"1 day ago"`. `"always"` always uses numeric values.
+</ParamField>

@@ -1,0 +1,162 @@
+---
+title: Profile
+description: Low-level building blocks for constructing identity layouts with an avatar, name, title, and custom content.
+---
+
+`Profile` exposes the composable primitives that power `Persona`. Use these sub-components when you need fine-grained control over layout, custom elements, or extended styling beyond what `Persona` provides.
+
+## Import
+
+```tsx
+import { Avatar, Profile } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Profile.Root>
+  <Profile.AvatarWrapper>
+    <Avatar.Root>
+      <Avatar.Fallback name="Ada Lovelace" />
+      <Avatar.Image src="/ada.jpg" alt="Ada Lovelace" />
+    </Avatar.Root>
+  </Profile.AvatarWrapper>
+
+  <Profile.Details>
+    <Profile.Name>Ada Lovelace</Profile.Name>
+    <Profile.Title>Mathematician</Profile.Title>
+  </Profile.Details>
+</Profile.Root>
+```
+
+## Examples
+
+### Horizontal layout (default)
+
+The avatar is placed beside the name and title.
+
+```tsx
+<Profile.Root orientation="horizontal">
+  <Profile.AvatarWrapper>
+    <Avatar.Root size="md">
+      <Avatar.Fallback name="Grace Hopper" />
+      <Avatar.Image src="/grace.jpg" alt="Grace Hopper" />
+    </Avatar.Root>
+  </Profile.AvatarWrapper>
+  <Profile.Details>
+    <Profile.Name>Grace Hopper</Profile.Name>
+    <Profile.Title>Computer Scientist</Profile.Title>
+  </Profile.Details>
+</Profile.Root>
+```
+
+### Vertical layout
+
+Use `orientation="vertical"` to stack the avatar above the text content.
+
+```tsx
+<Profile.Root orientation="vertical">
+  <Profile.AvatarWrapper>
+    <Avatar.Root size="xl">
+      <Avatar.Fallback name="Alan Turing" />
+      <Avatar.Image src="/alan.jpg" alt="Alan Turing" />
+    </Avatar.Root>
+  </Profile.AvatarWrapper>
+  <Profile.Details>
+    <Profile.Name>Alan Turing</Profile.Name>
+    <Profile.Title>Mathematician · Cryptographer</Profile.Title>
+  </Profile.Details>
+</Profile.Root>
+```
+
+### Custom sizes
+
+Apply size tokens directly to `Profile.Name` and `Profile.Title` for independent typography control.
+
+```tsx
+<Profile.Root>
+  <Profile.AvatarWrapper>
+    <Avatar.Root size="lg">
+      <Avatar.Fallback name="Grace Hopper" />
+    </Avatar.Root>
+  </Profile.AvatarWrapper>
+  <Profile.Details>
+    <Profile.Name fontSize="xl" fontWeight="bold">
+      Grace Hopper
+    </Profile.Name>
+    <Profile.Title fontSize="sm" color="fg.muted">
+      Rear Admiral, U.S. Navy
+    </Profile.Title>
+  </Profile.Details>
+</Profile.Root>
+```
+
+### With additional content
+
+Include any child elements inside `Profile.Details` to extend the layout.
+
+```tsx
+import { Profile, Avatar, Text, Badge } from '@fidely-ui/react'
+
+<Profile.Root gap="4">
+  <Profile.AvatarWrapper>
+    <Avatar.Root size="lg">
+      <Avatar.Fallback name="Ada Lovelace" />
+    </Avatar.Root>
+  </Profile.AvatarWrapper>
+  <Profile.Details>
+    <Profile.Name>Ada Lovelace</Profile.Name>
+    <Profile.Title color="fg.muted">Mathematician</Profile.Title>
+    <Badge color="blue">Active</Badge>
+    <Text fontSize="xs" color="fg.subtle">ada@example.com</Text>
+  </Profile.Details>
+</Profile.Root>
+```
+
+## Props
+
+### Root
+
+<ParamField path="orientation" type='"horizontal" | "vertical"' default="horizontal">
+  Layout direction of the profile block. `"horizontal"` renders the avatar beside the text; `"vertical"` stacks it above.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  Typically `Profile.AvatarWrapper` and `Profile.Details`.
+</ParamField>
+
+---
+
+### AvatarWrapper
+
+<ParamField path="children" type="ReactNode">
+  Wraps an `Avatar.Root` component to apply consistent layout spacing.
+</ParamField>
+
+---
+
+### Details
+
+<ParamField path="children" type="ReactNode">
+  Container for `Profile.Name`, `Profile.Title`, and any additional content.
+</ParamField>
+
+---
+
+### Name
+
+<ParamField path="children" type="ReactNode">
+  The primary label, typically the user's full name. Rendered as an `h2` element.
+</ParamField>
+
+---
+
+### Title
+
+<ParamField path="children" type="ReactNode">
+  A secondary label, such as a job title or role. Rendered as an `h3` element.
+</ParamField>
+
+<Note>
+  All `Profile` sub-components accept standard HTML attributes and design-system style props. Use `fontSize`, `fontWeight`, `color`, and spacing props directly to customise typography and layout without extra wrappers.
+</Note>

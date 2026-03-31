@@ -1,0 +1,116 @@
+---
+title: Icon button
+description: A square button that renders an icon instead of text, suitable for compact or icon-only actions.
+---
+
+`IconButton` is a variant of `Button` optimized for icon-only use. It enforces equal padding on all sides and centers its content, making it ideal for toolbars, action menus, and icon controls.
+
+<Note>
+  `IconButton` accepts the same props as `Button`. Always provide an `aria-label` so screen readers can describe the action.
+</Note>
+
+## Import
+
+```tsx
+import { IconButton } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<IconButton aria-label="Delete item">
+  <TrashIcon />
+</IconButton>
+```
+
+## Sizes
+
+Use `size` to adjust the button dimensions.
+
+```tsx
+<IconButton size="2xs" aria-label="Close"><XIcon /></IconButton>
+<IconButton size="xs" aria-label="Close"><XIcon /></IconButton>
+<IconButton size="sm" aria-label="Close"><XIcon /></IconButton>
+<IconButton size="md" aria-label="Close"><XIcon /></IconButton>
+<IconButton size="lg" aria-label="Close"><XIcon /></IconButton>
+<IconButton size="xl" aria-label="Close"><XIcon /></IconButton>
+<IconButton size="2xl" aria-label="Close"><XIcon /></IconButton>
+```
+
+## Variants
+
+```tsx
+<IconButton variant="solid" aria-label="Add"><PlusIcon /></IconButton>
+<IconButton variant="subtle" aria-label="Add"><PlusIcon /></IconButton>
+<IconButton variant="outline" aria-label="Add"><PlusIcon /></IconButton>
+<IconButton variant="ghost" aria-label="Add"><PlusIcon /></IconButton>
+<IconButton variant="plain" aria-label="Add"><PlusIcon /></IconButton>
+```
+
+## Color palette
+
+```tsx
+<IconButton colorPalette="blue" aria-label="Info"><InfoIcon /></IconButton>
+<IconButton colorPalette="red" aria-label="Delete"><TrashIcon /></IconButton>
+<IconButton colorPalette="green" aria-label="Confirm"><CheckIcon /></IconButton>
+```
+
+## Loading state
+
+Pass the `isLoading` prop to show a spinner while an async operation runs.
+
+```tsx
+<IconButton isLoading aria-label="Saving">
+  <SaveIcon />
+</IconButton>
+```
+
+## Custom spinner
+
+```tsx
+<IconButton isLoading spinner={<MySpinner />} aria-label="Processing">
+  <UploadIcon />
+</IconButton>
+```
+
+## Props
+
+<ParamField body="aria-label" type="string" required>
+  Accessible label for the button. Required when the button contains only an icon and no visible text.
+</ParamField>
+
+<ParamField body="variant" type="'solid' | 'subtle' | 'outline' | 'ghost' | 'plain'" default="solid">
+  The visual style variant.
+</ParamField>
+
+<ParamField body="size" type="'2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'" default="md">
+  The size of the button.
+</ParamField>
+
+<ParamField body="colorPalette" type='"red" | "blue" | "green" | "purple" | "orange" | "gray"' default="gray">
+  The color palette applied to the button.
+</ParamField>
+
+<ParamField body="isLoading" type="boolean">
+  When `true`, shows a spinner and disables the button.
+</ParamField>
+
+<ParamField body="loadingText" type="React.ReactNode">
+  Text displayed while `isLoading` is `true`.
+</ParamField>
+
+<ParamField body="spinner" type="React.ReactNode">
+  Custom spinner element rendered during loading.
+</ParamField>
+
+<ParamField body="disabled" type="boolean" default="false">
+  Disables the button.
+</ParamField>
+
+<ParamField body="asChild" type="boolean" default="false">
+  Merges button styles and behavior onto the child element.
+</ParamField>
+
+<ParamField body="as" type="React.ElementType">
+  The underlying element to render.
+</ParamField>

@@ -1,0 +1,199 @@
+---
+title: Dark mode
+description: Enable and manage dark mode in Fidely UI projects using next-themes and semantic tokens.
+---
+
+Fidely UI does not ship a built-in color mode manager. Instead, it integrates with [`next-themes`](https://github.com/pacocoursey/next-themes) — a lightweight theme switcher that toggles a `class` attribute on the `html` element. Panda CSS then uses that class to resolve the correct token values.
+
+## Install next-themes
+
+<Tabs>
+  <Tab title="npm">
+    ```bash
+    npm install next-themes
+    ```
+  </Tab>
+  <Tab title="pnpm">
+    ```bash
+    pnpm add next-themes
+    ```
+  </Tab>
+  <Tab title="yarn">
+    ```bash
+    yarn add next-themes
+    ```
+  </Tab>
+</Tabs>
+
+## Wrap your app with ThemeProvider
+
+<Steps>
+  <Step title="Create a provider component">
+    ```tsx app/provider.tsx
+    'use client'
+
+    import { ThemeProvider } from 'next-themes'
+
+    export const Provider = (props: { children: React.ReactNode }) => {
+      return (
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {props.children}
+        </ThemeProvider>
+      )
+    }
+    ```
+
+    | Prop | Effect |
+    |---|---|
+    | `attribute="class"` | Adds `class="light"` or `class="dark"` to the `html` element |
+    | `defaultTheme="system"` | Follows the user's OS preference on first load |
+    | `disableTransitionOnChange` | Prevents a flash of unstyled content when switching themes |
+  </Step>
+  <Step title="Use the provider in your layout">
+    ```tsx app/layout.tsx
+    import { Provider } from '../provider'
+
+    export default function RootLayout({
+      children,
+    }: Readonly<{
+      children: React.ReactNode
+    }>) {
+      return (
+        <html lang="en" suppressHydrationWarning>
+          <body>
+            <Provider>{children}</Provider>
+          </body>
+        </html>
+      )
+    }
+    ```
+
+    <Note>
+      `suppressHydrationWarning` on `<html>` is required because `next-themes` modifies the element's class on the client before React hydrates.
+    </Note>
+  </Step>
+</Steps>
+
+## Styling for dark mode
+
+### Using the `_dark` condition
+
+Apply dark-mode styles using the `_dark` condition in any style prop:
+
+```tsx
+{/* Responsive object syntax */}
+<Box bg={{ base: 'white', _dark: 'black' }}>
+  <Text>Hello</Text>
+</Box>
+
+{/* Nested condition syntax */}
+<Box bg="white" _dark={{ bg: 'black' }}>
+  <Text>Hello</Text>
+</Box>
+```
+
+### Using semantic tokens (recommended)
+
+Semantic tokens automatically resolve to the correct value for the current color mode. This eliminates repetitive `_dark` overrides and keeps your code clean.
+
+```tsx
+{/* No _dark needed — the token handles it */}
+<Box bg="bg.subtle">
+  <Text color="fg.default">Hello</Text>
+</Box>
+```
+
+Fidely UI provides semantic tokens across three categories:
+
+| Category | Available scales |
+|---|---|
+| `bg` | `surface` \| `default` \| `subtle` \| `muted` \| `emphasized` \| `disabled` |
+| `fg` | `default` \| `muted` \| `subtle` \| `disabled` \| `error` |
+| `border` | `default` \| `muted` \| `subtle` \| `disabled` \| `outline` \| `error` |
+
+## Forcing a color mode
+
+You can force light or dark mode on any subtree by applying a class name to a parent element, regardless of the user's system preference.
+
+### Force dark mode on an element
+
+```tsx
+<Box className="dark">
+  <Box bg="bg.subtle">
+    <Text>Always dark</Text>
+  </Box>
+</Box>
+```
+
+### Force light mode on an element
+
+```tsx
+<Box className="light">
+  <Box bg="bg.subtle">
+    <Text>Always light</Text>
+  </Box>
+</Box>
+```
+
+## Adding a theme toggle
+
+Here is a complete toggle button using Fidely UI components and `next-themes`:
+
+```tsx theme-toggle.tsx
+'use client'
+
+import { useTheme } from 'next-themes'
+import { ClientOnly, IconButton, Skeleton } from '@fidely-ui/react'
+import { IoSunnyOutline } from 'react-icons/io5'
+import { FaMoon } from 'react-icons/fa6'
+
+export function ThemeToggle() {
+  const { theme, setTheme } = useTheme()
+
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light')
+  }
+
+  return (
+    <ClientOnly fallback={<Skeleton boxSize="8" />}>
+      <IconButton
+        onClick={toggleTheme}
+        size="xs"
+        color="inherit"
+        variant="ghost"
+      >
+        {theme === 'light' ? (
+          <IoSunnyOutline size="17px" />
+        ) : (
+          <FaMoon size="17px" />
+        )}
+      </IconButton>
+    </ClientOnly>
+  )
+}
+```
+
+<Tip>
+  Wrap the toggle in `ClientOnly` with a `Skeleton` fallback to avoid hydration mismatches when the theme is not yet known on the server.
+</Tip>
+
+Then use it anywhere in your app:
+
+```tsx app/page.tsx
+import { ThemeToggle } from '../theme-toggle'
+import { Box } from '@fidely-ui/react'
+
+export default function Page() {
+  return (
+    <Box p="6">
+      <ThemeToggle />
+      <Box>Hello from Fidely UI</Box>
+    </Box>
+  )
+}
+```

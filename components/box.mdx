@@ -1,0 +1,95 @@
+---
+title: Box
+description: A generic layout primitive that renders a div with full access to Panda CSS style props.
+---
+
+`Box` is the most fundamental layout component in Fidely UI. It renders a `div` by default and accepts all Panda CSS style props directly, making it the building block for custom layouts.
+
+## Import
+
+```tsx
+import { Box } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Box p="4" bg="gray.100" borderRadius="md">
+  Hello world
+</Box>
+```
+
+## Examples
+
+### Style props
+
+Pass Panda CSS token values directly as props:
+
+```tsx
+<Box
+  display="flex"
+  alignItems="center"
+  gap="4"
+  p="6"
+  m="2"
+  bg="blue.50"
+  color="blue.900"
+  borderRadius="lg"
+  border="1px solid"
+  borderColor="blue.200"
+>
+  Styled box
+</Box>
+```
+
+### Polymorphic rendering with `as`
+
+Every Fidely UI component accepts an `as` prop to change the underlying HTML element:
+
+```tsx
+<Box as="section" p="8">Section content</Box>
+<Box as="article" p="4">Article content</Box>
+<Box as="h1" fontSize="2xl" fontWeight="bold">Heading</Box>
+<Box as="p" lineHeight="relaxed">Paragraph text</Box>
+<Box as="span" color="gray.500">Inline text</Box>
+```
+
+### Using `asChild`
+
+The `asChild` prop forwards all styles to the child element, merging props:
+
+```tsx
+<Box asChild p="4" bg="blue.500" color="white">
+  <a href="/dashboard">Go to dashboard</a>
+</Box>
+```
+
+### Responsive styles
+
+Pass a responsive object to any style prop to apply values at different breakpoints:
+
+```tsx
+<Box
+  p={{ base: '4', md: '8', lg: '12' }}
+  fontSize={{ base: 'sm', md: 'md' }}
+  display={{ base: 'block', md: 'flex' }}
+>
+  Responsive box
+</Box>
+```
+
+## Props
+
+`Box` extends `HTMLStyledProps<'div'>`, giving you access to all Panda CSS style props as well as standard HTML div attributes.
+
+<ParamField path="as" type="React.ElementType">
+  The HTML element or React component to render as. Defaults to `div`.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  When true, forwards all props and styles to the first child element instead of rendering a wrapper element.
+</ParamField>
+
+<Note>
+  All Panda CSS style props (e.g. `p`, `m`, `bg`, `color`, `display`, `gap`, `borderRadius`) are available directly as props on `Box`. Refer to the Panda CSS documentation for the full list of supported properties and token values.
+</Note>

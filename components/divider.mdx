@@ -1,0 +1,86 @@
+---
+title: Divider
+description: A visual separator used to divide sections of content horizontally or vertically.
+---
+
+`Divider` renders a line separator between elements. It supports horizontal and vertical orientations, and accepts props to control color and thickness. It is built on Panda CSS's `divider` pattern.
+
+## Import
+
+```tsx
+import { Divider } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Stack gap="4">
+  <Text>Section one</Text>
+  <Divider />
+  <Text>Section two</Text>
+</Stack>
+```
+
+## Examples
+
+### Horizontal
+
+The default orientation is horizontal. You can set it explicitly with the `orientation` prop:
+
+```tsx
+<Divider orientation="horizontal" />
+```
+
+### Vertical
+
+Use `orientation="vertical"` to render a vertical separator. The parent container needs a defined height:
+
+```tsx
+<HStack gap="4" h="8" align="stretch">
+  <Text>Left</Text>
+  <Divider orientation="vertical" />
+  <Text>Right</Text>
+</HStack>
+```
+
+### Custom color and thickness
+
+```tsx
+<Divider color="blue.300" thickness="2px" />
+```
+
+```tsx
+<Divider color="red.200" thickness="4px" orientation="horizontal" />
+```
+
+### Within a card layout
+
+```tsx
+<Paper p="6">
+  <Text fontWeight="semibold">Card title</Text>
+  <Divider my="4" />
+  <Text>Card body content goes here.</Text>
+</Paper>
+```
+
+## Props
+
+<ParamField path="orientation" type='"horizontal" | "vertical"' default='"horizontal"'>
+  Controls the direction of the divider line.
+</ParamField>
+
+<ParamField path="color" type="string">
+  The color of the divider. Accepts any Panda CSS color token or a CSS color value.
+</ParamField>
+
+<ParamField path="thickness" type="string">
+  The thickness of the divider line. Accepts any valid CSS length value (e.g. `"1px"`, `"2px"`).
+</ParamField>
+
+<ParamField path="as" type="React.ElementType">
+  The HTML element or React component to render as. Defaults to `div`.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  When true, forwards all props and styles to the first child element.
+</ParamField>

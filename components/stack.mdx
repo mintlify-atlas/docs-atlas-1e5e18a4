@@ -1,0 +1,125 @@
+---
+title: Stack
+description: Layout components for stacking children vertically or horizontally with consistent spacing.
+---
+
+Fidely UI provides three stack components built on Panda CSS's stack patterns:
+
+- **`Stack`** — general-purpose stack with a configurable direction.
+- **`HStack`** — horizontal stack (row direction).
+- **`VStack`** — vertical stack (column direction).
+
+## Import
+
+```tsx
+import { HStack, Stack, VStack } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Stack gap="4">
+  <Box p="4" bg="gray.100">Item 1</Box>
+  <Box p="4" bg="gray.100">Item 2</Box>
+  <Box p="4" bg="gray.100">Item 3</Box>
+</Stack>
+```
+
+## Examples
+
+### HStack
+
+`HStack` arranges children in a horizontal row. It accepts all `Stack` props in addition to its own:
+
+```tsx
+<HStack gap="4" align="center">
+  <Box boxSize="10" bg="blue.200" />
+  <Box boxSize="10" bg="blue.300" />
+  <Box boxSize="10" bg="blue.400" />
+</HStack>
+```
+
+### VStack
+
+`VStack` arranges children in a vertical column:
+
+```tsx
+<VStack gap="3" align="stretch">
+  <Box h="10" bg="green.200" />
+  <Box h="10" bg="green.300" />
+  <Box h="10" bg="green.400" />
+</VStack>
+```
+
+### Align and justify
+
+```tsx
+<Stack direction="row" align="center" justify="space-between" gap="4">
+  <Box p="3" bg="gray.100">Left</Box>
+  <Box p="3" bg="gray.100">Right</Box>
+</Stack>
+```
+
+### Responsive direction
+
+Use a responsive object on `direction` to switch the stack orientation at different breakpoints:
+
+```tsx
+<Stack direction={{ base: 'column', md: 'row' }} gap="6">
+  <Box flex="1" p="6" bg="gray.50">Sidebar</Box>
+  <Box flex="3" p="6" bg="white">Main content</Box>
+</Stack>
+```
+
+### Polymorphic rendering
+
+```tsx
+<Stack as="ul" gap="2" listStyle="none" p="0">
+  <Box as="li">List item one</Box>
+  <Box as="li">List item two</Box>
+</Stack>
+```
+
+## Props
+
+### Stack
+
+<ParamField path="direction" type='"row" | "column" | "row-reverse" | "column-reverse" | ResponsiveValue'>
+  The direction in which children are stacked. Accepts responsive values.
+</ParamField>
+
+<ParamField path="align" type="string">
+  Shorthand for the CSS `align-items` property.
+</ParamField>
+
+<ParamField path="justify" type="string">
+  Shorthand for the CSS `justify-content` property.
+</ParamField>
+
+<ParamField path="gap" type="string | number">
+  The space between stacked children. Accepts Panda CSS spacing tokens.
+</ParamField>
+
+<ParamField path="as" type="React.ElementType">
+  The HTML element or React component to render as. Defaults to `div`.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  When true, forwards all props and styles to the first child element.
+</ParamField>
+
+### HStack
+
+<ParamField path="direction" type="string">
+  Override the default horizontal direction. Accepts the same values as `Stack.direction`.
+</ParamField>
+
+`HStack` also accepts all Panda CSS style props and standard HTML `div` attributes.
+
+### VStack
+
+<ParamField path="direction" type="string">
+  Override the default vertical direction. Accepts the same values as `Stack.direction`.
+</ParamField>
+
+`VStack` also accepts all Panda CSS style props and standard HTML `div` attributes.

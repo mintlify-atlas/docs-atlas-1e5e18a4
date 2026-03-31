@@ -1,0 +1,94 @@
+---
+title: Close Button
+description: A pre-configured icon button that renders a close (×) icon with an accessible label. Commonly used to dismiss modals, alerts, and drawers.
+---
+
+`CloseButton` is a convenience wrapper around `IconButton` that renders a close icon and sets `aria-label="Close"` by default. It inherits all props from `Button`.
+
+## Import
+
+```tsx
+import { CloseButton } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<CloseButton />
+```
+
+## Custom icon
+
+Pass a child element to replace the default close icon.
+
+```tsx
+<CloseButton>
+  <XCircleIcon />
+</CloseButton>
+```
+
+## Sizes
+
+```tsx
+<CloseButton size="xs" />
+<CloseButton size="sm" />
+<CloseButton size="md" />
+<CloseButton size="lg" />
+```
+
+## Variants
+
+```tsx
+<CloseButton variant="ghost" />
+<CloseButton variant="subtle" />
+<CloseButton variant="outline" />
+```
+
+## Inside a Dialog
+
+```tsx
+<Dialog.Root>
+  <Dialog.Positioner>
+    <Dialog.Content>
+      <Dialog.CloseTrigger asChild>
+        <CloseButton />
+      </Dialog.CloseTrigger>
+      <Dialog.Body>
+        <p>Content here.</p>
+      </Dialog.Body>
+    </Dialog.Content>
+  </Dialog.Positioner>
+</Dialog.Root>
+```
+
+## Props
+
+`CloseButton` accepts all props from [`IconButton`](/components/icon-button) and [`Button`](/components/button).
+
+<ParamField path="size" type='"2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl"' default="md">
+  Size of the close button.
+</ParamField>
+
+<ParamField path="variant" type='"solid" | "subtle" | "outline" | "ghost" | "plain"' default="ghost">
+  Visual style of the button.
+</ParamField>
+
+<ParamField path="colorPalette" type="string" default="gray">
+  Color palette for the button.
+</ParamField>
+
+<ParamField path="aria-label" type="string" default='"Close"'>
+  Accessible label for screen readers. Defaults to `"Close"`.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  Custom icon to display. Defaults to a close (×) icon.
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default="false">
+  Disables the button when `true`.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  Merges props and behavior onto the child element.
+</ParamField>

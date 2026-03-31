@@ -1,0 +1,149 @@
+---
+title: Grid
+description: A layout component for CSS grid layouts, with a companion GridItem for controlling individual cell placement.
+---
+
+`Grid` applies `display: grid` and provides shorthand props for common grid properties via Panda CSS's `grid` pattern. Use `GridItem` to control how individual cells span rows and columns.
+
+## Import
+
+```tsx
+import { Grid, GridItem } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Grid columns={3} gap="4">
+  <GridItem p="4" bg="gray.100">1</GridItem>
+  <GridItem p="4" bg="gray.100">2</GridItem>
+  <GridItem p="4" bg="gray.100">3</GridItem>
+  <GridItem p="4" bg="gray.100">4</GridItem>
+  <GridItem p="4" bg="gray.100">5</GridItem>
+  <GridItem p="4" bg="gray.100">6</GridItem>
+</Grid>
+```
+
+## Examples
+
+### Column spans
+
+Use the `colSpan` prop on `GridItem` to make a cell span multiple columns:
+
+```tsx
+<Grid columns={4} gap="4">
+  <GridItem colSpan={2} p="4" bg="blue.100">Spans 2 columns</GridItem>
+  <GridItem p="4" bg="blue.50">1 column</GridItem>
+  <GridItem p="4" bg="blue.50">1 column</GridItem>
+</Grid>
+```
+
+### Row and column placement
+
+Use `colStart`, `colEnd`, `rowStart`, and `rowEnd` for precise placement:
+
+```tsx
+<Grid columns={3} gap="4">
+  <GridItem colStart={1} colEnd={3} p="4" bg="teal.100">
+    Col 1–2
+  </GridItem>
+  <GridItem rowSpan={2} p="4" bg="teal.200">
+    Spans 2 rows
+  </GridItem>
+  <GridItem p="4" bg="teal.50">Cell</GridItem>
+  <GridItem p="4" bg="teal.50">Cell</GridItem>
+</Grid>
+```
+
+### Minimum child width (auto-fill)
+
+Use `minChildWidth` to let the grid automatically determine the number of columns based on available space. Do not use this with `columns`:
+
+```tsx
+<Grid minChildWidth="200px" gap="4">
+  <Box p="4" bg="purple.50">Auto</Box>
+  <Box p="4" bg="purple.50">Auto</Box>
+  <Box p="4" bg="purple.50">Auto</Box>
+  <Box p="4" bg="purple.50">Auto</Box>
+</Grid>
+```
+
+### Responsive columns
+
+```tsx
+<Grid columns={{ base: 1, sm: 2, lg: 3 }} gap="6">
+  <GridItem p="6" bg="gray.50">Card 1</GridItem>
+  <GridItem p="6" bg="gray.50">Card 2</GridItem>
+  <GridItem p="6" bg="gray.50">Card 3</GridItem>
+</Grid>
+```
+
+## Props
+
+### Grid
+
+<ParamField path="columns" type="number | ResponsiveValue<number>">
+  The number of columns in the grid. Do not use together with `minChildWidth`.
+</ParamField>
+
+<ParamField path="gap" type="string | number">
+  The gap between grid cells. Accepts Panda CSS spacing tokens.
+</ParamField>
+
+<ParamField path="columnGap" type="string | number">
+  The horizontal gap between columns. Accepts Panda CSS spacing tokens.
+</ParamField>
+
+<ParamField path="rowGap" type="string | number">
+  The vertical gap between rows. Accepts Panda CSS spacing tokens.
+</ParamField>
+
+<ParamField path="minChildWidth" type="string">
+  The minimum width of a child before the grid wraps to a new row. Uses CSS `repeat(auto-fit, minmax(...))`. Must not be used with `columns`.
+</ParamField>
+
+<ParamField path="as" type="React.ElementType">
+  The HTML element or React component to render as. Defaults to `div`.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  When true, forwards all props and styles to the first child element.
+</ParamField>
+
+### GridItem
+
+<ParamField path="colSpan" type="number">
+  The number of columns this item spans.
+</ParamField>
+
+<ParamField path="rowSpan" type="number">
+  The number of rows this item spans.
+</ParamField>
+
+<ParamField path="colStart" type="number">
+  The grid column line where this item starts.
+</ParamField>
+
+<ParamField path="colEnd" type="number">
+  The grid column line where this item ends.
+</ParamField>
+
+<ParamField path="rowStart" type="number">
+  The grid row line where this item starts.
+</ParamField>
+
+<ParamField path="rowEnd" type="number">
+  The grid row line where this item ends.
+</ParamField>
+
+<ParamField path="as" type="React.ElementType">
+  The HTML element or React component to render as. Defaults to `div`.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  When true, forwards all props and styles to the first child element.
+</ParamField>
+
+<Tip>
+  Use `Grid` with `minChildWidth` for responsive auto-fill grids where you want items to reflow based on available space, rather than defining an explicit column count.
+</Tip>

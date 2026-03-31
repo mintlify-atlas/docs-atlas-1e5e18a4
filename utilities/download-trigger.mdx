@@ -1,0 +1,135 @@
+---
+title: Download trigger
+description: Trigger file downloads programmatically from a URL, blob, or raw data.
+---
+
+`DownloadTrigger` is a utility component that initiates a file download when its child element is activated. It supports downloading from a URL string, a `Blob`, or raw typed data, and lets you specify the output file name and MIME type.
+
+## Installation
+
+```bash
+npm install @fidely-ui/react
+```
+
+## Import
+
+```tsx
+import { DownloadTrigger } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<DownloadTrigger data="https://example.com/report.pdf" fileName="report.pdf" mimeType="application/pdf">
+  <button>Download report</button>
+</DownloadTrigger>
+```
+
+## Examples
+
+### Downloading from a URL
+
+Pass a URL string to `data` to download a remote file when the trigger is activated.
+
+```tsx
+import { DownloadTrigger } from '@fidely-ui/react'
+
+export function FileDownload() {
+  return (
+    <DownloadTrigger
+      data="https://example.com/assets/document.pdf"
+      fileName="document.pdf"
+      mimeType="application/pdf"
+    >
+      <button>Download PDF</button>
+    </DownloadTrigger>
+  )
+}
+```
+
+### Displaying file size with FormatByte
+
+Combine `DownloadTrigger` with the `FormatByte` component to show a human-readable file size alongside the download action.
+
+```tsx
+import { DownloadTrigger, FormatByte } from '@fidely-ui/react'
+
+export function FileDownloadWithSize() {
+  const fileSizeInBytes = 2048000
+
+  return (
+    <DownloadTrigger
+      data="https://example.com/assets/archive.zip"
+      fileName="archive.zip"
+      mimeType="application/zip"
+    >
+      <button>
+        Download archive (<FormatByte value={fileSizeInBytes} />)
+      </button>
+    </DownloadTrigger>
+  )
+}
+```
+
+### Downloading an SVG file
+
+```tsx
+import { DownloadTrigger } from '@fidely-ui/react'
+
+const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <circle cx="12" cy="12" r="10" fill="currentColor" />
+</svg>`
+
+export function SvgDownload() {
+  const blob = new Blob([svgContent], { type: 'image/svg+xml' })
+
+  return (
+    <DownloadTrigger data={blob} fileName="icon.svg" mimeType="image/svg+xml">
+      <button>Download SVG</button>
+    </DownloadTrigger>
+  )
+}
+```
+
+### Using `asChild`
+
+Use `asChild` to compose `DownloadTrigger` directly onto an existing element without adding an extra wrapper in the DOM.
+
+```tsx
+import { DownloadTrigger } from '@fidely-ui/react'
+
+export function IconButton() {
+  return (
+    <DownloadTrigger
+      asChild
+      data="https://example.com/export.csv"
+      fileName="export.csv"
+      mimeType="text/csv"
+    >
+      <a href="#">Export CSV</a>
+    </DownloadTrigger>
+  )
+}
+```
+
+<Warning>
+  When using `asChild`, ensure the child element supports click events and is accessible (e.g. a `<button>` or `<a>`).
+</Warning>
+
+## Props
+
+<ParamField path="data" type="string | Blob | ArrayBuffer">
+  The data to download. Accepts a URL string, a `Blob`, or an `ArrayBuffer`.
+</ParamField>
+
+<ParamField path="fileName" type="string">
+  The name of the file presented to the browser's download dialog.
+</ParamField>
+
+<ParamField path="mimeType" type="FileMimeType">
+  The MIME type of the data (e.g. `"application/pdf"`, `"image/svg+xml"`, `"text/csv"`). Used when constructing a downloadable blob URL.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  Use the provided child element as the default rendered element, combining their props and behaviour.
+</ParamField>

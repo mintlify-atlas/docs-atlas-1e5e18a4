@@ -1,0 +1,73 @@
+---
+title: Client only
+description: Render content exclusively on the client side, with optional server-side fallback.
+---
+
+`ClientOnly` renders its children only after the component mounts in the browser. Use it to safely wrap anything that accesses the DOM or browser APIs that are unavailable during server-side rendering.
+
+## Installation
+
+```bash
+npm install @fidely-ui/react
+```
+
+## Import
+
+```tsx
+import { ClientOnly } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<ClientOnly>
+  <div>This content is only rendered on the client side.</div>
+</ClientOnly>
+```
+
+## Examples
+
+### With a fallback
+
+Provide a `fallback` to display a skeleton or placeholder while the component waits for the client to mount.
+
+```tsx
+import { ClientOnly } from '@fidely-ui/react'
+import { Skeleton } from '@fidely-ui/react'
+
+export function MyWidget() {
+  return (
+    <ClientOnly fallback={<Skeleton boxSize="8" />}>
+      <div>This content is only rendered on the client side.</div>
+    </ClientOnly>
+  )
+}
+```
+
+<Tip>
+  Use `fallback` to prevent layout shift. Match the fallback's dimensions to those of the real content.
+</Tip>
+
+### Wrapping browser-only APIs
+
+```tsx
+import { ClientOnly } from '@fidely-ui/react'
+
+export function LocalTime() {
+  return (
+    <ClientOnly fallback={<span>Loading...</span>}>
+      <span>{new Date().toLocaleTimeString()}</span>
+    </ClientOnly>
+  )
+}
+```
+
+## Props
+
+<ParamField path="children" type="ReactNode">
+  The content to render once the component is mounted on the client.
+</ParamField>
+
+<ParamField path="fallback" type="ReactNode" default="null">
+  The content to render on the server or before the client has mounted.
+</ParamField>

@@ -1,0 +1,204 @@
+---
+title: Popover
+description: A floating panel that shows contextual information or actions when triggered by user interaction.
+---
+
+Popover renders a positioned, focusable overlay near its trigger. It supports arrow indicators, controlled state, and flexible placement via Floating UI.
+
+## Import
+
+```tsx
+import { Popover } from '@fidely-ui/react'
+```
+
+Sub-components: `Popover.Root`, `Popover.Trigger`, `Popover.Positioner`, `Popover.Content`, `Popover.CloseTrigger`, `Popover.Arrow`, `Popover.ArrowTip`, `Popover.Title`, `Popover.Description`, `Popover.Anchor`, `Popover.Indicator`, `Popover.Context`, `Popover.RootProvider`
+
+## Basic usage
+
+```tsx
+<Popover.Root>
+  <Popover.Trigger asChild>
+    <button>Open popover</button>
+  </Popover.Trigger>
+  <Popover.Positioner>
+    <Popover.Content>
+      <Popover.Arrow>
+        <Popover.ArrowTip />
+      </Popover.Arrow>
+      <Popover.Title>Settings</Popover.Title>
+      <Popover.Description>Adjust your preferences below.</Popover.Description>
+      <Popover.CloseTrigger asChild>
+        <button>Dismiss</button>
+      </Popover.CloseTrigger>
+    </Popover.Content>
+  </Popover.Positioner>
+</Popover.Root>
+```
+
+## Examples
+
+### Controlled
+
+Use `open` and `onOpenChange` to manage popover state externally.
+
+```tsx
+function ControlledPopover() {
+  const [open, setOpen] = React.useState(false)
+
+  return (
+    <Popover.Root open={open} onOpenChange={(e) => setOpen(e.open)}>
+      <Popover.Trigger asChild>
+        <button>Toggle</button>
+      </Popover.Trigger>
+      <Popover.Positioner>
+        <Popover.Content>
+          <Popover.Title>Controlled</Popover.Title>
+          <Popover.Description>Open: {String(open)}</Popover.Description>
+        </Popover.Content>
+      </Popover.Positioner>
+    </Popover.Root>
+  )
+}
+```
+
+### Placement
+
+Pass a `positioning.placement` value to control where the popover appears relative to its trigger. Accepts any [Floating UI placement](https://floating-ui.com/docs/computePosition#placement).
+
+```tsx
+<Popover.Root positioning={{ placement: 'right-start' }}>
+  <Popover.Trigger asChild>
+    <button>Right-start popover</button>
+  </Popover.Trigger>
+  <Popover.Positioner>
+    <Popover.Content>
+      <Popover.Title>Positioned right</Popover.Title>
+    </Popover.Content>
+  </Popover.Positioner>
+</Popover.Root>
+```
+
+Common placement values: `top`, `top-start`, `top-end`, `bottom`, `bottom-start`, `bottom-end`, `left`, `left-start`, `left-end`, `right`, `right-start`, `right-end`.
+
+### Offset
+
+Use `positioning.offset` to push the popover away from or toward the trigger.
+
+```tsx
+<Popover.Root positioning={{ offset: { mainAxis: 12, crossAxis: 0 } }}>
+  <Popover.Trigger asChild>
+    <button>With offset</button>
+  </Popover.Trigger>
+  <Popover.Positioner>
+    <Popover.Content>
+      <Popover.Title>Offset example</Popover.Title>
+    </Popover.Content>
+  </Popover.Positioner>
+</Popover.Root>
+```
+
+### Using inside a Dialog
+
+When rendering a Popover inside a Dialog, avoid portalling the positioner to `document.body` to prevent layering issues.
+
+```tsx
+{/* Do not wrap Popover.Positioner in <Portal> inside a Dialog */}
+<Popover.Root positioning={{ strategy: 'fixed', hideWhenDetached: true }}>
+  <Popover.Trigger asChild>
+    <button>Open popover</button>
+  </Popover.Trigger>
+  <Popover.Positioner>
+    <Popover.Content>
+      <Popover.Title>Inside a dialog</Popover.Title>
+    </Popover.Content>
+  </Popover.Positioner>
+</Popover.Root>
+```
+
+<Note>
+  Set `positioning.strategy` to `"fixed"` and `hideWhenDetached` to `true` when the parent dialog uses `scrollBehavior="inside"`.
+</Note>
+
+### Custom background
+
+Use the `--popover-bg` CSS variable to theme the popover panel and its arrow together.
+
+```tsx
+<Popover.Root>
+  <Popover.Trigger asChild>
+    <button>Dark popover</button>
+  </Popover.Trigger>
+  <Popover.Positioner>
+    <Popover.Content style={{ '--popover-bg': '#1a1a1a' }}>
+      <Popover.Arrow>
+        <Popover.ArrowTip />
+      </Popover.Arrow>
+      <Popover.Title>Custom background</Popover.Title>
+    </Popover.Content>
+  </Popover.Positioner>
+</Popover.Root>
+```
+
+## Props
+
+### Popover.Root
+
+<ParamField path="open" type="boolean">
+  The controlled open state of the popover.
+</ParamField>
+
+<ParamField path="defaultOpen" type="boolean">
+  The initial open state when first rendered (uncontrolled).
+</ParamField>
+
+<ParamField path="onOpenChange" type="(details: OpenChangeDetails) => void">
+  Callback fired when the popover opens or closes.
+</ParamField>
+
+<ParamField path="positioning" type="PositioningOptions">
+  Options passed to Floating UI for positioning the popover content. Includes `placement`, `offset`, `strategy`, and more.
+</ParamField>
+
+<ParamField path="autoFocus" type="boolean" default="true">
+  Whether to automatically focus the first focusable element inside the popover when it opens.
+</ParamField>
+
+<ParamField path="closeOnEscape" type="boolean" default="true">
+  Whether pressing Escape closes the popover.
+</ParamField>
+
+<ParamField path="closeOnInteractOutside" type="boolean" default="true">
+  Whether clicking outside the popover content closes it.
+</ParamField>
+
+<ParamField path="modal" type="boolean" default="false">
+  When `true`, interaction with elements outside the popover is disabled.
+</ParamField>
+
+<ParamField path="portalled" type="boolean" default="true">
+  Whether the popover positioner is portalled to `document.body`.
+</ParamField>
+
+<ParamField path="lazyMount" type="boolean" default="false">
+  Whether to defer mounting popover content until first open.
+</ParamField>
+
+<ParamField path="unmountOnExit" type="boolean" default="false">
+  Whether to unmount the popover content when it closes.
+</ParamField>
+
+<ParamField path="initialFocusEl" type="() => HTMLElement | null">
+  The element to focus when the popover opens.
+</ParamField>
+
+<ParamField path="onEscapeKeyDown" type="(event: KeyboardEvent) => void">
+  Called when the Escape key is pressed.
+</ParamField>
+
+<ParamField path="onInteractOutside" type="(event: InteractOutsideEvent) => void">
+  Called when an interaction occurs outside the popover.
+</ParamField>
+
+<ParamField path="onPointerDownOutside" type="(event: PointerDownOutsideEvent) => void">
+  Called when a pointer-down event occurs outside the popover.
+</ParamField>

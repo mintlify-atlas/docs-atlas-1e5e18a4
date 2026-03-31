@@ -1,0 +1,204 @@
+---
+title: Tabs
+description: A navigation component that organizes related content into panels, showing one panel at a time based on the selected tab trigger.
+---
+
+Tabs lets users switch between distinct views without leaving the current page. The active panel is controlled by the selected trigger, and focus management follows ARIA tab patterns.
+
+## Import
+
+```tsx
+import { Tabs } from '@fidely-ui/react'
+```
+
+Sub-components: `Tabs.Root`, `Tabs.List`, `Tabs.Trigger`, `Tabs.Indicator`, `Tabs.Content`, `Tabs.Context`, `Tabs.RootProvider`
+
+## Basic usage
+
+```tsx
+<Tabs.Root defaultValue="overview">
+  <Tabs.List>
+    <Tabs.Trigger value="overview">Overview</Tabs.Trigger>
+    <Tabs.Trigger value="activity">Activity</Tabs.Trigger>
+    <Tabs.Trigger value="settings">Settings</Tabs.Trigger>
+    <Tabs.Indicator />
+  </Tabs.List>
+  <Tabs.Content value="overview">
+    <p>Overview content.</p>
+  </Tabs.Content>
+  <Tabs.Content value="activity">
+    <p>Activity content.</p>
+  </Tabs.Content>
+  <Tabs.Content value="settings">
+    <p>Settings content.</p>
+  </Tabs.Content>
+</Tabs.Root>
+```
+
+## Examples
+
+### Controlled tabs
+
+Use `value` and `onValueChange` to manage the active tab from outside the component.
+
+```tsx
+function ControlledTabs() {
+  const [tab, setTab] = React.useState('overview')
+
+  return (
+    <Tabs.Root value={tab} onValueChange={(e) => setTab(e.value)}>
+      <Tabs.List>
+        <Tabs.Trigger value="overview">Overview</Tabs.Trigger>
+        <Tabs.Trigger value="details">Details</Tabs.Trigger>
+        <Tabs.Indicator />
+      </Tabs.List>
+      <Tabs.Content value="overview">Overview panel.</Tabs.Content>
+      <Tabs.Content value="details">Details panel.</Tabs.Content>
+    </Tabs.Root>
+  )
+}
+```
+
+### Disabled tab
+
+Set `disabled` on a `Tabs.Trigger` to prevent interaction with that tab.
+
+```tsx
+<Tabs.Root defaultValue="tab1">
+  <Tabs.List>
+    <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
+    <Tabs.Trigger value="tab2" disabled>Tab 2 (disabled)</Tabs.Trigger>
+    <Tabs.Trigger value="tab3">Tab 3</Tabs.Trigger>
+    <Tabs.Indicator />
+  </Tabs.List>
+  <Tabs.Content value="tab1">Content for tab 1.</Tabs.Content>
+  <Tabs.Content value="tab2">Content for tab 2.</Tabs.Content>
+  <Tabs.Content value="tab3">Content for tab 3.</Tabs.Content>
+</Tabs.Root>
+```
+
+### Manual activation
+
+By default, tabs activate automatically when navigated with arrow keys. Set `activationMode="manual"` to require an explicit click or Enter key press.
+
+```tsx
+<Tabs.Root defaultValue="tab1" activationMode="manual">
+  <Tabs.List>
+    <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
+    <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
+    <Tabs.Indicator />
+  </Tabs.List>
+  <Tabs.Content value="tab1">Tab 1 content.</Tabs.Content>
+  <Tabs.Content value="tab2">Tab 2 content.</Tabs.Content>
+</Tabs.Root>
+```
+
+### Lazy mounting
+
+Use `lazyMount` to defer rendering panel content until the tab is first activated, and `unmountOnExit` to destroy it when deactivated.
+
+```tsx
+<Tabs.Root defaultValue="tab1" lazyMount unmountOnExit>
+  <Tabs.List>
+    <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
+    <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
+  </Tabs.List>
+  <Tabs.Content value="tab1">Rendered on first activation.</Tabs.Content>
+  <Tabs.Content value="tab2">Also lazily mounted.</Tabs.Content>
+</Tabs.Root>
+```
+
+### Tab links (client-side routing)
+
+Render triggers as links using `asChild`. For frameworks like React Router, provide a `navigate` function on `Tabs.Root`.
+
+```tsx
+import { useNavigate } from 'react-router-dom'
+
+function TabLinks() {
+  const navigate = useNavigate()
+
+  return (
+    <Tabs.Root navigate={({ value }) => navigate(`/${value}`)}>
+      <Tabs.List>
+        <Tabs.Trigger value="home" asChild>
+          <a href="/home">Home</a>
+        </Tabs.Trigger>
+        <Tabs.Trigger value="profile" asChild>
+          <a href="/profile">Profile</a>
+        </Tabs.Trigger>
+      </Tabs.List>
+    </Tabs.Root>
+  )
+}
+```
+
+<Tip>
+  The `Tabs.Indicator` renders a sliding underline that animates between triggers. Place it inside `Tabs.List` after the last `Tabs.Trigger`.
+</Tip>
+
+## Props
+
+### Tabs.Root
+
+<ParamField path="value" type="string">
+  The controlled value of the active tab.
+</ParamField>
+
+<ParamField path="defaultValue" type="string">
+  The tab value to activate by default (uncontrolled).
+</ParamField>
+
+<ParamField path="onValueChange" type="(details: { value: string }) => void">
+  Callback fired when the active tab changes.
+</ParamField>
+
+<ParamField path="variant" type='"underline" | "outline"' default='"underline"'>
+  The visual style of the tab list.
+</ParamField>
+
+<ParamField path="size" type='"sm" | "md" | "lg"' default='"md"'>
+  The size of the tabs.
+</ParamField>
+
+<ParamField path="activationMode" type='"automatic" | "manual"' default='"automatic"'>
+  Controls when tabs activate. `"automatic"` activates on focus; `"manual"` requires a click or Enter key press.
+</ParamField>
+
+<ParamField path="lazyMount" type="boolean" default="false">
+  Whether to defer mounting panel content until first activation.
+</ParamField>
+
+<ParamField path="loopFocus" type="boolean" default="false">
+  Whether keyboard navigation wraps from the last tab back to the first.
+</ParamField>
+
+### Tabs.Trigger
+
+<ParamField path="value" type="string" required>
+  The value associated with this trigger. Must match a `Tabs.Content` value.
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default="false">
+  Disables interaction with this tab.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  Renders a custom element (e.g. a link) instead of the default button.
+</ParamField>
+
+### Tabs.Content
+
+<ParamField path="value" type="string" required>
+  The value associated with this content panel. Must match a `Tabs.Trigger` value.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  Renders a custom element instead of the default container.
+</ParamField>
+
+### Tabs.List
+
+<ParamField path="asChild" type="boolean" default="false">
+  Passes props to a custom child element.
+</ParamField>

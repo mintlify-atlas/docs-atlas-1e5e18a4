@@ -1,0 +1,88 @@
+---
+title: Paper
+description: A surface component for displaying content with optional elevation shadows and filled or outline variants.
+---
+
+`Paper` is a styled surface container. Use it for cards, panels, and other content areas that need visual elevation or a distinct background. It supports elevation levels and two visual variants.
+
+## Import
+
+```tsx
+import { Paper } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Paper p="6">
+  Content inside a paper surface
+</Paper>
+```
+
+## Examples
+
+### Elevation
+
+Use the `elevation` prop to control the shadow depth. Higher values cast larger, softer shadows:
+
+```tsx
+<Stack gap="6">
+  <Paper elevation="0" p="4">Elevation 0 (no shadow)</Paper>
+  <Paper elevation="1" p="4">Elevation 1</Paper>
+  <Paper elevation="2" p="4">Elevation 2</Paper>
+  <Paper elevation="3" p="4">Elevation 3</Paper>
+  <Paper elevation="4" p="4">Elevation 4 (deepest)</Paper>
+</Stack>
+```
+
+### Variants
+
+<Tabs>
+  <Tab title="Filled">
+    ```tsx
+    <Paper variant="filled" p="6">
+      Filled surface (default)
+    </Paper>
+    ```
+  </Tab>
+  <Tab title="Outline">
+    ```tsx
+    <Paper variant="outline" p="6">
+      Outlined surface with a border
+    </Paper>
+    ```
+  </Tab>
+</Tabs>
+
+### As a card
+
+```tsx
+<Paper elevation="2" p="6" maxW="sm">
+  <Heading size="md" mb="2">Card title</Heading>
+  <Text color="fg.subtle">
+    A short description of the card content goes here.
+  </Text>
+</Paper>
+```
+
+### Combining elevation and variant
+
+```tsx
+<Paper variant="outline" elevation="2" p="6">
+  Outlined with a shadow
+</Paper>
+```
+
+## Props
+
+<ParamField path="elevation" type='"0" | "1" | "2" | "3" | "4"' default='"0"'>
+  Controls the shadow depth of the Paper. `"0"` has no shadow; `"4"` has the deepest shadow.
+</ParamField>
+
+<ParamField path="variant" type='"filled" | "outline"' default='"filled"'>
+  Sets the visual style. `"filled"` applies a background color; `"outline"` adds a border instead.
+</ParamField>
+
+<Note>
+  `Paper` accepts all Panda CSS style props in addition to the above. Use `p`, `m`, `w`, `maxW`, and other spacing and sizing tokens to control the layout of the surface.
+</Note>

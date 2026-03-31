@@ -1,0 +1,100 @@
+---
+title: Textarea
+description: A multi-line text input that supports variants, sizes, resize control, and Field integration.
+---
+
+`Textarea` is a styled multi-line text input built on Ark UI's `Field.Textarea`. It integrates with the `Field` component for accessible labels, helper text, and error messages.
+
+## Import
+
+```tsx
+import { Textarea } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Textarea placeholder="Write your message..." />
+```
+
+## Sizes
+
+```tsx
+<Textarea size="xs" placeholder="Extra small" />
+<Textarea size="sm" placeholder="Small" />
+<Textarea size="md" placeholder="Medium" />
+<Textarea size="lg" placeholder="Large" />
+<Textarea size="xl" placeholder="Extra large" />
+```
+
+## Variants
+
+```tsx
+<Textarea variant="outline" placeholder="Outline (default)" />
+<Textarea variant="subtle" placeholder="Subtle" />
+<Textarea variant="flushed" placeholder="Flushed" />
+```
+
+## Resize behavior
+
+Use the `resize` prop to control how the textarea can be resized by the user.
+
+```tsx
+<Textarea resize="none" placeholder="No resize" />
+<Textarea resize="vertical" placeholder="Vertical resize (default)" />
+<Textarea resize="horizontal" placeholder="Horizontal resize" />
+```
+
+## With helper text
+
+```tsx
+import { Field, Textarea } from '@fidely-ui/react'
+
+<Field.Root>
+  <Field.Label>Bio</Field.Label>
+  <Textarea placeholder="Tell us about yourself" />
+  <Field.HelperText>Max 200 characters.</Field.HelperText>
+</Field.Root>
+```
+
+## With error state
+
+```tsx
+import { Field, Textarea } from '@fidely-ui/react'
+
+<Field.Root invalid>
+  <Field.Label>Bio</Field.Label>
+  <Textarea placeholder="Tell us about yourself" />
+  <Field.Error>Bio is required.</Field.Error>
+</Field.Root>
+```
+
+<Tip>
+  Pass the `autoresize` prop to enable automatic height growth as the user types.
+</Tip>
+
+## Props
+
+<ParamField body="size" type="'xs' | 'sm' | 'md' | 'lg' | 'xl'" default="md">
+  Controls the font size and padding.
+</ParamField>
+
+<ParamField body="variant" type="'outline' | 'subtle' | 'flushed'" default="outline">
+  The visual style of the textarea.
+</ParamField>
+
+<ParamField body="colorPalette" type="string" default="gray">
+  The color palette of the component.
+</ParamField>
+
+<ParamField body="resize" type="'none' | 'vertical' | 'horizontal' | 'both'">
+  Controls CSS `resize` behavior on the textarea element.
+</ParamField>
+
+<ParamField body="disabled" type="boolean" default="false">
+  Disables the textarea.
+</ParamField>
+
+<ParamField body="asChild" type="boolean" default="false">
+  Merges textarea styles onto the child element.
+</ParamField>

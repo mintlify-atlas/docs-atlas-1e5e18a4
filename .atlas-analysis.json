@@ -1,28 +1,11 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "name": "Fidely UI",
+  "projectType": "frontend",
+  "projectName": "Fidely UI",
+  "projectDescription": "A modern React design system powered by Ark UI and Panda CSS, providing accessible, themeable, and composable components for building production-ready web applications.",
   "theme": "willow",
-  "colors": {
-    "primary": "#e47734",
-    "light": "#e69465",
-    "dark": "#f1bf9e"
-  },
-  "favicon": "https://media.brand.dev/327816ba-af0a-4b01-903e-c15c376a3644.jpg",
-  "logo": {
-    "light": "https://media.brand.dev/166bc630-de35-490a-b20c-126f26b596ae.png",
-    "dark": "https://media.brand.dev/166bc630-de35-490a-b20c-126f26b596ae.png"
-  },
-  "navbar": {
-    "primary": {
-      "type": "github",
-      "href": "https://github.com/fidely-ui/fidely-ui"
-    }
-  },
-  "footer": {
-    "socials": {
-      "github": "https://github.com/fidely-ui/fidely-ui"
-    }
-  },
+  "primaryColor": "#e47734",
+  "lightColor": "#e69465",
+  "darkColor": "#f1bf9e",
   "navigation": {
     "tabs": [
       {
@@ -112,7 +95,6 @@
               "components/button",
               "components/icon-button",
               "components/input",
-              "components/input-group",
               "components/textarea",
               "components/select",
               "components/checkbox",
@@ -149,12 +131,35 @@
               "components/menu",
               "components/tabs",
               "components/accordion",
-              "components/clipboard",
-              "components/close-button"
+              "components/clipboard"
             ]
           }
         ]
       }
     ]
-  }
+  },
+  "keyFeatures": [
+    "50+ accessible React components built on Ark UI headless primitives",
+    "Zero-runtime styling via Panda CSS with static, type-safe styles at build time",
+    "Fully themeable with design tokens, accent colors, gray scales, and border radius options",
+    "Dark mode support via semantic tokens that adapt automatically",
+    "Composable factory system (fidely factory) to create styled Ark UI components",
+    "Panda CSS preset (@fidely-ui/panda-preset) usable independently of React components",
+    "Multiple framework guides: Next.js, Vite, React Router, Laravel",
+    "Custom color palette support using Radix Colors-based createColorTokens utility"
+  ],
+  "publicApiSurface": [
+    "@fidely-ui/react — main package exporting all components",
+    "@fidely-ui/panda-preset — Panda CSS preset with fidelyPreset(options)",
+    "fidelyPreset({ accentColor, grayColor, rounded }) — configure theme preset",
+    "fidely factory — fidely('button') / fidely.button for styled Ark UI components",
+    "makeStyleContext — utility for slot recipe style context",
+    "Button, IconButton, Input, Textarea, Select, Checkbox, Switch, PinInput, PasswordInput, Combobox, Field, CommandInput",
+    "Dialog, Popover, HoverCard, Menu, Tabs, Accordion, Clipboard",
+    "Card, Table, Avatar, AvatarGroup, Persona, Profile, Image, Icon, Skeleton, Spinner, Marquee, Badge",
+    "Box, Center, Flex, Grid, Stack, Wrap, Divider, Paper, Text, Heading, Em, Span, Kbd",
+    "ClientOnly, Portal, LocaleProvider, DownloadTrigger, Format utilities",
+    "createColorTokens(name, light, dark) — custom color palette utility from @fidely-ui/panda-preset/utils",
+    "Exported anatomy keys from @fidely-ui/react/anatomy for slot recipe customization"
+  ]
 }

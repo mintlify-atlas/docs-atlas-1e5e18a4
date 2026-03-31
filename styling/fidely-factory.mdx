@@ -1,0 +1,134 @@
+---
+title: Fidely factory
+description: Create style-prop-enabled components from Ark UI primitives or native HTML elements using the fidely factory.
+---
+
+The `fidely` factory is a utility that wraps any Ark UI headless component (or native HTML element) in Panda CSS's `styled` HOC, giving it full style prop support. The result is a component that accepts every Panda CSS style prop directly as a JSX prop.
+
+<Warning>
+  The fidely factory is still experimental. The API may change in a future release.
+</Warning>
+
+```ts
+import { fidely } from '@fidely-ui/react'
+```
+
+## How it works
+
+Internally, `fidely` is a JavaScript `Proxy` that intercepts both function calls and property access:
+
+```ts
+// Handles fidely('button')
+apply(_target, _thisArg, [component]: [ArkComponent]) {
+  return fidelyFactory(component)
+},
+
+// Handles fidely.button
+get(_target, component: ArkComponent) {
+  if (!cache.has(component)) {
+    cache.set(component, fidelyFactory(component))
+  }
+  return cache.get(component)
+},
+```
+
+`fidelyFactory` validates that the component exists in Ark UI and wraps it with `styled()` from Panda CSS. Components created this way are cached, so repeated access to `fidely.button` returns the same instance.
+
+## JSX element syntax
+
+Use the `fidely.<element>` syntax to inline style props directly on any valid Ark UI element name:
+
+```tsx
+import { fidely } from '@fidely-ui/react'
+
+const Button = ({ children }) => (
+  <fidely.button bg="blue.5" color="white" py="2" px="4" rounded="md">
+    {children}
+  </fidely.button>
+)
+```
+
+Every Panda CSS style prop (`bg`, `color`, `p`, `rounded`, `_hover`, etc.) is available on elements created this way.
+
+## Factory function syntax
+
+Call `fidely` as a function to create a reusable styled component:
+
+```tsx
+import { fidely } from '@fidely-ui/react'
+
+const A = fidely('a')
+
+function Link() {
+  return (
+    <A bg="crimson.8" href="https://fidely-ui.vercel.app">
+      fidely
+    </A>
+  )
+}
+```
+
+This is equivalent to the JSX element syntax but produces a named component you can reuse and compose.
+
+## Wrapping Ark UI primitives
+
+Because `fidely` wraps Ark UI components, you get full accessibility, keyboard navigation, and state management from Ark, plus Panda CSS style props on top:
+
+```tsx
+import { fidely } from '@fidely-ui/react'
+
+// Create a styled dialog trigger from Ark's dialog primitive
+const DialogTrigger = fidely('dialog-trigger')
+
+function App() {
+  return (
+    <DialogTrigger
+      px="4"
+      py="2"
+      bg="accent.9"
+      color="white"
+      rounded="md"
+      _hover={{ bg: 'accent.10' }}
+    >
+      Open dialog
+    </DialogTrigger>
+  )
+}
+```
+
+## Polymorphism
+
+All components created with `fidely` support the `as` and `asChild` props, allowing you to change the rendered element without losing styles.
+
+<Tabs>
+  <Tab title="as prop">
+    Replaces the rendered element directly:
+
+    ```tsx
+    <Button as="a" href="https://fidely-ui.vercel.app">
+      Fidely UI
+    </Button>
+    ```
+  </Tab>
+  <Tab title="asChild prop">
+    Merges props into the child element and avoids an extra DOM node:
+
+    ```tsx
+    <Button asChild>
+      <a href="https://fidely-ui.vercel.app">Fidely UI</a>
+    </Button>
+    ```
+  </Tab>
+</Tabs>
+
+<AccordionGroup>
+  <Accordion title="When should I use as vs asChild?">
+    Use `as` when you want to change the element type and don't need to pass the element explicitly. Use `asChild` when you already have the element in JSX (e.g., a `<Link>` from Next.js) and want to merge the button's styles and props into it without adding an extra DOM node.
+  </Accordion>
+  <Accordion title="Are style props forwarded through as and asChild?">
+    Yes. Style props applied to the factory component continue to work regardless of the rendered element. This means a `<Button as="a">` will apply all button styles to the anchor element.
+  </Accordion>
+  <Accordion title="What elements are available?">
+    All elements that are valid keys in Ark UI's `ark` export are available. If you pass an invalid component name, `fidelyFactory` throws: `[fidely] "foo" is not a valid component in Ark UI.`
+  </Accordion>
+</AccordionGroup>

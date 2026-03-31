@@ -1,0 +1,136 @@
+---
+title: Command input
+description: A non-editable, input-styled button that triggers a command palette or search dialog, with keyboard shortcut support and responsive behavior.
+---
+
+`CommandInput` is a read-only, button-like trigger that opens a command palette, global search, or dialog. It renders a placeholder, an optional left icon, and a keyboard shortcut badge. The shortcut badge is hidden on mobile and the keyboard listener only fires on desktop.
+
+## Import
+
+```tsx
+import { CommandInput } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<CommandInput onOpen={() => setOpen(true)} />
+```
+
+## Sizes
+
+```tsx
+<CommandInput size="sm" onOpen={() => setOpen(true)} />
+<CommandInput size="md" onOpen={() => setOpen(true)} />
+<CommandInput size="lg" onOpen={() => setOpen(true)} />
+```
+
+## Custom placeholder
+
+```tsx
+<CommandInput placeholder="Search docs..." onOpen={() => setOpen(true)} />
+```
+
+## Custom left icon
+
+Replace the default search icon using the `leftElement` prop.
+
+```tsx
+import { CommandIcon } from 'lucide-react'
+
+<CommandInput
+  leftElement={<CommandIcon />}
+  placeholder="Run a command..."
+  onOpen={() => setOpen(true)}
+/>
+```
+
+## Custom keyboard shortcut
+
+Override the default `⌘K` / `Ctrl+K` shortcut.
+
+```tsx
+<CommandInput
+  shortcut="Ctrl+P"
+  placeholder="Go to file..."
+  onOpen={() => setOpen(true)}
+/>
+```
+
+## Controlled open state
+
+Use `isOpen` to synchronize the trigger's visual active state with the dialog.
+
+```tsx
+<CommandInput
+  isOpen={dialogOpen}
+  onOpen={() => setDialogOpen(true)}
+  placeholder="Search..."
+/>
+```
+
+## Paired with a dialog and combobox
+
+`CommandInput` is typically combined with a `Dialog` and `Combobox` to build a full command palette.
+
+```tsx
+import { useState } from 'react'
+import { CommandInput, Combobox } from '@fidely-ui/react'
+import { Dialog } from '@fidely-ui/react'
+
+export function CommandPalette() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <>
+      <CommandInput
+        isOpen={open}
+        onOpen={() => setOpen(true)}
+        placeholder="Search commands..."
+      />
+      <Dialog.Root open={open} onOpenChange={(e) => setOpen(e.open)}>
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+          <Dialog.Content>
+            {/* Combobox content here */}
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Dialog.Root>
+    </>
+  )
+}
+```
+
+<Note>
+  On mobile, the keyboard shortcut label is hidden and shortcut key listeners are disabled. Tap/click interaction always works.
+</Note>
+
+## Props
+
+<ParamField body="onOpen" type="() => void">
+  Callback fired when the user clicks the trigger or presses the configured keyboard shortcut.
+</ParamField>
+
+<ParamField body="isOpen" type="boolean" default="false">
+  Reflects the open state of the associated dialog. Sets `aria-expanded` and applies active styling to the trigger.
+</ParamField>
+
+<ParamField body="placeholder" type="string" default='"Search..."'>
+  Placeholder text displayed inside the trigger.
+</ParamField>
+
+<ParamField body="shortcut" type="string" default='"⌘K" (macOS) / "Ctrl+K" (Windows)'>
+  The keyboard shortcut string. Displayed as a badge and registered as a global keydown listener. Pass key segments separated by `+` (e.g. `"Ctrl+P"`).
+</ParamField>
+
+<ParamField body="leftElement" type="ReactNode">
+  Element rendered at the start of the trigger. Defaults to a search icon.
+</ParamField>
+
+<ParamField body="size" type="'sm' | 'md' | 'lg'" default="md">
+  Controls the height and font size of the trigger.
+</ParamField>
+
+<ParamField body="aria-label" type="string">
+  Accessible label for the trigger button. Provide this if the visible placeholder text is insufficient for screen reader context.
+</ParamField>

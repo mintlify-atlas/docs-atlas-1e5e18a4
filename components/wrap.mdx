@@ -1,0 +1,107 @@
+---
+title: Wrap
+description: A layout component that wraps its children and applies consistent spacing, reflowing to the next line when space runs out.
+---
+
+`Wrap` uses flexbox with `flex-wrap: wrap` to lay out its children with spacing between them. When there is not enough horizontal space, items automatically reflow onto the next line. It is built on Panda CSS's `wrap` pattern.
+
+## Import
+
+```tsx
+import { Wrap } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Wrap gap="2">
+  <Box px="3" py="1" bg="blue.100" borderRadius="full">Tag one</Box>
+  <Box px="3" py="1" bg="blue.100" borderRadius="full">Tag two</Box>
+  <Box px="3" py="1" bg="blue.100" borderRadius="full">Tag three</Box>
+  <Box px="3" py="1" bg="blue.100" borderRadius="full">Tag four</Box>
+</Wrap>
+```
+
+## Examples
+
+### Gap
+
+Control uniform spacing between all items:
+
+```tsx
+<Wrap gap="4">
+  {badges.map((label) => (
+    <Badge key={label}>{label}</Badge>
+  ))}
+</Wrap>
+```
+
+### Row and column gap
+
+Set different gaps for rows and columns:
+
+```tsx
+<Wrap rowGap="2" columnGap="6">
+  <Box px="3" py="1" bg="gray.100">Item A</Box>
+  <Box px="3" py="1" bg="gray.100">Item B</Box>
+  <Box px="3" py="1" bg="gray.100">Item C</Box>
+</Wrap>
+```
+
+### Alignment
+
+Control how items align on the cross axis:
+
+```tsx
+<Wrap gap="4" align="center">
+  <Box h="8" px="3" bg="purple.100">Short</Box>
+  <Box h="16" px="3" bg="purple.200">Tall</Box>
+  <Box h="8" px="3" bg="purple.100">Short</Box>
+</Wrap>
+```
+
+### Justify
+
+Control how items are distributed along the main axis:
+
+```tsx
+<Wrap gap="4" justify="center">
+  <Box px="4" py="2" bg="teal.100">One</Box>
+  <Box px="4" py="2" bg="teal.100">Two</Box>
+  <Box px="4" py="2" bg="teal.100">Three</Box>
+</Wrap>
+```
+
+## Props
+
+<ParamField path="gap" type="string | number">
+  Uniform gap between items on both axes. Accepts Panda CSS spacing tokens.
+</ParamField>
+
+<ParamField path="rowGap" type="string | number">
+  The vertical gap between rows of items. Accepts Panda CSS spacing tokens.
+</ParamField>
+
+<ParamField path="columnGap" type="string | number">
+  The horizontal gap between items in a row. Accepts Panda CSS spacing tokens.
+</ParamField>
+
+<ParamField path="align" type="string">
+  Shorthand for the CSS `align-items` property. Controls cross-axis alignment.
+</ParamField>
+
+<ParamField path="justify" type="string">
+  Shorthand for the CSS `justify-content` property. Controls main-axis distribution.
+</ParamField>
+
+<ParamField path="as" type="React.ElementType">
+  The HTML element or React component to render as. Defaults to `div`.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  When true, forwards all props and styles to the first child element.
+</ParamField>
+
+<Note>
+  When both `gap` and `rowGap`/`columnGap` are set, `rowGap` and `columnGap` take precedence over `gap` for their respective axes.
+</Note>

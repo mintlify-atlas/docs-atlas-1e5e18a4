@@ -1,0 +1,134 @@
+---
+title: Badge
+description: A compact label component for highlighting status, categories, or metadata at a glance.
+---
+
+`Badge` renders a styled inline label. It supports size, variant, and color palette props via the `badge` recipe from Panda CSS. Use it to communicate status, counts, or categorical information.
+
+## Import
+
+```tsx
+import { Badge } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Badge>New</Badge>
+```
+
+## Examples
+
+### Variants
+
+<Tabs>
+  <Tab title="Solid">
+    ```tsx
+    <Badge variant="solid">Solid</Badge>
+    ```
+  </Tab>
+  <Tab title="Subtle">
+    ```tsx
+    <Badge variant="subtle">Subtle</Badge>
+    ```
+  </Tab>
+  <Tab title="Outline">
+    ```tsx
+    <Badge variant="outline">Outline</Badge>
+    ```
+  </Tab>
+</Tabs>
+
+### Sizes
+
+```tsx
+<HStack gap="3" align="center">
+  <Badge size="sm">Small</Badge>
+  <Badge size="md">Medium</Badge>
+  <Badge size="lg">Large</Badge>
+  <Badge size="xl">X-Large</Badge>
+</HStack>
+```
+
+### Color palette
+
+```tsx
+<Wrap gap="2">
+  <Badge colorPalette="gray">Gray</Badge>
+  <Badge colorPalette="red">Red</Badge>
+  <Badge colorPalette="orange">Orange</Badge>
+  <Badge colorPalette="yellow">Yellow</Badge>
+  <Badge colorPalette="green">Green</Badge>
+  <Badge colorPalette="teal">Teal</Badge>
+  <Badge colorPalette="blue">Blue</Badge>
+  <Badge colorPalette="purple">Purple</Badge>
+</Wrap>
+```
+
+### With an icon
+
+Render an icon inside a badge by nesting it as a child:
+
+```tsx
+<Badge colorPalette="green" variant="subtle">
+  <Icon icon="check" size={12} />
+  Active
+</Badge>
+```
+
+```tsx
+<Badge colorPalette="red" variant="solid">
+  <Icon icon="x" size={12} />
+  Rejected
+</Badge>
+```
+
+### Status indicators
+
+```tsx
+<HStack gap="3">
+  <Badge colorPalette="green" variant="subtle">Active</Badge>
+  <Badge colorPalette="yellow" variant="subtle">Pending</Badge>
+  <Badge colorPalette="red" variant="subtle">Inactive</Badge>
+</HStack>
+```
+
+### Using `asChild`
+
+Use `asChild` to render the badge styles on a child element, such as a link:
+
+```tsx
+<Badge asChild colorPalette="blue" variant="outline">
+  <a href="/changelog">v2.0.0</a>
+</Badge>
+```
+
+### Polymorphic rendering
+
+```tsx
+<Badge as="a" href="/pricing" colorPalette="purple">
+  Pro
+</Badge>
+```
+
+## Props
+
+<ParamField path="size" type='"sm" | "md" | "lg" | "xl"' default='"md"'>
+  Defines the size of the badge.
+</ParamField>
+
+<ParamField path="variant" type='"solid" | "subtle" | "outline"' default='"solid"'>
+  Defines the visual style of the badge.
+</ParamField>
+
+<ParamField path="colorPalette" type="string" default='"gray"'>
+  Sets the color palette for the badge. Accepts any Panda CSS color palette token.
+</ParamField>
+
+<ParamField path="as" type="React.ElementType">
+  The HTML element or React component to render as. Defaults to `span`.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  When true, merges badge styles with the first child element and renders it as the root element.
+</ParamField>

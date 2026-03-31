@@ -1,0 +1,138 @@
+---
+title: Card
+description: A flexible container for grouping related content, supporting header, body, and footer sections.
+---
+
+The `Card` component provides a structured surface for displaying related content. It follows a slot-based anatomy with `Root`, `Header`, `Body`, `Footer`, `Title`, and `Description` sub-components.
+
+## Import
+
+```tsx
+import { Card } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Card.Root>
+  <Card.Header>
+    <Card.Title>Account summary</Card.Title>
+    <Card.Description>Your current billing period</Card.Description>
+  </Card.Header>
+  <Card.Body>
+    <p>You have used 4 of 10 seats.</p>
+  </Card.Body>
+  <Card.Footer>
+    <button>Manage seats</button>
+  </Card.Footer>
+</Card.Root>
+```
+
+## Examples
+
+### Within a form
+
+Use `Card` to visually group form fields.
+
+```tsx
+<Card.Root>
+  <Card.Header>
+    <Card.Title>Personal details</Card.Title>
+  </Card.Header>
+  <Card.Body>
+    <form>
+      <label>
+        Name
+        <input type="text" name="name" />
+      </label>
+      <label>
+        Email
+        <input type="email" name="email" />
+      </label>
+    </form>
+  </Card.Body>
+  <Card.Footer>
+    <button type="submit">Save</button>
+  </Card.Footer>
+</Card.Root>
+```
+
+### With an avatar
+
+Combine `Card` with the `Avatar` component for user-facing cards.
+
+```tsx
+import { Avatar, Card } from '@fidely-ui/react'
+
+<Card.Root>
+  <Card.Header>
+    <Avatar.Root size="md">
+      <Avatar.Fallback name="Ada Lovelace" />
+      <Avatar.Image src="/ada.jpg" alt="Ada Lovelace" />
+    </Avatar.Root>
+    <Card.Title>Ada Lovelace</Card.Title>
+    <Card.Description>Mathematician · Engineer</Card.Description>
+  </Card.Header>
+  <Card.Body>
+    <p>Pioneer of computing and the first algorithm author.</p>
+  </Card.Body>
+</Card.Root>
+```
+
+### With an image
+
+Place an image directly inside `Card.Root` to render it above the header.
+
+```tsx
+<Card.Root>
+  <img src="/cover.jpg" alt="Mountain landscape" />
+  <Card.Header>
+    <Card.Title>Trail guide</Card.Title>
+  </Card.Header>
+  <Card.Body>
+    <p>An intermediate route through the northern ridge.</p>
+  </Card.Body>
+</Card.Root>
+```
+
+## Props
+
+### Root
+
+<ParamField path="children" type="ReactNode">
+  The content of the card, typically `Card.Header`, `Card.Body`, and `Card.Footer`.
+</ParamField>
+
+<Note>
+  `Card.Root` accepts all standard HTML `div` attributes plus any style props from the design system.
+</Note>
+
+### Header
+
+<ParamField path="children" type="ReactNode">
+  Content rendered in the top section of the card. Typically contains `Card.Title` and `Card.Description`.
+</ParamField>
+
+### Title
+
+<ParamField path="children" type="ReactNode">
+  The primary heading for the card. Rendered as an `h4` element by default.
+</ParamField>
+
+### Description
+
+<ParamField path="children" type="ReactNode">
+  Supporting text below the title. Rendered as a `p` element.
+</ParamField>
+
+### Body
+
+<ParamField path="children" type="ReactNode">
+  The main content area of the card.
+</ParamField>
+
+### Footer
+
+<ParamField path="children" type="ReactNode">
+  Content rendered at the bottom of the card. Typically contains action buttons.
+</ParamField>

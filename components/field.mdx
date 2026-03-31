@@ -1,0 +1,161 @@
+---
+title: Field
+description: A layout wrapper that connects a label, input, helper text, and error message with proper accessibility attributes.
+---
+
+`Field` is a compound component that manages `aria-labelledby`, `aria-describedby`, `aria-invalid`, and `aria-required` for any form element placed inside it. Wrap any input component with `Field.Root` to automatically wire up accessibility.
+
+## Import
+
+```tsx
+import { Field } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+import { Field, Input } from '@fidely-ui/react'
+
+<Field.Root>
+  <Field.Label>Email</Field.Label>
+  <Input placeholder="you@example.com" />
+</Field.Root>
+```
+
+## With required indicator
+
+`Field.RequiredIndicator` renders an asterisk (`*`) only when the field's `required` prop is `true`.
+
+```tsx
+<Field.Root required>
+  <Field.Label>
+    Email
+    <Field.RequiredIndicator />
+  </Field.Label>
+  <Input placeholder="you@example.com" />
+</Field.Root>
+```
+
+## With helper text
+
+```tsx
+<Field.Root>
+  <Field.Label>Username</Field.Label>
+  <Input placeholder="johndoe" />
+  <Field.HelperText>Must be 3–20 characters, letters and numbers only.</Field.HelperText>
+</Field.Root>
+```
+
+## With error message
+
+Pass `invalid` to `Field.Root`. The `Field.Error` component is only rendered to the user when the field is in an invalid state (via CSS or conditional rendering).
+
+```tsx
+<Field.Root invalid>
+  <Field.Label>Username</Field.Label>
+  <Input placeholder="johndoe" />
+  <Field.Error>Username is already taken.</Field.Error>
+</Field.Root>
+```
+
+## Disabled field
+
+```tsx
+<Field.Root disabled>
+  <Field.Label>API key</Field.Label>
+  <Input value="sk-live-xxxx" />
+  <Field.HelperText>Contact support to regenerate.</Field.HelperText>
+</Field.Root>
+```
+
+## Read-only field
+
+```tsx
+<Field.Root readOnly>
+  <Field.Label>User ID</Field.Label>
+  <Input value="usr_01HXYZ" />
+</Field.Root>
+```
+
+## With Textarea
+
+```tsx
+import { Field, Textarea } from '@fidely-ui/react'
+
+<Field.Root>
+  <Field.Label>
+    Description
+    <Field.RequiredIndicator />
+  </Field.Label>
+  <Textarea placeholder="Describe your project..." />
+  <Field.HelperText>Max 500 characters.</Field.HelperText>
+</Field.Root>
+```
+
+## With other inputs
+
+`Field` works with any Fidely UI input-like component — `Input`, `Textarea`, `Select`, `PinInput`, `PasswordInput`, and `Combobox` all read from the field context automatically.
+
+```tsx
+import { Field, PasswordInput } from '@fidely-ui/react'
+
+<Field.Root required>
+  <Field.Label>
+    Password
+    <Field.RequiredIndicator />
+  </Field.Label>
+  <PasswordInput.Root>
+    <PasswordInput.Control>
+      <PasswordInput.Input />
+      <PasswordInput.VisibilityTrigger>
+        <PasswordInput.Indicator />
+      </PasswordInput.VisibilityTrigger>
+    </PasswordInput.Control>
+  </PasswordInput.Root>
+  <Field.HelperText>At least 8 characters.</Field.HelperText>
+</Field.Root>
+```
+
+## Props
+
+### Root
+
+<ParamField body="invalid" type="boolean">
+  Marks the field as invalid. Propagates `aria-invalid` to child inputs and reveals `Field.Error`.
+</ParamField>
+
+<ParamField body="required" type="boolean">
+  Marks the field as required. Propagates `aria-required` and enables `Field.RequiredIndicator`.
+</ParamField>
+
+<ParamField body="disabled" type="boolean">
+  Marks the field as disabled. Propagates `aria-disabled` to child inputs.
+</ParamField>
+
+<ParamField body="readOnly" type="boolean">
+  Marks the field as read-only.
+</ParamField>
+
+<ParamField body="ids" type="ElementIds">
+  Custom IDs for individual field parts. Useful when composing multiple fields on the same page.
+</ParamField>
+
+<ParamField body="asChild" type="boolean" default="false">
+  Merges field root styles onto the child element.
+</ParamField>
+
+<ParamField body="as" type="React.ElementType">
+  The underlying element to render.
+</ParamField>
+
+---
+
+### RequiredIndicator
+
+<ParamField body="fallback" type="ReactNode">
+  Content rendered when the field is **not** required. Renders nothing by default.
+</ParamField>
+
+<ParamField body="children" type="ReactNode" default='"*"'>
+  Content rendered when the field is required.
+</ParamField>

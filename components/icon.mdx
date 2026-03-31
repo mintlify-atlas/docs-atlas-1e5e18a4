@@ -1,0 +1,102 @@
+---
+title: Icon
+description: A thin wrapper for rendering SVG icons from any icon library or inline SVG, with size and color tokens from the design system.
+---
+
+The `Icon` component renders an accessible SVG container. Pass any icon component from a third-party library — such as `react-icons` — or an inline `<svg>` as its child. It uses `asChild` by default, so the child element becomes the rendered element.
+
+## Import
+
+```tsx
+import { Icon } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+import { BsGithub } from 'react-icons/bs'
+
+<Icon>
+  <BsGithub />
+</Icon>
+```
+
+## Examples
+
+### With React Icons
+
+Pass any `react-icons` component as a child. Use `size` and `color` to apply design-system tokens.
+
+```tsx
+import { BsGithub } from 'react-icons/bs'
+import { FiSettings } from 'react-icons/fi'
+import { MdOutlineEmail } from 'react-icons/md'
+
+<Icon size="lg" color="amber.10">
+  <BsGithub />
+</Icon>
+
+<Icon size="md" color="blue.9">
+  <FiSettings />
+</Icon>
+
+<Icon size="sm" color="gray.11">
+  <MdOutlineEmail />
+</Icon>
+```
+
+### Sizes
+
+```tsx
+import { FiStar } from 'react-icons/fi'
+
+<Icon size="xs"><FiStar /></Icon>
+<Icon size="sm"><FiStar /></Icon>
+<Icon size="md"><FiStar /></Icon>
+<Icon size="lg"><FiStar /></Icon>
+<Icon size="xl"><FiStar /></Icon>
+```
+
+### With inline SVG
+
+Provide an inline `<svg>` element directly as a child.
+
+```tsx
+<Icon size="lg" color="currentColor">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <circle cx="12" cy="12" r="10" />
+    <line x1="12" y1="8" x2="12" y2="12" />
+    <line x1="12" y1="16" x2="12.01" y2="16" />
+  </svg>
+</Icon>
+```
+
+### Custom color
+
+Color accepts design-system token values or any valid CSS color string.
+
+```tsx
+import { BsHeart } from 'react-icons/bs'
+
+<Icon color="red.9">
+  <BsHeart />
+</Icon>
+```
+
+## Props
+
+<ParamField path="size" type='"inherit" | "xs" | "sm" | "md" | "lg" | "xl"' default="inherit">
+  Applies a size token to scale the icon. Defaults to `"inherit"`, which uses the icon library's intrinsic size.
+</ParamField>
+
+<ParamField path="color" type="string">
+  A design-system color token (e.g., `"amber.10"`) or any valid CSS color value applied to the icon.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  The icon element to render. Typically a component from a third-party icon library or an inline `<svg>`.
+</ParamField>
+
+<Note>
+  `Icon` sets `aria-hidden="true"` and `focusable={false}` by default, so it is hidden from assistive technologies. When an icon conveys meaning on its own, wrap it in an element with an appropriate `aria-label`.
+</Note>

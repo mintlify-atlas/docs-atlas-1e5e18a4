@@ -1,0 +1,255 @@
+---
+title: Dialog
+description: A modal window that appears on top of the main content, requiring user interaction before returning to the page.
+---
+
+A Dialog overlays the page with a focused panel. It traps keyboard focus and prevents interaction with the rest of the page until dismissed.
+
+## Import
+
+```tsx
+import { Dialog } from '@fidely-ui/react'
+```
+
+Sub-components: `Dialog.Root`, `Dialog.Trigger`, `Dialog.Backdrop`, `Dialog.Positioner`, `Dialog.Content`, `Dialog.Header`, `Dialog.Title`, `Dialog.Body`, `Dialog.Footer`, `Dialog.CloseTrigger`, `Dialog.CloseAction`, `Dialog.Context`, `Dialog.RootProvider`
+
+## Basic usage
+
+```tsx
+<Dialog.Root>
+  <Dialog.Trigger asChild>
+    <button>Open dialog</button>
+  </Dialog.Trigger>
+  <Dialog.Backdrop />
+  <Dialog.Positioner>
+    <Dialog.Content>
+      <Dialog.Header>
+        <Dialog.Title>Confirm action</Dialog.Title>
+      </Dialog.Header>
+      <Dialog.Body>
+        <p>Are you sure you want to continue?</p>
+      </Dialog.Body>
+      <Dialog.Footer>
+        <Dialog.CloseTrigger asChild>
+          <button>Cancel</button>
+        </Dialog.CloseTrigger>
+        <button>Confirm</button>
+      </Dialog.Footer>
+    </Dialog.Content>
+  </Dialog.Positioner>
+</Dialog.Root>
+```
+
+## Examples
+
+### Controlled
+
+Use `open` and `onOpenChange` to control dialog visibility from outside the component.
+
+```tsx
+function ControlledDialog() {
+  const [open, setOpen] = React.useState(false)
+
+  return (
+    <>
+      <button onClick={() => setOpen(true)}>Open</button>
+      <Dialog.Root open={open} onOpenChange={(e) => setOpen(e.open)}>
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+          <Dialog.Content>
+            <Dialog.Header>
+              <Dialog.Title>Controlled dialog</Dialog.Title>
+            </Dialog.Header>
+            <Dialog.Body>
+              <p>This dialog is controlled via React state.</p>
+            </Dialog.Body>
+            <Dialog.Footer>
+              <Dialog.CloseAction>Close</Dialog.CloseAction>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Dialog.Root>
+    </>
+  )
+}
+```
+
+### Sizes
+
+Use the `size` prop on `Dialog.Root` to control the width of the dialog panel.
+
+```tsx
+<Dialog.Root size="sm">
+  {/* xs | sm | md | lg | xl | full */}
+</Dialog.Root>
+```
+
+<Tabs>
+  <Tab title="xs / sm">
+    ```tsx
+    <Dialog.Root size="xs">
+      <Dialog.Trigger asChild>
+        <button>Small dialog</button>
+      </Dialog.Trigger>
+      <Dialog.Backdrop />
+      <Dialog.Positioner>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Small</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body>Compact content.</Dialog.Body>
+        </Dialog.Content>
+      </Dialog.Positioner>
+    </Dialog.Root>
+    ```
+  </Tab>
+  <Tab title="full">
+    ```tsx
+    <Dialog.Root size="full">
+      <Dialog.Trigger asChild>
+        <button>Fullscreen dialog</button>
+      </Dialog.Trigger>
+      <Dialog.Backdrop />
+      <Dialog.Positioner>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Fullscreen</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body>Takes up the entire viewport.</Dialog.Body>
+          <Dialog.Footer>
+            <Dialog.CloseTrigger asChild>
+              <button>Close</button>
+            </Dialog.CloseTrigger>
+          </Dialog.Footer>
+        </Dialog.Content>
+      </Dialog.Positioner>
+    </Dialog.Root>
+    ```
+  </Tab>
+</Tabs>
+
+### Alert dialog
+
+Pass `role="alertdialog"` to communicate urgent, blocking messages to assistive technologies.
+
+```tsx
+<Dialog.Root role="alertdialog">
+  <Dialog.Trigger asChild>
+    <button>Delete item</button>
+  </Dialog.Trigger>
+  <Dialog.Backdrop />
+  <Dialog.Positioner>
+    <Dialog.Content>
+      <Dialog.Header>
+        <Dialog.Title>Delete permanently?</Dialog.Title>
+      </Dialog.Header>
+      <Dialog.Body>
+        <Dialog.Description>
+          This action cannot be undone.
+        </Dialog.Description>
+      </Dialog.Body>
+      <Dialog.Footer>
+        <Dialog.CloseTrigger asChild>
+          <button>Cancel</button>
+        </Dialog.CloseTrigger>
+        <button>Delete</button>
+      </Dialog.Footer>
+    </Dialog.Content>
+  </Dialog.Positioner>
+</Dialog.Root>
+```
+
+### Accessing dialog state with Context
+
+Use `Dialog.Context` to read dialog state or call methods from anywhere inside the tree.
+
+```tsx
+<Dialog.Root>
+  <Dialog.Trigger asChild>
+    <button>Open</button>
+  </Dialog.Trigger>
+  <Dialog.Backdrop />
+  <Dialog.Positioner>
+    <Dialog.Content>
+      <Dialog.Context>
+        {(dialog) => (
+          <Dialog.Header>
+            <Dialog.Title>Status: {dialog.open ? 'open' : 'closed'}</Dialog.Title>
+          </Dialog.Header>
+        )}
+      </Dialog.Context>
+      <Dialog.Body>Content here.</Dialog.Body>
+    </Dialog.Content>
+  </Dialog.Positioner>
+</Dialog.Root>
+```
+
+<Warning>
+  Avoid placing interactive content (forms, buttons) inside `Dialog.Description`. Use `Dialog.Body` instead.
+</Warning>
+
+## Props
+
+### Dialog.Root
+
+<ParamField path="open" type="boolean">
+  The controlled open state of the dialog.
+</ParamField>
+
+<ParamField path="defaultOpen" type="boolean" default="false">
+  The initial open state when the dialog is first rendered (uncontrolled).
+</ParamField>
+
+<ParamField path="onOpenChange" type="(details: OpenChangeDetails) => void">
+  Callback fired when the dialog opens or closes.
+</ParamField>
+
+<ParamField path="size" type='"xs" | "sm" | "md" | "lg" | "xl" | "full"' default='"md"'>
+  Controls the width of the dialog panel.
+</ParamField>
+
+<ParamField path="role" type='"dialog" | "alertdialog"' default='"dialog"'>
+  The ARIA role. Use `"alertdialog"` for urgent, blocking messages.
+</ParamField>
+
+<ParamField path="modal" type="boolean" default="true">
+  Whether to prevent pointer interaction outside the dialog and hide all content below it.
+</ParamField>
+
+<ParamField path="closeOnEscape" type="boolean" default="true">
+  Whether pressing Escape closes the dialog.
+</ParamField>
+
+<ParamField path="closeOnInteractOutside" type="boolean" default="true">
+  Whether clicking outside the dialog content closes it.
+</ParamField>
+
+<ParamField path="trapFocus" type="boolean" default="true">
+  Whether focus is trapped inside the dialog while it is open.
+</ParamField>
+
+<ParamField path="preventScroll" type="boolean" default="true">
+  Whether scrolling the page behind the dialog is prevented.
+</ParamField>
+
+<ParamField path="lazyMount" type="boolean" default="false">
+  Whether to defer mounting the dialog content until the first open.
+</ParamField>
+
+<ParamField path="unmountOnExit" type="boolean" default="false">
+  Whether to unmount the dialog content when it closes.
+</ParamField>
+
+<ParamField path="initialFocusEl" type="() => HTMLElement | null">
+  Element to receive focus when the dialog opens.
+</ParamField>
+
+<ParamField path="finalFocusEl" type="() => HTMLElement | null">
+  Element to receive focus when the dialog closes.
+</ParamField>
+
+### Dialog.CloseTrigger
+
+<ParamField path="asChild" type="boolean" default="false">
+  Use the provided child element as the default rendered element, combining their props and behavior.
+</ParamField>

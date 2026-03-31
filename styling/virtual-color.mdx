@@ -1,0 +1,114 @@
+---
+title: Virtual color
+description: Use the colorPalette prop to create color placeholders that let components adapt to any accent color at runtime.
+---
+
+Virtual color is a Panda CSS feature that lets you write styles using a `colorPalette` placeholder instead of a hard-coded color name. At render time, you set the `colorPalette` prop to any color and every reference to `colorPalette.*` resolves to that color's scale.
+
+This pattern is central to how Fidely UI components support multiple color variants without duplicating styles.
+
+## Basic usage
+
+Set `colorPalette` on any element and use `colorPalette.*` scale steps in your style props:
+
+```tsx
+<Box
+  colorPalette="teal"
+  bg={{ base: 'colorPalette.9', _hover: 'colorPalette.10' }}
+>
+  Hello World
+</Box>
+```
+
+Changing `colorPalette` to `"violet"` or any other color automatically updates all `colorPalette.*` references to the new scale.
+
+## Using with recipes
+
+Virtual colors are most powerful inside recipes, because the palette can be swapped at the component call site without changing the recipe definition:
+
+```tsx
+const alertRecipe = defineRecipe({
+  className: 'fidely-alert',
+  base: {
+    display: 'flex',
+    gap: '3',
+    padding: '4',
+    rounded: 'md',
+    colorPalette: 'crimson', // default palette
+  },
+  variants: {
+    status: {
+      info: {
+        bg: 'colorPalette.3',
+        color: 'colorPalette.11',
+      },
+      error: {
+        bg: 'colorPalette.4',
+        color: 'colorPalette.12',
+      },
+    },
+  },
+})
+```
+
+The `colorPalette: 'crimson'` in `base` sets the default. Components using this recipe can override it at the call site.
+
+## Built-in component support
+
+Most built-in Fidely UI components accept a `colorPalette` prop out of the box. Pass any accent color name to change the component's color scheme:
+
+```tsx
+{/* Solid red badge */}
+<Badge colorPalette="red">New</Badge>
+
+{/* Subtle green badge */}
+<Badge colorPalette="grass" variant="subtle">
+  Success
+</Badge>
+
+{/* Blue button */}
+<Button colorPalette="blue" variant="solid">
+  Submit
+</Button>
+```
+
+## Dark mode
+
+Virtual colors compose naturally with dark mode tokens, so a single `colorPalette` value can produce the right shade in both light and dark contexts:
+
+```tsx
+<Box
+  colorPalette="orange"
+  bg={{ base: 'colorPalette.6', _dark: 'colorPalette.8' }}
+>
+  Hello World
+</Box>
+```
+
+Step 6 is suitable as a light-mode fill; step 8 provides better contrast in dark mode.
+
+## CSS variable usage
+
+You can reference a virtual color inside a CSS variable assignment:
+
+```tsx
+<Box colorPalette="purple" css={{ '--color': 'colors.colorPalette.8' }}>
+  <p style={{ color: 'var(--color)' }}>Hello</p>
+</Box>
+```
+
+## Available color steps
+
+Each `colorPalette` scale exposes all standard Radix steps:
+
+| Steps | Typical use |
+|---|---|
+| `colorPalette.1` – `colorPalette.2` | Backgrounds |
+| `colorPalette.3` – `colorPalette.5` | Component backgrounds, hover fills |
+| `colorPalette.6` – `colorPalette.8` | Borders, interactive borders |
+| `colorPalette.9` – `colorPalette.10` | Solid fills, buttons |
+| `colorPalette.11` – `colorPalette.12` | Text, high-contrast elements |
+
+<Tip>
+  Define `colorPalette` in recipe `base` to set a sensible default, and let consumers override it via the prop. This keeps recipe logic color-agnostic and reusable.
+</Tip>

@@ -1,0 +1,362 @@
+---
+title: Migrating to v2
+description: How to migrate from Fidely UI v1.x to v2.x.
+---
+
+## Why this change in v2?
+
+In **v1**, styling was more restrictive than originally intended.
+As projects grew, several limitations became apparent that affected both developer experience and long-term scalability:
+
+- Adding new component variants, sizes, and states was cumbersome
+- Overriding styles via configuration was unreliable in some cases
+- Prefixing or modifying class names often caused unexpected issues
+- Class hashing made predictable styling difficult
+- Multiple edge cases surfaced as applications became more complex
+
+### How v2 solves this
+
+Fidely UI v2 removes these constraints by aligning fully with **Panda CSS's native workflow**:
+
+- Styles are generated **directly in your project**
+- Full **type safety and autocomplete** for tokens, recipes, and variants
+- Predictable, debuggable class names
+- No hidden abstractions or locked styling layers
+- Easier extension and long-term maintenance
+
+This shift gives you **full control over your design system** while keeping Fidely UI lightweight, accessible, and composable.
+
+---
+
+## Breaking changes
+
+<AccordionGroup>
+  <Accordion title="@fidely-ui/styled-system removed">
+    The `@fidely-ui/styled-system` package has been removed. Panda CSS now generates styles directly into your project's `styled-system/` directory using the `@fidely-ui/panda-preset` tokens, recipes, and styles.
+  </Accordion>
+  <Accordion title="Button: ripple effect removed">
+    The `ripple` prop and related keyframes have been removed from `Button`.
+  </Accordion>
+  <Accordion title="Components removed">
+    The following components have been removed:
+
+    - `SkeletonText`
+    - `FloatInput` — a customizable replacement guide will be provided in the documentation
+
+  </Accordion>
+  <Accordion title="Collections removed">
+    The following collection utilities have been removed:
+
+    - `createFileTreeCollection`
+    - `createTreeCollection`
+    - `FilePathTreeNode`
+    - `FlatTreeNode`
+    - `TreeCollection`
+    - `TreeCollectionOptions`
+    - `TreeNode`
+  </Accordion>
+  <Accordion title="@ark-ui/react removed from preset">
+    `@ark-ui/react` is no longer a dependency of `@fidely-ui/panda-preset`. Ark UI locales are now re-exported directly from `@fidely-ui/react`.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Step-by-step migration
+
+<Steps>
+  <Step title="Update packages">
+    Remove the old packages that are no longer used in v2.
+
+    ```bash
+    npm uninstall @fidely-ui/styled-system @ark-ui/react
+    ```
+
+    Install the updated v2 packages.
+
+    ```bash
+    npm install @fidely-ui/react @fidely-ui/panda-preset
+    ```
+  </Step>
+
+  <Step title="Update styled-system imports">
+    If you were importing from `@fidely-ui/styled-system`, update those imports to use your locally generated `styled-system` output instead.
+
+    <CodeGroup>
+
+    ```tsx Before (v1)
+    import { css } from '@fidely-ui/styled-system/css'
+
+    const Demo = () => {
+      return <div className={css({ bg: 'red', color: 'white' })}>Hello</div>
+    }
+    ```
+
+    ```tsx After (v2)
+    import { css } from 'styled-system/css'
+
+    const Demo = () => {
+      return <div className={css({ bg: 'red', color: 'white' })}>Hello</div>
+    }
+    ```
+
+    </CodeGroup>
+  </Step>
+
+  <Step title="Update tsconfig.json">
+    v2 requires TypeScript to resolve the `styled-system/*` path from your project root. Add `baseUrl` and `paths` to your `tsconfig.json`.
+
+    ```json
+    {
+      "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+          "styled-system/*": ["styled-system/*"]
+        }
+      }
+    }
+    ```
+
+    Without `baseUrl: "."`, TypeScript cannot resolve absolute paths. Without the `paths` mapping, imports like the following will fail:
+
+    ```tsx
+    import { button } from 'styled-system/recipes'
+    ```
+  </Step>
+
+  <Step title="Update Panda CSS configuration">
+    v2 introduces a new styling architecture. Panda CSS must scan the Fidely UI package itself to generate the correct styles.
+
+    ```ts
+    export default defineConfig({
+      include: [
+        './node_modules/@fidely-ui/react/dist/panda.buildinfo.json',
+      ],
+    })
+    ```
+  </Step>
+
+  <Step title="Framework-specific updates">
+    Additional configuration is required depending on your framework.
+
+    **Next.js** — add `transpilePackages` to `next.config.ts`:
+
+    ```ts
+    import type { NextConfig } from 'next'
+
+    const nextConfig: NextConfig = {
+      transpilePackages: ['@fidely-ui/react'],
+    }
+
+    export default nextConfig
+    ```
+
+    **Vite** — Vite does not read `tsconfig.json` paths automatically. Add a matching alias and exclude Fidely UI from dependency optimization in `vite.config.ts`:
+
+    ```ts
+    import { defineConfig } from 'vite'
+    import react from '@vitejs/plugin-react'
+    import path from 'node:path'
+
+    export default defineConfig({
+      plugins: [react()],
+      resolve: {
+        alias: {
+          'styled-system': path.resolve(__dirname, 'styled-system'),
+        },
+      },
+      optimizeDeps: {
+        exclude: ['@fidely-ui/react'],
+      },
+    })
+    ```
+
+    Also update `tsconfig.app.json` for Vite projects:
+
+    ```json
+    {
+      "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+          "styled-system/*": ["styled-system/*"]
+        }
+      }
+    }
+    ```
+
+    Without the alias, you may see errors like:
+
+    ```bash
+    Cannot resolve module 'styled-system/css'
+    ```
+  </Step>
+
+  <Step title="Run Panda codegen">
+    After completing the migration steps, regenerate the Panda CSS output:
+
+    ```bash
+    npx panda codegen
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Using a custom output directory
+
+You are not locked to `styled-system`. If you prefer a different directory (e.g. `dist`, `design-system`, `ui-system`), you can configure it.
+
+**`panda.config.ts`**
+
+```ts
+import { defineConfig } from '@pandacss/dev'
+
+export default defineConfig({
+  outdir: 'dist',
+  presets: [...],
+})
+```
+
+Update **`tsconfig.json`**:
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "styled-system/*": ["dist/*"]
+    }
+  }
+}
+```
+
+Update the **Vite** alias if needed:
+
+```ts
+import path from 'node:path'
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      'styled-system': path.resolve(__dirname, 'dist'),
+    },
+  },
+})
+```
+
+<Note>
+  Fidely UI internally still resolves from `styled-system`, so you alias it to your custom folder.
+</Note>
+
+---
+
+## New features in v2
+
+### `unstyled` prop on all components
+
+All components now accept an `unstyled` prop to remove default styles.
+
+```tsx
+<Accordion.Root unstyled>{/* ... */}</Accordion.Root>
+```
+
+### New `Icon` component
+
+<CodeGroup>
+
+```tsx Before (v1)
+// icon.tsx
+import * as React from 'react'
+import { fidely } from '@fidely-ui/react'
+import { styled } from '@fidely-ui/styled-system/jsx'
+import type { HTMLStyledProps } from '@fidely-ui/styled-system/types'
+
+const StyledIcon = styled(fidely.svg, {}, { defaultProps: { asChild: true } })
+
+export interface IconProps extends Omit<HTMLStyledProps<'svg'>, 'as'> {}
+
+export const Icon = React.forwardRef<SVGSVGElement, IconProps>(
+  function Icon(props, ref) {
+    return (
+      <StyledIcon ref={ref} focusable={false} aria-hidden="true" {...props} />
+    )
+  }
+)
+
+Icon.displayName = 'Icon'
+
+// component.tsx
+import { Icon } from '../icon.tsx'
+
+const Demo = () => {
+  return (
+    <Icon>
+      <FaXTwitter />
+    </Icon>
+  )
+}
+```
+
+```tsx After (v2)
+import { Icon } from '@fidely-ui/react'
+
+const Demo = () => {
+  return (
+    <Icon>
+      <FaXTwitter />
+    </Icon>
+  )
+}
+```
+
+</CodeGroup>
+
+### New `Popover` component
+
+```tsx
+<Popover.Root>
+  <Popover.Trigger />
+  <Popover.Positioner>
+    <Popover.Content>
+      <Popover.CloseTrigger />
+      <Popover.Arrow>
+        <Popover.ArrowTip />
+      </Popover.Arrow>
+      <Popover.Title />
+      <Popover.Description />
+    </Popover.Content>
+  </Popover.Positioner>
+</Popover.Root>
+```
+
+### New `LocaleProvider`
+
+```tsx
+<LocaleProvider locale="ar-AE">
+  <YourComponent />
+</LocaleProvider>
+```
+
+### `InputGroup` and `CommandInput` size variants
+
+Both `InputGroup` and `CommandInput` now accept a `size` prop.
+
+### `CommandInput` `isOpen` prop
+
+`CommandInput` now accepts an `isOpen` prop to track open/close state when used with `Dialog` or `Combobox`.
+
+---
+
+## Summary of changes
+
+| Area | v1 | v2 |
+|---|---|---|
+| Styles source | `@fidely-ui/styled-system` package | Your project's generated `styled-system/` |
+| Style generation | Precompiled, shipped in the package | Generated at build time in your project |
+| `tsconfig.json` paths | Not required | Required (`baseUrl` + `paths`) |
+| Theming | Limited | Full control via Panda CSS config |
+| Runtime CSS | None | None (zero-runtime) |
+
+<Tip>
+  Refer to the [framework guides](/installation) for full setup instructions specific to your stack.
+</Tip>

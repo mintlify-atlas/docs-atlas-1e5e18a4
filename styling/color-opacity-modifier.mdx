@@ -1,0 +1,84 @@
+---
+title: Color opacity modifier
+description: Apply opacity to any color token using Panda CSS's color-mix shorthand syntax.
+---
+
+Every color-related style property in Fidely UI supports the color opacity modifier. It uses the browser's [`color-mix()`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix) function under the hood to blend a color token with transparency — without needing to define a separate token.
+
+## Syntax
+
+```
+{color}/{opacity}
+```
+
+The opacity value is a percentage from `0` to `100`. For example, `red.5/40` applies 40% opacity to the `red.5` token.
+
+```tsx
+<Text bg="red.5/40" color="white">
+  Hello World
+</Text>
+```
+
+Panda CSS generates the following CSS:
+
+```css
+--mix-background: color-mix(in srgb, var(--colors-red-5) 40%, transparent);
+background: var(--mix-background, var(--colors-red-5));
+color: var(--colors-white);
+```
+
+## Using any color token
+
+The modifier works with any valid Panda CSS color value:
+
+<CodeGroup>
+
+```tsx step tokens
+{/* Scale steps */}
+<Box bg="teal.9/60" />
+<Box color="gray.12/80" />
+<Box borderColor="violet.7/50" />
+```
+
+```tsx semantic tokens
+{/* Semantic tokens */}
+<Box bg="bg.subtle/70" />
+<Box color="fg.muted/90" />
+```
+
+</CodeGroup>
+
+## CSS variables
+
+You can use the modifier when assigning color tokens to CSS variables. The `{}` token reference syntax is required for this to work:
+
+```tsx
+<Box css={{ '--bg': '{colors.red.9/40}' }}>
+  <Text>Hello World</Text>
+  <Box bg="var(--bg)" boxSize="10" />
+</Box>
+```
+
+<Note>
+  When using the opacity modifier in a CSS variable assignment, always wrap the token in `{}`. The plain `/` syntax (e.g., `red.9/40`) only works in style props, not inside the `css` object.
+</Note>
+
+## Combining with responsive syntax
+
+The opacity modifier composes with responsive values:
+
+```tsx
+<Box bg={{ base: 'teal.9/40', lg: 'teal.9/80' }}>
+  Fades in opacity on larger screens
+</Box>
+```
+
+## Combining with `_dark`
+
+```tsx
+<Box
+  bg={{ base: 'blue.4/60', _dark: 'blue.7/40' }}
+>
+  Adjusts color and opacity per mode
+</Box>
+```

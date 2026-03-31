@@ -1,0 +1,201 @@
+---
+title: Marquee
+description: A continuously scrolling component for displaying content in a seamless, GPU-accelerated loop with configurable speed, direction, and pause behavior.
+---
+
+`Marquee` animates its content in a continuous horizontal (or vertical) loop. It supports reverse scrolling, auto-fill, edge gradients, and pausing on interaction.
+
+## Import
+
+```tsx
+import { Marquee } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Marquee.Root>
+  <Marquee.Viewport>
+    <Marquee.Content>
+      <Marquee.Item>Item one</Marquee.Item>
+      <Marquee.Item>Item two</Marquee.Item>
+      <Marquee.Item>Item three</Marquee.Item>
+    </Marquee.Content>
+  </Marquee.Viewport>
+</Marquee.Root>
+```
+
+## Examples
+
+### Auto-fill
+
+Use `autoFill` to duplicate items automatically until the viewport is filled. Use `spacing` to control the gap between each duplicated set.
+
+```tsx
+<Marquee.Root autoFill spacing="2rem">
+  <Marquee.Viewport>
+    <Marquee.Content>
+      <Marquee.Item>Logo A</Marquee.Item>
+      <Marquee.Item>Logo B</Marquee.Item>
+      <Marquee.Item>Logo C</Marquee.Item>
+    </Marquee.Content>
+  </Marquee.Viewport>
+</Marquee.Root>
+```
+
+### Reverse direction
+
+Pass `reverse` to scroll content from right to left instead of the default left-to-right direction.
+
+```tsx
+<Marquee.Root reverse>
+  <Marquee.Viewport>
+    <Marquee.Content>
+      <Marquee.Item>Announcement one</Marquee.Item>
+      <Marquee.Item>Announcement two</Marquee.Item>
+    </Marquee.Content>
+  </Marquee.Viewport>
+</Marquee.Root>
+```
+
+### Vertical orientation
+
+Set `side="bottom"` (or `side="top"`) to scroll content vertically.
+
+```tsx
+<Marquee.Root side="bottom">
+  <Marquee.Viewport style={{ height: '200px' }}>
+    <Marquee.Content>
+      <Marquee.Item>Scrolling down</Marquee.Item>
+      <Marquee.Item>Line two</Marquee.Item>
+      <Marquee.Item>Line three</Marquee.Item>
+    </Marquee.Content>
+  </Marquee.Viewport>
+</Marquee.Root>
+```
+
+### Edge gradients
+
+Add `Marquee.Edge` components to fade content at the leading and trailing edges.
+
+```tsx
+<Marquee.Root autoFill>
+  <Marquee.Edge side="start" />
+  <Marquee.Viewport>
+    <Marquee.Content>
+      <Marquee.Item>Card A</Marquee.Item>
+      <Marquee.Item>Card B</Marquee.Item>
+      <Marquee.Item>Card C</Marquee.Item>
+    </Marquee.Content>
+  </Marquee.Viewport>
+  <Marquee.Edge side="end" />
+</Marquee.Root>
+```
+
+### Pause on interaction
+
+Enable `pauseOnInteraction` to pause scrolling when a user hovers or focuses on the marquee.
+
+```tsx
+<Marquee.Root pauseOnInteraction>
+  <Marquee.Viewport>
+    <Marquee.Content>
+      <Marquee.Item>Hover to pause</Marquee.Item>
+      <Marquee.Item>Item two</Marquee.Item>
+      <Marquee.Item>Item three</Marquee.Item>
+    </Marquee.Content>
+  </Marquee.Viewport>
+</Marquee.Root>
+```
+
+### Custom speed
+
+Control scroll speed in pixels per second using the `speed` prop.
+
+```tsx
+{/* Slow */}
+<Marquee.Root speed={20}>
+  <Marquee.Viewport>
+    <Marquee.Content>
+      <Marquee.Item>Slow scroll</Marquee.Item>
+    </Marquee.Content>
+  </Marquee.Viewport>
+</Marquee.Root>
+
+{/* Fast */}
+<Marquee.Root speed={150}>
+  <Marquee.Viewport>
+    <Marquee.Content>
+      <Marquee.Item>Fast scroll</Marquee.Item>
+    </Marquee.Content>
+  </Marquee.Viewport>
+</Marquee.Root>
+```
+
+## Props
+
+### Root
+
+<ParamField path="speed" type="number" default="50">
+  Scroll speed in pixels per second.
+</ParamField>
+
+<ParamField path="reverse" type="boolean" default="false">
+  Reverses the scroll direction.
+</ParamField>
+
+<ParamField path="autoFill" type="boolean" default="false">
+  Automatically duplicates content to fill the viewport.
+</ParamField>
+
+<ParamField path="spacing" type="string" default="1rem">
+  Gap between duplicated content instances when `autoFill` is enabled.
+</ParamField>
+
+<ParamField path="side" type='"start" | "end" | "top" | "bottom"' default="start">
+  The direction the marquee scrolls towards. Use `"bottom"` or `"top"` for vertical scrolling.
+</ParamField>
+
+<ParamField path="pauseOnInteraction" type="boolean" default="false">
+  Pauses the animation when the user hovers or focuses on the marquee, improving accessibility.
+</ParamField>
+
+<ParamField path="paused" type="boolean">
+  Controlled paused state. When provided, overrides `defaultPaused`.
+</ParamField>
+
+<ParamField path="defaultPaused" type="boolean" default="false">
+  Initial paused state for uncontrolled usage.
+</ParamField>
+
+<ParamField path="delay" type="number" default="0">
+  Delay in seconds before the animation starts.
+</ParamField>
+
+<ParamField path="loopCount" type="number" default="0">
+  Number of times the animation loops. `0` means infinite looping.
+</ParamField>
+
+<ParamField path="onLoopComplete" type="() => void">
+  Called at the end of each loop iteration.
+</ParamField>
+
+<ParamField path="onComplete" type="() => void">
+  Called when all loops finish. Only fires when `loopCount` is greater than `0`.
+</ParamField>
+
+<ParamField path="onPauseChange" type="(details: PauseStatusDetails) => void">
+  Called when the pause state changes.
+</ParamField>
+
+---
+
+### Edge
+
+<ParamField path="side" type='"start" | "end" | "top" | "bottom"'>
+  The side at which the fade gradient is rendered.
+</ParamField>
+
+<Tip>
+  For accessible ticker-style feeds, combine `pauseOnInteraction` with `Marquee.Edge` gradients so users can read items before they scroll out of view.
+</Tip>

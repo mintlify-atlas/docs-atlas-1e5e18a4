@@ -1,0 +1,151 @@
+---
+title: Colors
+description: Explore the Fidely UI color system — neutral tones, vibrant accent hues, and how to import and use specific palettes.
+---
+
+Fidely UI's color system is built on top of **[Radix Colors](https://www.radix-ui.com/colors)**, providing perceptually balanced scales that work well in both light and dark modes. Every color is available as a `ColorPalette` object that carries both raw tokens and semantic tokens.
+
+## Accent colors
+
+There are 26 accent colors available. Each can be passed as `accentColor` in `fidelyPreset()`.
+
+<Tabs>
+  <Tab title="Warm">
+    | Name | Import path |
+    |---|---|
+    | `tomato` | `@fidely-ui/panda-preset/colors/tomato` |
+    | `red` | `@fidely-ui/panda-preset/colors/red` |
+    | `ruby` | `@fidely-ui/panda-preset/colors/ruby` |
+    | `crimson` | `@fidely-ui/panda-preset/colors/crimson` |
+    | `pink` | `@fidely-ui/panda-preset/colors/pink` |
+    | `orange` | `@fidely-ui/panda-preset/colors/orange` |
+    | `amber` | `@fidely-ui/panda-preset/colors/amber` |
+    | `yellow` | `@fidely-ui/panda-preset/colors/yellow` |
+    | `bronze` | `@fidely-ui/panda-preset/colors/bronze` |
+    | `gold` | `@fidely-ui/panda-preset/colors/gold` |
+    | `brown` | `@fidely-ui/panda-preset/colors/brown` |
+  </Tab>
+  <Tab title="Cool">
+    | Name | Import path |
+    |---|---|
+    | `plum` | `@fidely-ui/panda-preset/colors/plum` |
+    | `purple` | `@fidely-ui/panda-preset/colors/purple` |
+    | `violet` | `@fidely-ui/panda-preset/colors/violet` |
+    | `iris` | `@fidely-ui/panda-preset/colors/iris` |
+    | `indigo` | `@fidely-ui/panda-preset/colors/indigo` |
+    | `blue` | `@fidely-ui/panda-preset/colors/blue` |
+    | `cyan` | `@fidely-ui/panda-preset/colors/cyan` |
+    | `sky` | `@fidely-ui/panda-preset/colors/sky` |
+    | `mint` | `@fidely-ui/panda-preset/colors/mint` |
+    | `teal` | `@fidely-ui/panda-preset/colors/teal` |
+    | `jade` | `@fidely-ui/panda-preset/colors/jade` |
+    | `green` | `@fidely-ui/panda-preset/colors/green` |
+    | `grass` | `@fidely-ui/panda-preset/colors/grass` |
+    | `lime` | `@fidely-ui/panda-preset/colors/lime` |
+  </Tab>
+  <Tab title="Neutral">
+    | Name | Import path |
+    |---|---|
+    | `neutral` | `@fidely-ui/panda-preset/colors/neutral` |
+  </Tab>
+</Tabs>
+
+## Gray colors
+
+There are 6 gray scales available. Each can be passed as `grayColor` in `fidelyPreset()`. The gray color drives all `bg.*`, `fg.*`, and `border.*` semantic tokens.
+
+| Name | Character |
+|---|---|
+| `neutral` | Pure gray, no hue cast |
+| `mauve` | Subtle purple tint |
+| `olive` | Subtle green tint |
+| `sage` | Muted green, softer than olive |
+| `sand` | Warm sandy tint |
+| `slate` | Blue-gray, popular for modern UIs |
+
+```ts panda.config.ts
+import { defineConfig } from '@pandacss/dev'
+import { fidelyPreset } from '@fidely-ui/panda-preset'
+import slate from '@fidely-ui/panda-preset/colors/slate'
+import teal from '@fidely-ui/panda-preset/colors/teal'
+
+export default defineConfig({
+  presets: [
+    fidelyPreset({
+      accentColor: teal,
+      grayColor: slate,
+    }),
+  ],
+})
+```
+
+## Color pairing
+
+Fidely UI lets you combine any gray and accent to shape your product's visual personality. By default, `neutral` is used for both, giving a clean minimal look. Swap in any color from the palette to differentiate your brand.
+
+<Tabs>
+  <Tab title="Teal + Slate">
+    ```ts
+    fidelyPreset({
+      accentColor: teal,
+      grayColor: slate,
+    })
+    ```
+  </Tab>
+  <Tab title="Violet + Mauve">
+    ```ts
+    fidelyPreset({
+      accentColor: violet,
+      grayColor: mauve,
+    })
+    ```
+  </Tab>
+  <Tab title="Orange + Sand">
+    ```ts
+    fidelyPreset({
+      accentColor: orange,
+      grayColor: sand,
+    })
+    ```
+  </Tab>
+</Tabs>
+
+## Using color tokens directly
+
+Every color scale has 12 numbered steps plus alpha variants. Use them as style prop values:
+
+```tsx
+// Step-based usage
+<Box bg="teal.3" color="teal.11" borderColor="teal.6" />
+
+// Alpha variant
+<Box bg="teal.alpha3" />
+```
+
+The scale steps follow the Radix Colors convention:
+
+| Steps | Use case |
+|---|---|
+| 1–2 | App backgrounds |
+| 3–5 | Component backgrounds |
+| 6–8 | Borders and separators |
+| 9–10 | Solid fills (buttons, badges) |
+| 11–12 | Text and high-contrast fills |
+
+## Importing a color directly
+
+You can import any color and use it as a `ColorPalette` value in your config or pass its tokens to utilities like `createColorTokens`:
+
+```ts
+import orange from '@fidely-ui/panda-preset/colors/orange'
+import crimson from '@fidely-ui/panda-preset/colors/crimson'
+import neutral from '@fidely-ui/panda-preset/colors/neutral'
+
+// orange.name      → 'orange'
+// orange.tokens    → raw Panda color tokens
+// orange.semanticTokens → semantic token mappings
+```
+
+<Note>
+  All colors exported from `@fidely-ui/panda-preset/colors/*` implement the `ColorPalette` interface from `types.ts`, which requires `name`, `tokens`, and `semanticTokens`.
+</Note>

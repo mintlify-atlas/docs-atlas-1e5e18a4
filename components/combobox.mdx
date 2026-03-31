@@ -1,0 +1,344 @@
+---
+title: Combobox
+description: A searchable dropdown that combines a text input with a filtered list of options, supporting async filtering, custom objects, and multiple selection.
+---
+
+`Combobox` is a compound component built on Ark UI. It pairs a free-text input with a floating list of filtered options. Use `useListCollection` to build and filter the item collection.
+
+## Import
+
+```tsx
+import { Combobox } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+import { useFilter } from '@react-aria/i18n'
+import { useListCollection } from '@fidely-ui/react'
+import { Combobox } from '@fidely-ui/react'
+
+const allFrameworks = ['React', 'Vue', 'Svelte', 'Angular', 'SolidJS']
+
+export function BasicCombobox() {
+  const { contains } = useFilter({ sensitivity: 'base' })
+  const { collection, filter } = useListCollection({
+    initialItems: allFrameworks.map((f) => ({ label: f, value: f.toLowerCase() })),
+    filter: contains,
+  })
+
+  return (
+    <Combobox.Root
+      collection={collection}
+      onInputValueChange={({ inputValue }) => filter(inputValue)}
+    >
+      <Combobox.Label>Framework</Combobox.Label>
+      <Combobox.Control>
+        <Combobox.Input placeholder="Search..." />
+        <Combobox.IndicatorGroup>
+          <Combobox.ClearTrigger />
+          <Combobox.Trigger />
+        </Combobox.IndicatorGroup>
+      </Combobox.Control>
+      <Combobox.Positioner>
+        <Combobox.Content>
+          <Combobox.Empty>No results found</Combobox.Empty>
+          {collection.items.map((item) => (
+            <Combobox.Item key={item.value} item={item}>
+              <Combobox.ItemText>{item.label}</Combobox.ItemText>
+              <Combobox.ItemIndicator>✓</Combobox.ItemIndicator>
+            </Combobox.Item>
+          ))}
+        </Combobox.Content>
+      </Combobox.Positioner>
+    </Combobox.Root>
+  )
+}
+```
+
+## Sizes
+
+```tsx
+<Combobox.Root collection={collection} size="xs">...</Combobox.Root>
+<Combobox.Root collection={collection} size="sm">...</Combobox.Root>
+<Combobox.Root collection={collection} size="md">...</Combobox.Root>
+<Combobox.Root collection={collection} size="lg">...</Combobox.Root>
+```
+
+## Open on click
+
+Set `openOnClick` to open the dropdown when the user first clicks into the input.
+
+```tsx
+<Combobox.Root collection={collection} openOnClick>
+  {/* ... */}
+</Combobox.Root>
+```
+
+## Custom objects
+
+When items are not `{ label, value }` shaped, provide `itemToString` and `itemToValue` on the collection.
+
+```tsx
+const items = [
+  { name: 'JavaScript', id: 'js' },
+  { name: 'TypeScript', id: 'ts' },
+  { name: 'Python', id: 'py' },
+]
+
+const { contains } = useFilter({ sensitivity: 'base' })
+const { collection, filter } = useListCollection({
+  initialItems: items,
+  itemToString: (item) => item.name,
+  itemToValue: (item) => item.id,
+  filter: contains,
+})
+```
+
+## Minimum characters before filtering
+
+Use `openOnChange` to defer the dropdown until the user has typed a minimum number of characters.
+
+```tsx
+<Combobox.Root
+  collection={collection}
+  openOnChange={(e) => e.inputValue.length > 2}
+>
+  {/* ... */}
+</Combobox.Root>
+```
+
+## Async filtering pattern
+
+```tsx
+import { useState } from 'react'
+import { useListCollection } from '@fidely-ui/react'
+import { Combobox } from '@fidely-ui/react'
+
+async function searchUsers(query: string) {
+  const res = await fetch(`/api/users?q=${query}`)
+  return res.json()
+}
+
+export function AsyncCombobox() {
+  const [items, setItems] = useState<{ label: string; value: string }[]>([])
+  const { collection } = useListCollection({ initialItems: items })
+
+  async function handleInputChange({ inputValue }: { inputValue: string }) {
+    if (inputValue.length < 2) return
+    const results = await searchUsers(inputValue)
+    setItems(results)
+  }
+
+  return (
+    <Combobox.Root
+      collection={collection}
+      onInputValueChange={handleInputChange}
+    >
+      <Combobox.Control>
+        <Combobox.Input placeholder="Search users..." />
+        <Combobox.IndicatorGroup>
+          <Combobox.ClearTrigger />
+          <Combobox.Trigger />
+        </Combobox.IndicatorGroup>
+      </Combobox.Control>
+      <Combobox.Positioner>
+        <Combobox.Content>
+          <Combobox.Empty>No users found</Combobox.Empty>
+          {collection.items.map((item) => (
+            <Combobox.Item key={item.value} item={item}>
+              <Combobox.ItemText>{item.label}</Combobox.ItemText>
+            </Combobox.Item>
+          ))}
+        </Combobox.Content>
+      </Combobox.Positioner>
+    </Combobox.Root>
+  )
+}
+```
+
+## Item groups
+
+```tsx
+<Combobox.Content>
+  <Combobox.ItemGroup>
+    <Combobox.ItemGroupLabel>Frontend</Combobox.ItemGroupLabel>
+    <Combobox.Item item={reactItem}>
+      <Combobox.ItemText>React</Combobox.ItemText>
+    </Combobox.Item>
+  </Combobox.ItemGroup>
+  <Combobox.ItemGroup>
+    <Combobox.ItemGroupLabel>Backend</Combobox.ItemGroupLabel>
+    <Combobox.Item item={djangoItem}>
+      <Combobox.ItemText>Django</Combobox.ItemText>
+    </Combobox.Item>
+  </Combobox.ItemGroup>
+</Combobox.Content>
+```
+
+## Disabled items
+
+Add `disabled: true` to individual items in the collection.
+
+```tsx
+const { collection } = useListCollection({
+  initialItems: [
+    { label: 'Available', value: 'available' },
+    { label: 'Unavailable', value: 'unavailable', disabled: true },
+  ],
+})
+```
+
+## Disabled
+
+```tsx
+<Combobox.Root collection={collection} disabled>
+  {/* ... */}
+</Combobox.Root>
+```
+
+## Invalid state
+
+```tsx
+<Combobox.Root collection={collection} invalid>
+  {/* ... */}
+</Combobox.Root>
+```
+
+## Using the store
+
+For cases where you need access to combobox state outside the component tree, use `Combobox.RootProvider` with `useCombobox`.
+
+```tsx
+import { Combobox, useCombobox } from '@fidely-ui/react'
+
+function ComboboxDemo() {
+  const combobox = useCombobox()
+
+  return (
+    <Combobox.RootProvider value={combobox}>
+      {/* ... */}
+    </Combobox.RootProvider>
+  )
+}
+```
+
+<Warning>
+  When using `Combobox` inside a dialog with `scrollBehavior="inside"`, set `positioning={{ strategy: 'fixed', hideWhenDetached: true }}` and do not wrap `Combobox.Positioner` inside a `Portal`.
+</Warning>
+
+## Props
+
+### Root
+
+<ParamField body="collection" type="ListCollection<T>" required>
+  The collection of items to display in the dropdown.
+</ParamField>
+
+<ParamField body="value" type="string[]">
+  Controlled selected values.
+</ParamField>
+
+<ParamField body="defaultValue" type="string[]" default="[]">
+  Initial selected values for uncontrolled usage.
+</ParamField>
+
+<ParamField body="onValueChange" type="(details: ValueChangeDetails<T>) => void">
+  Called when a new item is selected.
+</ParamField>
+
+<ParamField body="inputValue" type="string">
+  Controlled value of the text input.
+</ParamField>
+
+<ParamField body="onInputValueChange" type="(details: OpenChangeDetails) => void">
+  Called when the input value changes. Use this to update the collection filter.
+</ParamField>
+
+<ParamField body="multiple" type="boolean">
+  Allows multiple items to be selected simultaneously.
+</ParamField>
+
+<ParamField body="open" type="boolean">
+  Controlled open state of the dropdown.
+</ParamField>
+
+<ParamField body="defaultOpen" type="boolean">
+  Whether the dropdown is open by default.
+</ParamField>
+
+<ParamField body="openOnClick" type="boolean" default="false">
+  Opens the dropdown when the input is clicked.
+</ParamField>
+
+<ParamField body="openOnChange" type="boolean | ((details: InputValueChangeDetails) => boolean)" default="true">
+  Whether to open the dropdown when the input value changes. Pass a function to implement minimum-character thresholds.
+</ParamField>
+
+<ParamField body="openOnKeyPress" type="boolean" default="true">
+  Opens the dropdown when the user presses an arrow key.
+</ParamField>
+
+<ParamField body="disabled" type="boolean">
+  Disables the entire combobox.
+</ParamField>
+
+<ParamField body="invalid" type="boolean">
+  Marks the combobox as invalid.
+</ParamField>
+
+<ParamField body="required" type="boolean">
+  Marks the combobox as required.
+</ParamField>
+
+<ParamField body="allowCustomValue" type="boolean">
+  Allows the user to submit a value that is not in the collection.
+</ParamField>
+
+<ParamField body="inputBehavior" type="'none' | 'autohighlight' | 'autocomplete'" default="none">
+  Auto-completion behavior. `autohighlight` highlights the first match; `autocomplete` selects and fills the input on arrow navigation.
+</ParamField>
+
+<ParamField body="selectionBehavior" type="'replace' | 'clear' | 'preserve'" default="'replace'">
+  What happens to the input value when an item is selected.
+</ParamField>
+
+<ParamField body="closeOnSelect" type="boolean">
+  Whether the dropdown closes after an item is selected.
+</ParamField>
+
+<ParamField body="size" type="'xs' | 'sm' | 'md' | 'lg'" default="md">
+  The size of the combobox.
+</ParamField>
+
+<ParamField body="positioning" type="PositioningOptions" default='{ placement: "bottom-start" }'>
+  Floating UI positioning options for the dropdown.
+</ParamField>
+
+<ParamField body="placeholder" type="string">
+  Placeholder text for the input.
+</ParamField>
+
+<ParamField body="name" type="string">
+  The `name` attribute for form submission.
+</ParamField>
+
+<ParamField body="asChild" type="boolean">
+  Merges root styles onto the child element.
+</ParamField>
+
+---
+
+### Item
+
+<ParamField body="item" type="any" required>
+  The item data object from the collection.
+</ParamField>
+
+<ParamField body="persistFocus" type="boolean">
+  Prevents clearing the highlighted state when the pointer leaves.
+</ParamField>
+
+<ParamField body="asChild" type="boolean">
+  Merges item styles onto the child element.
+</ParamField>

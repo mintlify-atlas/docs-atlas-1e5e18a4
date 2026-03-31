@@ -1,0 +1,90 @@
+---
+title: Span
+description: An inline layout primitive that renders a span element with full access to Panda CSS style props.
+---
+
+`Span` is the inline equivalent of `Box`. It renders a `<span>` element and accepts all Panda CSS style props, making it useful for styling inline portions of text without breaking document flow.
+
+## Import
+
+```tsx
+import { Span } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Text>
+  Fidely <Span color="fg.subtle">UI</Span> is a modern React component library.
+</Text>
+```
+
+## Examples
+
+### Highlighting text
+
+```tsx
+<Text>
+  Press <Span bg="yellow.100" px="1" borderRadius="sm">Ctrl + S</Span> to save.
+</Text>
+```
+
+### Color overrides
+
+```tsx
+<Text>
+  Status: <Span color="green.600" fontWeight="semibold">Active</Span>
+</Text>
+```
+
+### Font style variations
+
+```tsx
+<Text>
+  The value is{' '}
+  <Span fontStyle="italic" color="gray.500">
+    computed at runtime
+  </Span>
+  .
+</Text>
+```
+
+### Multiple inline styles
+
+```tsx
+<Text fontSize="lg">
+  Welcome back,{' '}
+  <Span fontWeight="bold" color="blue.700">
+    Jane Doe
+  </Span>
+  !
+</Text>
+```
+
+### As a different element
+
+```tsx
+<Text>
+  Learn more in the{' '}
+  <Span as="a" href="/docs" color="blue.500" textDecoration="underline">
+    documentation
+  </Span>
+  .
+</Text>
+```
+
+## Props
+
+`Span` extends `HTMLStyledProps<'span'>` and accepts all Panda CSS style props as well as standard HTML `span` attributes.
+
+<ParamField path="as" type="React.ElementType">
+  The HTML element or React component to render as. Defaults to `span`.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  When true, forwards all props and styles to the first child element.
+</ParamField>
+
+<Note>
+  Unlike `Em`, `Span` carries no semantic meaning. Use it when you need to apply styles to an inline portion of content without implying emphasis or other significance.
+</Note>

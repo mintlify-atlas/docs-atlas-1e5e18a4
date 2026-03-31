@@ -1,0 +1,351 @@
+---
+title: Customization
+description: Customize the Fidely UI preset — colors, radii, recipes, and semantic tokens — to match your design system.
+---
+
+Fidely UI is built on top of **Panda CSS**, so you can customize it at the token, theme, and component levels. By default, the preset uses a neutral color for both `grayColor` and `accentColor`, but every aspect is overridable.
+
+## Setting up your Panda config
+
+All customization starts in `panda.config.ts`. Pass options to `fidelyPreset()` to change the accent color, gray scale, and global border radius.
+
+```ts panda.config.ts
+import { defineConfig } from '@pandacss/dev'
+import { fidelyPreset } from '@fidely-ui/panda-preset'
+import neutral from '@fidely-ui/panda-preset/colors/neutral'
+import orange from '@fidely-ui/panda-preset/colors/orange'
+
+export default defineConfig({
+  presets: [
+    fidelyPreset({
+      accentColor: orange, // your brand accent
+      grayColor: neutral,
+      rounded: 'sm',       // global border radius
+    }),
+  ],
+  preflight: true,
+  exclude: [],
+  include: [
+    './node_modules/@fidely-ui/react/dist/panda.buildinfo.json',
+    './src/components/**/*.{ts,tsx,js,jsx}',
+    './src/app/**/*.{ts,tsx,js,jsx}',
+  ],
+  outdir: 'styled-system',
+  jsxFramework: 'react',
+  staticCss: {
+    recipes: '*',
+  },
+  theme: {
+    extend: {},
+  },
+})
+```
+
+### `fidelyPreset` options
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `accentColor` | `ColorPalette` | `neutral` | Primary brand accent color |
+| `grayColor` | `ColorPalette` | `neutral` | Neutral gray scale used for backgrounds, borders, and text |
+| `rounded` | `Radius` | `'sm'` | Global border radius: `none` \| `xs` \| `sm` \| `md` \| `lg` \| `xl` \| `2xl` |
+
+## Custom color palette
+
+You can define a custom accent color and integrate it into the preset using the `createColorTokens` utility. It generates the correct token and semantic token shapes for both light and dark modes.
+
+Fidely UI uses [Radix Colors](https://www.radix-ui.com/colors/custom) as its base, so you can derive custom palettes from their system.
+
+```ts theme/colors/burgundy.ts
+import { createColorTokens } from '@fidely-ui/panda-preset/utils'
+
+const light = {
+  '1': { value: '#FFFCFC' },
+  '2': { value: '#FFF7F6' },
+  // 3–11 ...
+  '12': { value: '#720015' },
+  alpha1: { value: '#FF000003' },
+  alpha2: { value: '#FF1D0009' },
+  // 3–11 ...
+  alpha12: { value: '#720015' },
+}
+
+const dark = {
+  '1': { value: '#180E0E' },
+  '2': { value: '#231111' },
+  // 3–11 ...
+  '12': { value: '#FCC' },
+  alpha1: { value: '#F1000008' },
+  alpha2: { value: '#F7111114' },
+  // 3–11 ...
+  alpha12: { value: '#FFCCCC' },
+}
+
+export default createColorTokens('burgundy', light, dark)
+```
+
+Then reference your custom palette in `panda.config.ts`:
+
+```ts panda.config.ts
+import { defineConfig } from '@pandacss/dev'
+import { fidelyPreset } from '@fidely-ui/panda-preset'
+import slate from '@fidely-ui/panda-preset/colors/slate'
+import burgundy from './theme/colors/burgundy'
+
+export default defineConfig({
+  presets: [
+    fidelyPreset({
+      accentColor: burgundy,
+      grayColor: slate,
+      rounded: 'sm',
+    }),
+  ],
+  // ...rest of config
+})
+```
+
+## Customizing typography, radii, and spacing
+
+Use Panda's `theme.extend.tokens` to override or add design tokens independently of the preset.
+
+```ts panda.config.ts
+theme: {
+  extend: {
+    tokens: {
+      radii: {
+        xl: { value: '1.25rem' },
+        '2xl': { value: '1.75rem' },
+      },
+      spacing: {
+        '4.5': { value: '1.125rem' },
+      },
+      fonts: {
+        heading: { value: "'Poppins', sans-serif" },
+        body: { value: "'Inter', sans-serif" },
+      },
+    },
+  },
+},
+```
+
+You can also set the global rounded value directly via the preset:
+
+```ts panda.config.ts
+fidelyPreset({
+  accentColor: orange,
+  grayColor: slate,
+  rounded: 'lg',
+})
+```
+
+## Extending component recipes
+
+Every Fidely UI component is powered by a Panda recipe. You can override or extend them from your config.
+
+<Steps>
+  <Step title="Define your recipe">
+    Create a recipe file that extends or replaces the component's default styles.
+
+    ```ts theme/recipes/button.ts
+    import { defineRecipe } from '@pandacss/dev'
+
+    export const buttonRecipe = defineRecipe({
+      className: 'button',
+      base: {
+        fontWeight: 'medium',
+        borderRadius: 'md',
+      },
+      variants: {
+        variant: {
+          solid: {
+            bg: 'green.9',
+            color: 'white',
+            _hover: { bg: 'green.10' },
+          },
+          outline: {
+            borderWidth: '1px',
+            borderColor: 'green.7',
+            color: 'green.11',
+          },
+          subtle: {},
+          ghost: {},
+          plain: {},
+        },
+      },
+      defaultVariants: {
+        variant: 'solid',
+      },
+    })
+    ```
+  </Step>
+  <Step title="Register the recipe in panda.config.ts">
+    ```ts panda.config.ts
+    import { buttonRecipe } from './theme/recipes/button'
+
+    theme: {
+      extend: {
+        recipes: {
+          button: buttonRecipe,
+        },
+      },
+    },
+    ```
+  </Step>
+</Steps>
+
+### Adding new variants
+
+You can add new variants using `colorPalette` virtual colors, which lets components adapt to any accent at runtime:
+
+```ts theme/recipes/button.ts
+import { defineRecipe } from '@pandacss/dev'
+
+export const buttonRecipe = defineRecipe({
+  className: 'button',
+  variants: {
+    variant: {
+      primary: {
+        background: 'colorPalette.emphasized',
+        color: 'colorPalette.fg',
+        _hover: {
+          background: 'colorPalette.emphasized/80',
+        },
+      },
+    },
+  },
+})
+```
+
+Use the new variant with any color palette:
+
+```tsx
+<Button variant="primary" colorPalette="red">
+  Hello
+</Button>
+```
+
+To make the new variant the default:
+
+```ts
+export const buttonRecipe = defineRecipe({
+  className: 'button',
+  defaultVariants: {
+    variant: 'primary',
+  },
+})
+```
+
+## Customizing slot recipes
+
+Components like `Accordion` use slot recipes, where each part of the component (root, item, trigger, content) has its own slot that can be styled independently.
+
+<Steps>
+  <Step title="Import the anatomy">
+    Use `accordionAnatomy` from `@fidely-ui/react/anatomy` to get the list of valid slot keys.
+
+    ```ts theme/recipes/accordion.ts
+    import { defineSlotRecipe } from '@pandacss/dev'
+    import { accordionAnatomy } from '@fidely-ui/react/anatomy'
+
+    export const accordionSlotRecipe = defineSlotRecipe({
+      className: 'accordion',
+      slots: accordionAnatomy.keys,
+
+      base: {
+        root: {
+          width: '100%',
+          borderRadius: 'md',
+        },
+        item: {
+          borderBottomWidth: '1px',
+          borderColor: 'border.default',
+          _last: { borderBottomWidth: '0' },
+        },
+        itemTrigger: {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          py: '3',
+          px: '4',
+          cursor: 'pointer',
+          fontWeight: 'medium',
+          color: 'fg.default',
+          _hover: { bg: 'bg.subtle' },
+        },
+        itemContent: {
+          px: '4',
+          py: '3',
+          color: 'fg.muted',
+          fontSize: 'sm',
+        },
+        itemIndicator: {
+          transition: 'transform 0.2s',
+          _open: { transform: 'rotate(-180deg)' },
+        },
+      },
+
+      variants: {
+        variant: {
+          subtle: {
+            itemTrigger: { _hover: { bg: 'gray.3' } },
+          },
+          outline: {
+            item: {
+              borderWidth: '1px',
+              borderColor: 'gray.6',
+              borderRadius: 'md',
+              mb: '2',
+            },
+          },
+        },
+        size: {
+          sm: {
+            itemTrigger: { py: '2', fontSize: 'sm' },
+          },
+          lg: {
+            itemTrigger: { py: '4', fontSize: 'lg' },
+          },
+        },
+      },
+
+      defaultVariants: {
+        variant: 'subtle',
+        size: 'sm',
+      },
+    })
+    ```
+  </Step>
+  <Step title="Register the slot recipe">
+    ```ts panda.config.ts
+    import { accordionSlotRecipe } from './theme/recipes/accordion'
+
+    theme: {
+      extend: {
+        slotRecipes: {
+          accordion: accordionSlotRecipe,
+        },
+      },
+    },
+    ```
+  </Step>
+</Steps>
+
+## Summary
+
+<AccordionGroup>
+  <Accordion title="What can I customize?">
+    Fidely UI gives you full control over:
+
+    - Theme colors via `fidelyPreset` (`accentColor`, `grayColor`, `rounded`)
+    - Custom color palettes via `createColorTokens`
+    - Semantic tokens for adaptive light/dark theming
+    - Component recipes via `defineRecipe`
+    - Component slot recipes via `defineSlotRecipe`
+    - Typography, spacing, and radii via Panda's token system
+  </Accordion>
+  <Accordion title="Tips for maintainability">
+    - Use semantic tokens (`fg.default`, `bg.subtle`) instead of raw color values so dark mode works automatically.
+    - Use `createColorTokens` to generate consistent token sets from any Radix-compatible palette.
+    - Prefer extending recipes over overriding base styles to avoid fighting specificity.
+    - Combine Fidely UI utilities with Panda CSS for full design control.
+  </Accordion>
+</AccordionGroup>

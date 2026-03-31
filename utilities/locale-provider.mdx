@@ -1,0 +1,109 @@
+---
+title: Locale provider
+description: Set the active locale for your application to enable locale-aware formatting and text direction.
+---
+
+`LocaleProvider` defines the active locale for your application. It enables locale-aware behaviour — such as number and date formatting, and text direction — across all Fidely UI components that consume the locale context.
+
+<Note>
+  Most Fidely UI components automatically read the locale supplied by `LocaleProvider`. Wrap your application root (or a subtree) once, and all descendant components will inherit it.
+</Note>
+
+## Installation
+
+```bash
+npm install @fidely-ui/react
+```
+
+## Import
+
+```tsx
+import { LocaleProvider, useLocaleContext } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<LocaleProvider locale="en-US">
+  <YourApp />
+</LocaleProvider>
+```
+
+## Examples
+
+### Setting the locale
+
+Wrap your application (or any subtree) with `LocaleProvider` and pass a BCP 47 locale string.
+
+```tsx
+import { LocaleProvider } from '@fidely-ui/react'
+
+export function App() {
+  return (
+    <LocaleProvider locale="fr-FR">
+      <YourComponent />
+    </LocaleProvider>
+  )
+}
+```
+
+### Reading the locale
+
+Use the `useLocaleContext` hook to access the current locale and text direction from any descendant component.
+
+```tsx
+import { useLocaleContext } from '@fidely-ui/react'
+
+export function LocaleInfo() {
+  const { locale, dir } = useLocaleContext()
+
+  return <pre>{JSON.stringify({ locale, dir }, null, 2)}</pre>
+}
+```
+
+The `dir` value is derived automatically from the locale — `"ltr"` for left-to-right languages and `"rtl"` for right-to-left languages such as Arabic (`ar`) or Hebrew (`he`).
+
+### Right-to-left layout
+
+```tsx
+import { LocaleProvider } from '@fidely-ui/react'
+
+export function ArabicApp() {
+  return (
+    <LocaleProvider locale="ar">
+      <YourComponent />
+    </LocaleProvider>
+  )
+}
+```
+
+<Tip>
+  You can nest `LocaleProvider` components to override the locale for a specific subtree without affecting the rest of your application.
+</Tip>
+
+## Props
+
+### LocaleProvider
+
+<ParamField path="locale" type="string" default="en-US">
+  A BCP 47 locale string (e.g. `"en-US"`, `"fr-FR"`, `"ar"`) that sets the active locale for all descendant Fidely UI components.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  The component tree that will consume the locale context.
+</ParamField>
+
+## Hooks
+
+### `useLocaleContext`
+
+Returns the current locale context. Must be called from a component rendered inside `LocaleProvider`.
+
+```tsx
+const { locale, dir } = useLocaleContext()
+```
+
+| Return value | Type                 | Description                                               |
+| ------------ | -------------------- | --------------------------------------------------------- |
+| `locale`     | `string`             | The active BCP 47 locale string.                          |
+| `dir`        | `"ltr"` \| `"rtl"`  | The text direction derived from the locale.               |

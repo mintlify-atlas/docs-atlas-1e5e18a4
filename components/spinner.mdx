@@ -1,0 +1,78 @@
+---
+title: Spinner
+description: An animated loading indicator for communicating that an action is in progress.
+---
+
+The `Spinner` component renders a circular, CSS-animated indicator. Use it inside buttons, forms, or full-page overlays to signal pending state.
+
+## Import
+
+```tsx
+import { Spinner } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Spinner />
+```
+
+## Examples
+
+### Sizes
+
+Use the `size` prop to scale the spinner.
+
+```tsx
+<Spinner size="xs" />
+<Spinner size="sm" />
+<Spinner size="md" />
+<Spinner size="lg" />
+<Spinner size="xl" />
+```
+
+### Color
+
+Use `colorPalette` to apply a color from the design-system palette.
+
+```tsx
+<Spinner colorPalette="blue" />
+<Spinner colorPalette="green" />
+<Spinner colorPalette="red" />
+<Spinner colorPalette="orange" />
+```
+
+### Inside a button
+
+Combine `Spinner` with a button to indicate a loading action.
+
+```tsx
+<button disabled style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+  <Spinner size="sm" />
+  Saving…
+</button>
+```
+
+### With an accessible label
+
+Wrap `Spinner` with a `span` containing `aria-label` when the spinner is the only indicator in a region.
+
+```tsx
+<span role="status" aria-label="Loading results">
+  <Spinner size="lg" />
+</span>
+```
+
+## Props
+
+<ParamField path="size" type='"xs" | "sm" | "md" | "lg" | "xl"' default="md">
+  Controls the diameter of the spinner.
+</ParamField>
+
+<ParamField path="colorPalette" type="string">
+  Sets the spinner's color using a design-system palette token. Falls back to `currentColor` when omitted, inheriting the parent's text color.
+</ParamField>
+
+<Tip>
+  `Spinner` is a `span` element under the hood. Pair it with `role="status"` and `aria-label` on a wrapper element to communicate loading state to assistive technologies.
+</Tip>

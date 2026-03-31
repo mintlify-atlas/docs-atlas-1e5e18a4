@@ -1,0 +1,189 @@
+---
+title: Checkbox
+description: A compound checkbox component that supports controlled state, custom icons, sizes, colors, and indeterminate states.
+---
+
+`Checkbox` is a compound component built on Ark UI. It composes a hidden input, a visual control with an indicator, and an optional label.
+
+## Import
+
+```tsx
+import { Checkbox } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Checkbox.Root>
+  <Checkbox.HiddenInput />
+  <Checkbox.Control>
+    <Checkbox.Indicator />
+  </Checkbox.Control>
+  <Checkbox.Label>Accept terms</Checkbox.Label>
+</Checkbox.Root>
+```
+
+## Sizes
+
+Pass `size` to `Checkbox.Root` to adjust the component scale.
+
+```tsx
+<Checkbox.Root size="sm">
+  <Checkbox.HiddenInput />
+  <Checkbox.Control><Checkbox.Indicator /></Checkbox.Control>
+  <Checkbox.Label>Small</Checkbox.Label>
+</Checkbox.Root>
+
+<Checkbox.Root size="md">
+  <Checkbox.HiddenInput />
+  <Checkbox.Control><Checkbox.Indicator /></Checkbox.Control>
+  <Checkbox.Label>Medium</Checkbox.Label>
+</Checkbox.Root>
+
+<Checkbox.Root size="lg">
+  <Checkbox.HiddenInput />
+  <Checkbox.Control><Checkbox.Indicator /></Checkbox.Control>
+  <Checkbox.Label>Large</Checkbox.Label>
+</Checkbox.Root>
+```
+
+## Color palette
+
+```tsx
+<Checkbox.Root colorPalette="blue" defaultChecked>
+  <Checkbox.HiddenInput />
+  <Checkbox.Control><Checkbox.Indicator /></Checkbox.Control>
+  <Checkbox.Label>Blue</Checkbox.Label>
+</Checkbox.Root>
+
+<Checkbox.Root colorPalette="green" defaultChecked>
+  <Checkbox.HiddenInput />
+  <Checkbox.Control><Checkbox.Indicator /></Checkbox.Control>
+  <Checkbox.Label>Green</Checkbox.Label>
+</Checkbox.Root>
+```
+
+## Controlled usage
+
+Use `checked` and `onCheckedChange` to manage state externally.
+
+```tsx
+import { useState } from 'react'
+
+function ControlledCheckbox() {
+  const [checked, setChecked] = useState(false)
+
+  return (
+    <Checkbox.Root
+      checked={checked}
+      onCheckedChange={(e) => setChecked(e.checked as boolean)}
+    >
+      <Checkbox.HiddenInput />
+      <Checkbox.Control>
+        <Checkbox.Indicator />
+      </Checkbox.Control>
+      <Checkbox.Label>Subscribe to newsletter</Checkbox.Label>
+    </Checkbox.Root>
+  )
+}
+```
+
+## Disabled state
+
+```tsx
+<Checkbox.Root disabled>
+  <Checkbox.HiddenInput />
+  <Checkbox.Control><Checkbox.Indicator /></Checkbox.Control>
+  <Checkbox.Label>Disabled</Checkbox.Label>
+</Checkbox.Root>
+
+<Checkbox.Root disabled defaultChecked>
+  <Checkbox.HiddenInput />
+  <Checkbox.Control><Checkbox.Indicator /></Checkbox.Control>
+  <Checkbox.Label>Disabled (checked)</Checkbox.Label>
+</Checkbox.Root>
+```
+
+## Custom icon
+
+Pass a custom icon as children of `Checkbox.Indicator` to replace the default checkmark.
+
+```tsx
+<Checkbox.Root defaultChecked>
+  <Checkbox.HiddenInput />
+  <Checkbox.Control>
+    <Checkbox.Indicator>
+      <HeartIcon />
+    </Checkbox.Indicator>
+  </Checkbox.Control>
+  <Checkbox.Label>Favorite</Checkbox.Label>
+</Checkbox.Root>
+```
+
+## Props
+
+### Root
+
+<ParamField body="checked" type="boolean">
+  Controlled checked state.
+</ParamField>
+
+<ParamField body="defaultChecked" type="boolean" default="false">
+  Initial checked state for uncontrolled usage.
+</ParamField>
+
+<ParamField body="onCheckedChange" type="(checked: boolean) => void">
+  Callback fired when the checked state changes.
+</ParamField>
+
+<ParamField body="disabled" type="boolean" default="false">
+  Disables the checkbox.
+</ParamField>
+
+<ParamField body="required" type="boolean" default="false">
+  Marks the checkbox as required in a form.
+</ParamField>
+
+<ParamField body="name" type="string">
+  The name of the hidden input for form submission.
+</ParamField>
+
+<ParamField body="value" type="string" default='"on"'>
+  The value submitted with the form when checked.
+</ParamField>
+
+<ParamField body="size" type='"sm" | "md" | "lg"' default='"md"'>
+  Controls the scale of the checkbox.
+</ParamField>
+
+<ParamField body="colorPalette" type='"red" | "blue" | "green" | "purple" | "orange" | "gray"' default='"blue"'>
+  The color palette applied to the checkbox control.
+</ParamField>
+
+<ParamField body="children" type="ReactNode">
+  Slot content — typically `HiddenInput`, `Control`, and `Label`.
+</ParamField>
+
+---
+
+### Indicator
+
+<ParamField body="children" type="ReactNode">
+  Custom icon to display inside the checkbox control when checked.
+</ParamField>
+
+<ParamField body="idleIcon" type="ReactNode">
+  Icon rendered by default when no children are provided. Defaults to a checkmark.
+</ParamField>
+
+---
+
+### HiddenInput
+
+<ParamField body="name" type="string">
+  Name attribute of the hidden input.
+</ParamField>
+
+<ParamField body="value" type="string" default='"on"'>
+  Value of the hidden input when checked.
+</ParamField>

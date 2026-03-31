@@ -1,0 +1,124 @@
+---
+title: Flex
+description: A layout component that applies CSS flexbox, with shorthand props for common flexbox properties.
+---
+
+`Flex` is a `div` with `display: flex` applied. It exposes shorthand props that map directly to CSS flexbox properties, built on Panda CSS's `flex` pattern.
+
+## Import
+
+```tsx
+import { Flex } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Flex gap="4">
+  <Box p="4" bg="gray.100">Item 1</Box>
+  <Box p="4" bg="gray.100">Item 2</Box>
+  <Box p="4" bg="gray.100">Item 3</Box>
+</Flex>
+```
+
+## Examples
+
+### Align and justify
+
+```tsx
+<Flex align="center" justify="space-between" p="4" bg="gray.50">
+  <span>Left</span>
+  <span>Right</span>
+</Flex>
+```
+
+### Column direction
+
+```tsx
+<Flex direction="column" gap="3">
+  <Box p="3" bg="blue.50">First</Box>
+  <Box p="3" bg="blue.50">Second</Box>
+  <Box p="3" bg="blue.50">Third</Box>
+</Flex>
+```
+
+### Wrapping items
+
+```tsx
+<Flex wrap gap="2">
+  {items.map((item) => (
+    <Box key={item} px="3" py="1" bg="purple.100" borderRadius="full">
+      {item}
+    </Box>
+  ))}
+</Flex>
+```
+
+### Inline flex
+
+```tsx
+<Flex display="inline-flex" gap="2" align="center">
+  <Icon name="check" />
+  <span>Inline flex container</span>
+</Flex>
+```
+
+### Responsive direction
+
+```tsx
+<Flex direction={{ base: 'column', md: 'row' }} gap="6">
+  <Box flex="1" p="4" bg="gray.100">Sidebar</Box>
+  <Box flex="3" p="4" bg="gray.50">Main content</Box>
+</Flex>
+```
+
+### Controlling flex children
+
+```tsx
+<Flex gap="4">
+  <Box grow={1} p="4" bg="teal.50">Grows to fill space</Box>
+  <Box shrink={0} basis="200px" p="4" bg="teal.100">Fixed basis</Box>
+</Flex>
+```
+
+## Props
+
+<ParamField path="direction" type='"row" | "column" | "row-reverse" | "column-reverse"'>
+  The flex direction. Maps to the CSS `flex-direction` property.
+</ParamField>
+
+<ParamField path="align" type="string">
+  Shorthand for the CSS `align-items` property.
+</ParamField>
+
+<ParamField path="justify" type="string">
+  Shorthand for the CSS `justify-content` property.
+</ParamField>
+
+<ParamField path="wrap" type="boolean | string">
+  Whether flex items should wrap. When `true`, applies `flex-wrap: wrap`.
+</ParamField>
+
+<ParamField path="gap" type="string | number">
+  The gap between flex items. Accepts Panda CSS spacing tokens.
+</ParamField>
+
+<ParamField path="basis" type="string | number">
+  Shorthand for the CSS `flex-basis` property.
+</ParamField>
+
+<ParamField path="grow" type="number">
+  Shorthand for the CSS `flex-grow` property.
+</ParamField>
+
+<ParamField path="shrink" type="number">
+  Shorthand for the CSS `flex-shrink` property.
+</ParamField>
+
+<ParamField path="as" type="React.ElementType">
+  The HTML element or React component to render as. Defaults to `div`.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  When true, forwards all props and styles to the first child element.
+</ParamField>

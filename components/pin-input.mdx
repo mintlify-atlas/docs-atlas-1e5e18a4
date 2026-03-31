@@ -1,0 +1,262 @@
+---
+title: Pin input
+description: A sequence of individual input fields for entering a PIN, OTP, or verification code, with masking, alphanumeric support, and controlled state.
+---
+
+`PinInput` renders a row of single-character inputs. When a character is typed, focus automatically moves to the next field. It is commonly used for OTP entry and PIN confirmation screens.
+
+## Import
+
+```tsx
+import { PinInput } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<PinInput.Root>
+  <PinInput.HiddenInput />
+  <PinInput.Control>
+    <PinInput.Input index={0} />
+    <PinInput.Input index={1} />
+    <PinInput.Input index={2} />
+    <PinInput.Input index={3} />
+  </PinInput.Control>
+</PinInput.Root>
+```
+
+<Tip>
+  Use the `count` prop on `PinInput.Root` to control the number of fields instead of manually listing each `PinInput.Input`.
+</Tip>
+
+## Sizes
+
+```tsx
+<PinInput.Root size="sm" count={4}>
+  <PinInput.HiddenInput />
+  <PinInput.Control>
+    <PinInput.Input index={0} />
+    <PinInput.Input index={1} />
+    <PinInput.Input index={2} />
+    <PinInput.Input index={3} />
+  </PinInput.Control>
+</PinInput.Root>
+```
+
+## OTP mode
+
+Set `otp` to enable `autocomplete="one-time-code"`, allowing browsers and mobile devices to suggest OTP codes automatically.
+
+```tsx
+<PinInput.Root otp count={6}>
+  <PinInput.HiddenInput />
+  <PinInput.Control>
+    <PinInput.Input index={0} />
+    <PinInput.Input index={1} />
+    <PinInput.Input index={2} />
+    <PinInput.Input index={3} />
+    <PinInput.Input index={4} />
+    <PinInput.Input index={5} />
+  </PinInput.Control>
+</PinInput.Root>
+```
+
+## Masked input
+
+Set `mask` to hide the entered characters, similar to a password field.
+
+```tsx
+<PinInput.Root mask count={4}>
+  <PinInput.HiddenInput />
+  <PinInput.Control>
+    <PinInput.Input index={0} />
+    <PinInput.Input index={1} />
+    <PinInput.Input index={2} />
+    <PinInput.Input index={3} />
+  </PinInput.Control>
+</PinInput.Root>
+```
+
+## Alphanumeric input
+
+Use the `type` prop to allow letters, digits, or both.
+
+```tsx
+<PinInput.Root type="alphanumeric" count={4}>
+  <PinInput.HiddenInput />
+  <PinInput.Control>
+    <PinInput.Input index={0} />
+    <PinInput.Input index={1} />
+    <PinInput.Input index={2} />
+    <PinInput.Input index={3} />
+  </PinInput.Control>
+</PinInput.Root>
+```
+
+## Controlled usage
+
+Pass `value` and `onValueChange` to manage input state externally.
+
+```tsx
+import { useState } from 'react'
+
+function ControlledPinInput() {
+  const [value, setValue] = useState<string[]>([])
+
+  return (
+    <PinInput.Root
+      value={value}
+      onValueChange={(details) => setValue(details.value)}
+      count={4}
+    >
+      <PinInput.HiddenInput />
+      <PinInput.Control>
+        <PinInput.Input index={0} />
+        <PinInput.Input index={1} />
+        <PinInput.Input index={2} />
+        <PinInput.Input index={3} />
+      </PinInput.Control>
+    </PinInput.Root>
+  )
+}
+```
+
+## Blur on complete
+
+By default, the last field retains focus after all values are filled. Set `blurOnComplete` to move focus away automatically.
+
+```tsx
+<PinInput.Root blurOnComplete count={4}>
+  <PinInput.HiddenInput />
+  <PinInput.Control>
+    <PinInput.Input index={0} />
+    <PinInput.Input index={1} />
+    <PinInput.Input index={2} />
+    <PinInput.Input index={3} />
+  </PinInput.Control>
+</PinInput.Root>
+```
+
+## With Field
+
+Wrap with `Field.Root` to add an accessible label and error or helper text.
+
+```tsx
+import { Field, PinInput } from '@fidely-ui/react'
+
+<Field.Root>
+  <Field.Label>Verification code</Field.Label>
+  <PinInput.Root count={6} otp>
+    <PinInput.HiddenInput />
+    <PinInput.Control>
+      <PinInput.Input index={0} />
+      <PinInput.Input index={1} />
+      <PinInput.Input index={2} />
+      <PinInput.Input index={3} />
+      <PinInput.Input index={4} />
+      <PinInput.Input index={5} />
+    </PinInput.Control>
+  </PinInput.Root>
+  <Field.HelperText>Enter the 6-digit code sent to your email.</Field.HelperText>
+</Field.Root>
+```
+
+## Props
+
+### Root
+
+<ParamField body="count" type="number" default="4">
+  The number of input fields to render.
+</ParamField>
+
+<ParamField body="type" type="'numeric' | 'alphabetic' | 'alphanumeric'" default="'numeric'">
+  The character type accepted by each input.
+</ParamField>
+
+<ParamField body="value" type="string[]">
+  Controlled value of the pin input.
+</ParamField>
+
+<ParamField body="defaultValue" type="string[]" default="[]">
+  Initial value for uncontrolled usage.
+</ParamField>
+
+<ParamField body="onValueChange" type="(details: ValueChangeDetails) => void">
+  Called when any input value changes.
+</ParamField>
+
+<ParamField body="onValueComplete" type="(details: ValueChangeDetails) => void">
+  Called when all fields have been filled with valid values.
+</ParamField>
+
+<ParamField body="onValueInvalid" type="(details: ValueInvalidDetails) => void">
+  Called when an invalid value is entered.
+</ParamField>
+
+<ParamField body="mask" type="boolean" default="false">
+  Masks the entered characters (displays dots instead of characters).
+</ParamField>
+
+<ParamField body="otp" type="boolean" default="false">
+  Adds `autocomplete="one-time-code"` to enable OTP autofill.
+</ParamField>
+
+<ParamField body="blurOnComplete" type="boolean" default="false">
+  Blurs the last input automatically when all fields are filled.
+</ParamField>
+
+<ParamField body="autoFocus" type="boolean" default="false">
+  Automatically focuses the first input on mount.
+</ParamField>
+
+<ParamField body="placeholder" type="string" default="o">
+  Placeholder character displayed in each empty field.
+</ParamField>
+
+<ParamField body="disabled" type="boolean" default="false">
+  Disables all input fields.
+</ParamField>
+
+<ParamField body="invalid" type="boolean" default="false">
+  Marks the input group as invalid.
+</ParamField>
+
+<ParamField body="required" type="boolean" default="false">
+  Marks the input as required.
+</ParamField>
+
+<ParamField body="readOnly" type="boolean" default="false">
+  Makes all fields read-only.
+</ParamField>
+
+<ParamField body="selectOnFocus" type="boolean" default="false">
+  Selects the field's value on focus.
+</ParamField>
+
+<ParamField body="size" type="'2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'" default="'md'">
+  Controls the visual size of each input field.
+</ParamField>
+
+<ParamField body="variant" type="'outline' | 'subtle' | 'flushed'" default="'outline'">
+  The visual style of the inputs.
+</ParamField>
+
+<ParamField body="name" type="string">
+  The `name` attribute for form submission.
+</ParamField>
+
+<ParamField body="form" type="string">
+  The associated form element ID.
+</ParamField>
+
+---
+
+### Input
+
+<ParamField body="index" type="number" required>
+  The zero-based position of this input within the sequence.
+</ParamField>
+
+<ParamField body="asChild" type="boolean" default="false">
+  Merges input styles onto the child element.
+</ParamField>

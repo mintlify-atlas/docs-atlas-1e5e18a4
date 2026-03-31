@@ -1,0 +1,175 @@
+---
+title: Button
+description: A clickable element used to trigger an action or event, with support for variants, sizes, loading states, and icon composition.
+---
+
+A versatile button component that supports multiple visual variants, sizes, loading states, and polymorphic rendering via `asChild`.
+
+## Import
+
+```tsx
+import { Button } from '@fidely-ui/react/button'
+```
+
+## Basic usage
+
+```tsx
+<Button>Click me</Button>
+```
+
+## Sizes
+
+Use the `size` prop to control the button's size. Available sizes range from `2xs` to `2xl`.
+
+```tsx
+<Button size="2xs">2xs</Button>
+<Button size="xs">xs</Button>
+<Button size="sm">sm</Button>
+<Button size="md">md</Button>
+<Button size="lg">lg</Button>
+<Button size="xl">xl</Button>
+<Button size="2xl">2xl</Button>
+```
+
+## Variants
+
+Use the `variant` prop to change the visual style of the button.
+
+```tsx
+<Button variant="solid">Solid</Button>
+<Button variant="subtle">Subtle</Button>
+<Button variant="outline">Outline</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="plain">Plain</Button>
+```
+
+## Color palette
+
+Use `colorPalette` to apply a theme color to the button.
+
+```tsx
+<Button colorPalette="blue">Blue</Button>
+<Button colorPalette="red">Red</Button>
+<Button colorPalette="green">Green</Button>
+<Button colorPalette="purple">Purple</Button>
+<Button colorPalette="orange">Orange</Button>
+<Button colorPalette="gray">Gray</Button>
+```
+
+## With icon
+
+Place an icon inside the button alongside text.
+
+```tsx
+import { ArrowRightIcon } from 'your-icon-library'
+
+<Button>
+  Continue <ArrowRightIcon />
+</Button>
+```
+
+## Loading state
+
+Set `isLoading` to `true` to show a spinner and disable interaction while an action is in progress.
+
+```tsx
+<Button isLoading>Saving</Button>
+```
+
+## Loading with text
+
+Combine `isLoading` and `loadingText` to display custom text while loading.
+
+```tsx
+<Button isLoading loadingText="Saving...">
+  Save
+</Button>
+```
+
+## Spinner placement
+
+Use `spinnerPlacement` to control whether the spinner appears before or after the button text.
+
+```tsx
+<Button isLoading spinnerPlacement="start" loadingText="Loading">
+  Submit
+</Button>
+
+<Button isLoading spinnerPlacement="end" loadingText="Loading">
+  Submit
+</Button>
+```
+
+## Custom spinner
+
+Provide your own spinner element using the `spinner` prop.
+
+```tsx
+<Button isLoading spinner={<MyCustomSpinner />}>
+  Processing
+</Button>
+```
+
+## Disabled
+
+Use the `disabled` prop to prevent interaction.
+
+```tsx
+<Button disabled>Disabled</Button>
+```
+
+## Render as link (asChild)
+
+Use `asChild` to render the button as a different element, such as an anchor tag. The button's styles and behavior are merged onto the child element.
+
+```tsx
+<Button asChild>
+  <a href="/dashboard">Go to dashboard</a>
+</Button>
+```
+
+## Props
+
+<ParamField body="variant" type="'solid' | 'subtle' | 'outline' | 'ghost' | 'plain'" default="solid">
+  The visual style variant of the button.
+</ParamField>
+
+<ParamField body="size" type="'2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'" default="md">
+  The size of the button.
+</ParamField>
+
+<ParamField body="colorPalette" type='"red" | "blue" | "green" | "purple" | "orange" | "gray"' default="gray">
+  The color palette applied to the button.
+</ParamField>
+
+<ParamField body="isLoading" type="boolean">
+  When `true`, displays a loading spinner and disables the button.
+</ParamField>
+
+<ParamField body="loadingText" type="React.ReactNode">
+  Text displayed inside the button while `isLoading` is `true`.
+</ParamField>
+
+<ParamField body="spinner" type="React.ReactNode">
+  A custom spinner element to render in place of the default spinner.
+</ParamField>
+
+<ParamField body="spinnerPlacement" type="'start' | 'end'" default="start">
+  Position of the spinner relative to the button text.
+</ParamField>
+
+<ParamField body="disabled" type="boolean" default="false">
+  Disables the button and prevents user interaction.
+</ParamField>
+
+<ParamField body="asChild" type="boolean" default="false">
+  When `true`, renders the button's styles onto its single child element instead of a `<button>`. The child must accept `ref` and standard HTML attributes.
+</ParamField>
+
+<ParamField body="fullWidth" type="boolean" default="false">
+  When `true`, the button stretches to fill the width of its container.
+</ParamField>
+
+<ParamField body="as" type="React.ElementType">
+  The underlying HTML element or custom component to render.
+</ParamField>

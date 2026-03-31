@@ -1,0 +1,114 @@
+---
+title: Input Group
+description: A composable input container that adds start and end add-ons — icons, labels, buttons — alongside any input field.
+---
+
+`InputGroup` wraps an `Input` (or any input-like element) and lets you attach leading and trailing add-ons such as icons, text prefixes, or action buttons.
+
+## Import
+
+```tsx
+import { InputGroup, Input } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<InputGroup startAddon="https://">
+  <Input placeholder="example.com" />
+</InputGroup>
+```
+
+## End addon
+
+```tsx
+<InputGroup endAddon=".com">
+  <Input placeholder="yourdomain" />
+</InputGroup>
+```
+
+## Both addons
+
+```tsx
+<InputGroup startAddon="$" endAddon="/mo">
+  <Input placeholder="0.00" type="number" />
+</InputGroup>
+```
+
+## With icons
+
+Pass a React node to `startAddon` or `endAddon` to render an icon.
+
+```tsx
+import { SearchIcon } from 'your-icon-library'
+
+<InputGroup startAddon={<SearchIcon />}>
+  <Input placeholder="Search..." />
+</InputGroup>
+```
+
+## Sizes
+
+Use the `size` prop to match the height of the surrounding input.
+
+```tsx
+<InputGroup size="sm" startAddon="$">
+  <Input size="sm" placeholder="Small" />
+</InputGroup>
+
+<InputGroup size="md" startAddon="$">
+  <Input size="md" placeholder="Medium (default)" />
+</InputGroup>
+
+<InputGroup size="lg" startAddon="$">
+  <Input size="lg" placeholder="Large" />
+</InputGroup>
+```
+
+## Using InputAddon directly
+
+For full styling control, use `InputAddon` inside `InputGroup` and set the `placement` prop.
+
+```tsx
+import { InputGroup, InputAddon, Input } from '@fidely-ui/react'
+
+<InputGroup>
+  <InputAddon placement="left">https://</InputAddon>
+  <Input placeholder="example.com" />
+  <InputAddon placement="right">.io</InputAddon>
+</InputGroup>
+```
+
+## Props
+
+### InputGroup
+
+<ParamField path="startAddon" type="React.ReactNode | string">
+  Element or text rendered at the start (left) of the input group.
+</ParamField>
+
+<ParamField path="startAddonProps" type="InputAddonProps">
+  Props forwarded to the start `InputAddon` component.
+</ParamField>
+
+<ParamField path="endAddon" type="React.ReactNode | string">
+  Element or text rendered at the end (right) of the input group.
+</ParamField>
+
+<ParamField path="endAddonProps" type="InputAddonProps">
+  Props forwarded to the end `InputAddon` component.
+</ParamField>
+
+<ParamField path="size" type='"sm" | "md" | "lg"' default='"md"'>
+  Controls the height of the input group container.
+</ParamField>
+
+<ParamField path="children" type="ReactNode" required>
+  The input or input-like element rendered inside the group.
+</ParamField>
+
+### InputAddon
+
+<ParamField path="placement" type='"left" | "right"' default='"left"'>
+  Which side of the input the addon is rendered on.
+</ParamField>

@@ -1,0 +1,197 @@
+---
+title: Vite (TypeScript)
+description: Install and use Fidely UI in a Vite project with TypeScript.
+---
+
+## Get started with a template
+
+The easiest way to get started is to use the **Vite + TypeScript** template. It comes preconfigured with Panda CSS, Ark UI, Fidely UI v2, and theme support.
+
+```bash
+npx gitpick https://github.com/fidely-ui/fidely-templates/tree/main/vite-ts-template
+```
+
+---
+
+## Manual installation
+
+If you prefer setting things up yourself, follow the steps below.
+
+<Steps>
+  <Step title="Install Panda CSS">
+    ```bash
+    npm install -D @pandacss/dev
+    npx panda init --postcss
+    ```
+  </Step>
+
+  <Step title="Install Fidely UI">
+    ```bash
+    npm install @fidely-ui/react @fidely-ui/panda-preset
+    ```
+  </Step>
+
+  <Step title="Update package.json scripts">
+    Open your **package.json** file and add the `prepare` script:
+
+    ```json
+    {
+      "scripts": {
+        "prepare": "panda codegen",
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+      }
+    }
+    ```
+
+    The `prepare` script ensures Panda CSS generates styles automatically when dependencies are installed.
+  </Step>
+
+  <Step title="Update tsconfig.app.json">
+    Update your `compilerOptions` to include the following:
+
+    ```json
+    {
+      "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "skipLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+          "styled-system/*": ["styled-system/*"]
+        }
+      }
+    }
+    ```
+
+    This allows Panda's generated `styled-system` files to resolve correctly.
+  </Step>
+
+  <Step title="Configure Vite path aliases and optimizeDeps">
+    Vite does not automatically read **tsconfig.json** path aliases. You must manually configure them in **vite.config.ts** so Panda's `styled-system` imports resolve correctly.
+
+    ```ts
+    import { defineConfig } from 'vite'
+    import react from '@vitejs/plugin-react'
+    import path from 'node:path'
+
+    export default defineConfig({
+      plugins: [react()],
+      resolve: {
+        alias: {
+          'styled-system': path.resolve(__dirname, 'styled-system'),
+        },
+      },
+      optimizeDeps: {
+        exclude: ['@fidely-ui/react'],
+      },
+    })
+    ```
+  </Step>
+
+  <Step title="Configure Panda CSS">
+    Update **panda.config.ts**:
+
+    ```ts
+    import { defineConfig } from '@pandacss/dev'
+    import { fidelyPreset } from '@fidely-ui/panda-preset'
+
+    export default defineConfig({
+      presets: [fidelyPreset()],
+
+      // Enable CSS reset
+      preflight: true,
+
+      // Files Panda should scan for styles
+      include: [
+        './src/**/*.{js,jsx,ts,tsx}',
+        './components/**/*.{js,jsx,ts,tsx}',
+        './node_modules/@fidely-ui/react/dist/panda.buildinfo.json',
+      ],
+
+      exclude: [],
+
+      // Theme customization
+      theme: {
+        extend: {},
+      },
+
+      // Generate static CSS for all recipes
+      staticCss: {
+        recipes: '*',
+      },
+
+      // Output directory for generated styles
+      outdir: 'styled-system',
+
+      jsxFramework: 'react',
+
+      // Remove Panda default 50 / 950 color steps
+      plugins: [
+        {
+          name: 'panda-headless-colors',
+          hooks: {
+            'preset:resolved': ({ utils, preset, name }) => {
+              if (name === '@pandacss/preset-panda') {
+                return utils.omit(preset, [
+                  'theme.tokens.colors',
+                  'theme.semanticTokens.colors',
+                ])
+              }
+              return preset
+            },
+          },
+        },
+      ],
+    })
+    ```
+
+    After updating the config, generate the styled system:
+
+    ```bash
+    npx panda codegen
+    ```
+  </Step>
+
+  <Step title="Configure the entry CSS with layers">
+    Open **src/App.css** and replace its contents with:
+
+    ```css
+    @layer reset, base, tokens, recipes, utilities;
+    ```
+
+    <Tip>You can safely remove unused CSS files and delete **index.css** if it is present.</Tip>
+  </Step>
+
+  <Step title="Import global CSS in the app entry">
+    Update **src/main.tsx**:
+
+    ```tsx
+    import { StrictMode } from 'react'
+    import { createRoot } from 'react-dom/client'
+
+    import './App.css'
+    import App from './App'
+
+    createRoot(document.getElementById('root')!).render(
+      <StrictMode>
+        <App />
+      </StrictMode>
+    )
+    ```
+  </Step>
+</Steps>
+
+## Use your first component
+
+You can now start using Fidely UI components:
+
+```tsx
+import { Button } from '@fidely-ui/react'
+
+const Demo = () => {
+  return <Button>Click me</Button>
+}
+```

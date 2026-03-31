@@ -1,0 +1,106 @@
+---
+title: Input
+description: A single-line text input field with support for variants, sizes, disabled and error states.
+---
+
+`Input` is a styled text field built on top of Ark UI's `Field.Input`. It integrates automatically with the `Field` component for labels, helper text, and error messages.
+
+## Import
+
+```tsx
+import { Input } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Input placeholder="Enter your email" />
+```
+
+## Sizes
+
+Use the `size` prop to change the height and text size of the input.
+
+```tsx
+<Input size="2xs" placeholder="2xs" />
+<Input size="xs" placeholder="xs" />
+<Input size="sm" placeholder="sm" />
+<Input size="md" placeholder="md (default)" />
+<Input size="lg" placeholder="lg" />
+<Input size="xl" placeholder="xl" />
+<Input size="2xl" placeholder="2xl" />
+```
+
+## Variants
+
+Use `variant` to change the visual style of the input.
+
+```tsx
+<Input variant="outline" placeholder="Outline (default)" />
+<Input variant="subtle" placeholder="Subtle" />
+<Input variant="flushed" placeholder="Flushed" />
+```
+
+## Disabled
+
+```tsx
+<Input disabled placeholder="Disabled input" />
+```
+
+## With helper text
+
+Wrap `Input` with `Field.Root` to add accessible helper text.
+
+```tsx
+import { Field, Input } from '@fidely-ui/react'
+
+<Field.Root>
+  <Field.Label>Email</Field.Label>
+  <Input placeholder="you@example.com" />
+  <Field.HelperText>We'll never share your email.</Field.HelperText>
+</Field.Root>
+```
+
+## With error state
+
+Pass `invalid` to `Field.Root` and include `Field.Error` to surface validation errors.
+
+```tsx
+import { Field, Input } from '@fidely-ui/react'
+
+<Field.Root invalid>
+  <Field.Label>Email</Field.Label>
+  <Input placeholder="you@example.com" />
+  <Field.Error>Enter a valid email address.</Field.Error>
+</Field.Root>
+```
+
+<Tip>
+  The `Input` component forwards all standard HTML `<input>` attributes such as `type`, `value`, `onChange`, `onBlur`, and `required`.
+</Tip>
+
+## Props
+
+<ParamField body="size" type="'2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'" default="md">
+  Controls the height and font size of the input.
+</ParamField>
+
+<ParamField body="variant" type="'outline' | 'subtle' | 'flushed'" default="outline">
+  The visual style of the input.
+</ParamField>
+
+<ParamField body="colorPalette" type="string" default="gray">
+  The color palette of the component.
+</ParamField>
+
+<ParamField body="disabled" type="boolean" default="false">
+  Disables the input field.
+</ParamField>
+
+<ParamField body="asChild" type="boolean" default="false">
+  Merges input styles onto the child element.
+</ParamField>
+
+<ParamField body="as" type="React.ElementType">
+  The underlying element to render. Changing this away from `input` is not recommended.
+</ParamField>

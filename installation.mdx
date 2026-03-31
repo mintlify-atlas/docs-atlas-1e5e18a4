@@ -1,0 +1,70 @@
+---
+title: Installation
+description: Choose your framework and get started with Fidely UI.
+---
+
+## Overview
+
+Fidely UI is built on top of **Panda CSS** and **Ark UI**. It ships as two packages:
+
+<CardGroup cols={2}>
+  <Card title="@fidely-ui/react" icon="react">
+    The React component library. Includes all accessible, headless-first UI components styled with Panda CSS.
+  </Card>
+  <Card title="@fidely-ui/panda-preset" icon="palette">
+    The Panda CSS preset. Provides design tokens, slot recipes, and utilities. Use this independently or as the foundation for your own components.
+  </Card>
+</CardGroup>
+
+---
+
+## Install packages
+
+Install both packages using your preferred package manager.
+
+<CodeGroup>
+
+```bash npm
+npm install @fidely-ui/react @fidely-ui/panda-preset
+```
+
+```bash pnpm
+pnpm add @fidely-ui/react @fidely-ui/panda-preset
+```
+
+```bash yarn
+yarn add @fidely-ui/react @fidely-ui/panda-preset
+```
+
+</CodeGroup>
+
+<Note>
+  `@fidely-ui/react` and `@fidely-ui/panda-preset` require `react >= 18` and `@pandacss/dev >= 1.1.0` as peer dependencies.
+</Note>
+
+---
+
+## Choose your framework
+
+Each guide is tailored to that framework's setup, file structure, and best practices.
+
+<CardGroup cols={2}>
+  <Card title="Vite (TypeScript)" icon="bolt" href="/frameworks/vite-ts">
+    Set up Fidely UI in a Vite project using TypeScript.
+  </Card>
+  <Card title="Vite (JavaScript)" icon="bolt" href="/frameworks/vite-js">
+    Set up Fidely UI in a Vite project using JavaScript.
+  </Card>
+  <Card title="Next.js App Router" icon="triangle" href="/frameworks/next-js-app">
+    Set up Fidely UI with the Next.js App Router.
+  </Card>
+  <Card title="Next.js Pages Router" icon="triangle" href="/frameworks/next-js-page">
+    Set up Fidely UI with the Next.js Pages Router.
+  </Card>
+  <Card title="React Router" icon="route" href="/frameworks/react-router">
+    Set up Fidely UI with React Router.
+  </Card>
+  <Card title="Laravel + Inertia" icon="server" href="/frameworks/laravel">
+    Set up Fidely UI in a Laravel project using Inertia.js.
+  </Card>
+</CardGroup>

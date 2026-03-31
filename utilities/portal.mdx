@@ -1,0 +1,108 @@
+---
+title: Portal
+description: Render elements outside the current DOM hierarchy using React portals.
+---
+
+`Portal` uses `ReactDOM.createPortal` to mount its children at the end of `document.body` — or inside a custom container element — rather than inline in the component tree. This is useful for modals, tooltips, and overlays that need to escape CSS overflow or stacking context constraints.
+
+## Installation
+
+```bash
+npm install @fidely-ui/react
+```
+
+## Import
+
+```tsx
+import { Portal } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Portal>
+  <div>This content is rendered at the end of document.body.</div>
+</Portal>
+```
+
+## Examples
+
+### Custom container
+
+Pass a `ref` to the `container` prop to render the portal inside a specific DOM element instead of `document.body`.
+
+```tsx
+import React from 'react'
+import { Portal } from '@fidely-ui/react'
+
+export function CustomContainer() {
+  const containerRef = React.useRef<HTMLDivElement>(null)
+
+  return (
+    <>
+      <Portal container={containerRef}>
+        <div>Portal content rendered inside the custom container.</div>
+      </Portal>
+      <div ref={containerRef} />
+    </>
+  )
+}
+```
+
+### Disabled portal
+
+Set `disabled` to render children in place — within the normal DOM hierarchy — instead of teleporting them.
+
+```tsx
+import { Portal } from '@fidely-ui/react'
+
+export function InlineContent() {
+  return (
+    <Portal disabled>
+      <div>Rendered inline, portal disabled.</div>
+    </Portal>
+  )
+}
+```
+
+<Note>
+  `disabled` is useful during development or testing when you want to inspect portal content in its natural position in the component tree.
+</Note>
+
+### Using `asChild`
+
+Use `asChild` to merge Portal's behaviour onto your own element rather than wrapping it in an extra DOM node.
+
+```tsx
+import { Portal } from '@fidely-ui/react'
+
+export function MergedPortal() {
+  return (
+    <Portal asChild>
+      <section>Content rendered via portal without an extra wrapper.</section>
+    </Portal>
+  )
+}
+```
+
+## Props
+
+<ParamField path="children" type="ReactNode">
+  The content to render inside the portal.
+</ParamField>
+
+<ParamField path="container" type="RefObject<HTMLElement | null>" default="null">
+  A ref pointing to the DOM element that will receive the portal content. Defaults to `document.body` when not provided.
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default="false">
+  When `true`, renders children in place rather than teleporting them to the container.
+</ParamField>
+
+<ParamField path="as" type="React.ElementType">
+  The underlying element to render.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  Use the provided child element as the default rendered element, merging its props and behaviour with the portal.
+</ParamField>

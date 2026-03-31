@@ -1,97 +1,119 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Fidely UI — Build Production-Ready React Apps"
+description: "A modern React design system powered by Ark UI and Panda CSS. Accessible, themeable, and composable components for high-quality web applications."
 ---
 
-## Setting up
+Fidely UI is a React component library built on [Ark UI](https://ark-ui.com/) headless primitives and [Panda CSS](https://panda-css.com/) zero-runtime styling. It gives you 50+ accessible, fully themeable components — ready to use in production without sacrificing flexibility or performance.
 
-Get your documentation site up and running in minutes.
-
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Introduction" icon="book-open" href="/introduction">
+    Learn what Fidely UI is, how it's structured, and why it's different from other React UI libraries.
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Installation" icon="download" href="/installation">
+    Choose your framework and follow a step-by-step setup guide to get started quickly.
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Components" icon="puzzle-piece" href="/components/button">
+    Explore 50+ accessible, composable components with props documentation and usage examples.
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Theming" icon="palette" href="/theming/customization">
+    Customize accent colors, gray scales, border radii, and extend component recipes to match your brand.
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## Get started in minutes
 
-Everything you need to create world-class documentation.
+<Steps>
+  <Step title="Install the packages">
+    Install `@fidely-ui/react` and `@fidely-ui/panda-preset` using your preferred package manager.
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+    <CodeGroup>
+      ```bash npm
+      npm install @fidely-ui/react @fidely-ui/panda-preset
+      ```
+      ```bash pnpm
+      pnpm add @fidely-ui/react @fidely-ui/panda-preset
+      ```
+      ```bash yarn
+      yarn add @fidely-ui/react @fidely-ui/panda-preset
+      ```
+    </CodeGroup>
+  </Step>
+  <Step title="Configure Panda CSS">
+    Add the Fidely preset to your `panda.config.ts`:
 
-## Need inspiration?
+    ```ts panda.config.ts
+    import { defineConfig } from '@pandacss/dev'
+    import { fidelyPreset } from '@fidely-ui/panda-preset'
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+    export default defineConfig({
+      presets: [fidelyPreset()],
+      preflight: true,
+      include: [
+        './src/**/*.{js,jsx,ts,tsx}',
+        './node_modules/@fidely-ui/react/dist/panda.buildinfo.json',
+      ],
+      outdir: 'styled-system',
+      jsxFramework: 'react',
+      staticCss: { recipes: '*' },
+    })
+    ```
+  </Step>
+  <Step title="Use your first component">
+    Import and render any component from `@fidely-ui/react`:
+
+    ```tsx
+    import { Button, Stack, Text } from '@fidely-ui/react'
+
+    export default function App() {
+      return (
+        <Stack gap="4" p="8">
+          <Text fontSize="xl" fontWeight="bold">Hello, Fidely UI!</Text>
+          <Button variant="solid">Get Started</Button>
+        </Stack>
+      )
+    }
+    ```
+  </Step>
+</Steps>
+
+## Why Fidely UI?
+
+<CardGroup cols={2}>
+  <Card title="Accessible by default" icon="universal-access">
+    Every component inherits Ark UI's ARIA-compliant headless foundation — keyboard navigation, screen reader support, and focus management included.
+  </Card>
+  <Card title="Zero-runtime styling" icon="bolt">
+    Panda CSS generates static CSS at build time — no runtime overhead, smaller bundles, and fully typed design tokens.
+  </Card>
+  <Card title="Fully themeable" icon="swatchbook">
+    Choose from 25+ built-in accent colors and 6 gray scales. Override border radii, typography, spacing, and component recipes to match your brand.
+  </Card>
+  <Card title="Composable and extensible" icon="layer-group">
+    Use the `fidely` factory to create styled Ark UI primitives. Extend or override any component recipe without losing flexibility.
+  </Card>
+</CardGroup>
+
+## Framework guides
+
+Fidely UI works with all major React frameworks. Follow the guide for your stack:
+
+<CardGroup cols={3}>
+  <Card title="Vite (TypeScript)" icon="v" href="/frameworks/vite-ts">
+    The recommended setup for new Vite projects.
+  </Card>
+  <Card title="Vite (JavaScript)" icon="v" href="/frameworks/vite-js">
+    Setup guide for Vite JavaScript projects.
+  </Card>
+  <Card title="Next.js App Router" icon="n" href="/frameworks/next-js-app">
+    Server components and App Router support.
+  </Card>
+  <Card title="Next.js Pages Router" icon="n" href="/frameworks/next-js-page">
+    Classic Pages Router setup for Next.js.
+  </Card>
+  <Card title="React Router" icon="route" href="/frameworks/react-router">
+    Use Fidely UI with React Router v7.
+  </Card>
+  <Card title="Laravel + Inertia" icon="l" href="/frameworks/laravel">
+    Integrate Fidely UI in Laravel + Inertia.js apps.
+  </Card>
+</CardGroup>

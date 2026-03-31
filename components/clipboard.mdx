@@ -1,0 +1,192 @@
+---
+title: Clipboard
+description: A component that copies text to the clipboard and provides visual feedback to confirm the action.
+---
+
+Clipboard wraps a trigger and optional input to give users a one-click way to copy a value. It automatically resets the "copied" state after a configurable timeout.
+
+## Import
+
+```tsx
+import { Clipboard } from '@fidely-ui/react'
+```
+
+Sub-components: `Clipboard.Root`, `Clipboard.Trigger`, `Clipboard.Control`, `Clipboard.Input`, `Clipboard.Indicator`, `Clipboard.Status`, `Clipboard.Label`, `Clipboard.Context`, `Clipboard.RootProvider`
+
+## Basic usage
+
+```tsx
+<Clipboard.Root value="npm install @fidely-ui/react">
+  <Clipboard.Trigger>
+    <Clipboard.Indicator />
+  </Clipboard.Trigger>
+</Clipboard.Root>
+```
+
+## Examples
+
+### With input
+
+Combine `Clipboard.Input` with a trigger to let users see and copy the value.
+
+```tsx
+<Clipboard.Root value="https://fidely-ui.dev/docs">
+  <Clipboard.Control>
+    <Clipboard.Input />
+    <Clipboard.Trigger>
+      <Clipboard.Indicator />
+    </Clipboard.Trigger>
+  </Clipboard.Control>
+</Clipboard.Root>
+```
+
+<Note>
+  `Clipboard.Input` is read-only by default. The displayed value comes from the `value` prop on `Clipboard.Root`.
+</Note>
+
+### Status text feedback
+
+Use `Clipboard.Status` to show text that switches between "Copy" and "Copied" automatically.
+
+```tsx
+<Clipboard.Root value="Hello, world!">
+  <Clipboard.Trigger>
+    <Clipboard.Status />
+  </Clipboard.Trigger>
+</Clipboard.Root>
+```
+
+`Clipboard.Status` renders "Copy" in the idle state and "Copied" after the action — no additional state management required.
+
+### Custom indicator icons
+
+Override the default icons on `Clipboard.Indicator` with `idleIcon` and `copiedIcon`.
+
+```tsx
+<Clipboard.Root value="custom-token-abc123">
+  <Clipboard.Trigger>
+    <Clipboard.Indicator
+      idleIcon={<DocumentIcon />}
+      copiedIcon={<CheckCircleIcon />}
+    />
+  </Clipboard.Trigger>
+</Clipboard.Root>
+```
+
+### Custom timeout
+
+Use `timeout` to control how long the "copied" feedback is displayed before reverting to the idle state.
+
+```tsx
+<Clipboard.Root value="short-lived" timeout={1500}>
+  <Clipboard.Trigger>
+    <Clipboard.Indicator />
+  </Clipboard.Trigger>
+</Clipboard.Root>
+```
+
+### Handling the copy event
+
+Use `onCopy` to run side effects when the copy succeeds.
+
+```tsx
+<Clipboard.Root
+  value="api-key-xyz"
+  onCopy={(value) => console.log('Copied:', value)}
+>
+  <Clipboard.Trigger>
+    <Clipboard.Indicator />
+  </Clipboard.Trigger>
+</Clipboard.Root>
+```
+
+### Programmatic control with useClipboard
+
+Use the `useClipboard` hook with `Clipboard.RootProvider` for full programmatic access to clipboard state.
+
+```tsx
+import { useClipboard, Clipboard } from '@fidely-ui/react'
+
+function CustomClipboard() {
+  const clipboard = useClipboard({ value: 'programmatic-copy' })
+
+  return (
+    <Clipboard.RootProvider value={clipboard}>
+      <button onClick={() => clipboard.copy()}>
+        {clipboard.copied ? 'Copied!' : 'Copy to clipboard'}
+      </button>
+    </Clipboard.RootProvider>
+  )
+}
+```
+
+<Tip>
+  When using `Clipboard.RootProvider`, you do not need `Clipboard.Root`. The provider takes the return value of `useClipboard` directly.
+</Tip>
+
+### Labelled clipboard
+
+Use `Clipboard.Label` to associate an accessible label with the clipboard input.
+
+```tsx
+<Clipboard.Root value="npm install @fidely-ui/react">
+  <Clipboard.Label>Install command</Clipboard.Label>
+  <Clipboard.Control>
+    <Clipboard.Input />
+    <Clipboard.Trigger>
+      <Clipboard.Indicator />
+    </Clipboard.Trigger>
+  </Clipboard.Control>
+</Clipboard.Root>
+```
+
+## Props
+
+### Clipboard.Root
+
+<ParamField path="value" type="string">
+  The text to copy. If omitted, the value is read from `Clipboard.Input`.
+</ParamField>
+
+<ParamField path="timeout" type="number" default="3000">
+  Duration in milliseconds for how long the copied state is shown before resetting.
+</ParamField>
+
+<ParamField path="onCopy" type="(value: string) => void">
+  Callback fired after the text is successfully copied to the clipboard.
+</ParamField>
+
+### Clipboard.Trigger
+
+<ParamField path="asChild" type="boolean" default="false">
+  Pass clipboard trigger props to a custom child component instead of rendering a default button.
+</ParamField>
+
+### Clipboard.Indicator
+
+<ParamField path="idleIcon" type="ReactNode">
+  Icon displayed in the idle (not yet copied) state. Defaults to a copy icon.
+</ParamField>
+
+<ParamField path="copiedIcon" type="ReactNode">
+  Icon displayed in the copied state. Defaults to a check icon.
+</ParamField>
+
+### Clipboard.Input
+
+<ParamField path="readOnly" type="boolean" default="true">
+  Makes the input read-only. Recommended to keep enabled.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  Renders a custom element instead of the default input.
+</ParamField>
+
+### useClipboard hook
+
+| Property | Type | Description |
+|---|---|---|
+| `copied` | `boolean` | Whether the text has been successfully copied. |
+| `value` | `string` | The current value managed by the clipboard. |
+| `copy` | `(value?: string) => void` | Triggers the copy action. Pass a value to override the root value. |
+| `setValue` | `(value: string) => void` | Updates the clipboard value. |

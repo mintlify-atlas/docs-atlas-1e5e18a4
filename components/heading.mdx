@@ -1,0 +1,96 @@
+---
+title: Heading
+description: A typography component for rendering semantic HTML heading elements with independent visual size control.
+---
+
+`Heading` renders an `h2` element by default and uses the `heading` recipe from Panda CSS. The `as` prop changes the semantic element without affecting the visual size, and the `size` prop adjusts the visual size independently of the semantic tag.
+
+## Import
+
+```tsx
+import { Heading } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Heading>Page heading</Heading>
+```
+
+## Examples
+
+### Semantic elements with `as`
+
+By default `Heading` renders as `h2`. Use `as` to render a different semantic heading level while keeping independent visual control:
+
+```tsx
+<Heading as="h1">Main page title (h1)</Heading>
+<Heading as="h2">Section heading (h2, default)</Heading>
+<Heading as="h3">Subsection heading (h3)</Heading>
+<Heading as="h4">Sub-subsection (h4)</Heading>
+```
+
+### Visual size
+
+Use the `size` prop to control the visual size without changing the semantic element. This lets you keep the correct document outline while matching the visual hierarchy of your design:
+
+```tsx
+<Stack gap="3">
+  <Heading size="xs">Extra small heading</Heading>
+  <Heading size="sm">Small heading</Heading>
+  <Heading size="md">Medium heading</Heading>
+  <Heading size="lg">Large heading</Heading>
+  <Heading size="xl">Extra large heading</Heading>
+  <Heading size="2xl">2XL heading</Heading>
+  <Heading size="3xl">3XL heading</Heading>
+  <Heading size="4xl">4XL heading</Heading>
+</Stack>
+```
+
+You can also pass a `textStyle` token directly:
+
+```tsx
+<Heading textStyle="5xl">Styled with textStyle token</Heading>
+```
+
+### Decoupling visual size from semantics
+
+```tsx
+{/* Semantically h1, but visually styled as a large heading */}
+<Heading as="h1" size="4xl">Hero title</Heading>
+
+{/* Semantically h3, but visually smaller */}
+<Heading as="h3" size="sm">Compact subsection label</Heading>
+```
+
+### With style props
+
+```tsx
+<Heading
+  as="h2"
+  size="xl"
+  color="blue.700"
+  fontWeight="extrabold"
+  letterSpacing="tight"
+>
+  Styled heading
+</Heading>
+```
+
+## Props
+
+<ParamField path="size" type='"xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl"'>
+  Controls the visual size of the heading independently from its semantic level.
+</ParamField>
+
+<ParamField path="as" type='"h1" | "h2" | "h3" | "h4" | "h5" | "h6" | React.ElementType'>
+  The HTML element to render. Defaults to `h2`. Change this to maintain correct document outline semantics.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  When true, forwards all props and styles to the first child element.
+</ParamField>
+
+<Tip>
+  Always choose the `as` element based on document structure and accessibility (correct heading hierarchy), then use `size` to achieve the desired visual appearance.
+</Tip>

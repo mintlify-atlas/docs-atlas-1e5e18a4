@@ -1,0 +1,71 @@
+---
+title: Em
+description: An inline typography component that renders emphasized text using the semantic HTML em element.
+---
+
+`Em` renders an `<em>` element with `font-style: italic` applied. It is a styled primitive that accepts all Panda CSS style props, making it easy to layer additional typography overrides on top of the base italic style.
+
+## Import
+
+```tsx
+import { Em } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Text>
+  Fidely <Em>UI</Em> is a modern React component library.
+</Text>
+```
+
+## Examples
+
+### With color
+
+```tsx
+<Text>
+  This component is <Em color="blue.600">particularly useful</Em> for
+  drawing attention to key terms inline.
+</Text>
+```
+
+### Using semantic color tokens
+
+```tsx
+<Text>
+  The process will <Em color="fg.subtle">automatically retry</Em> on failure.
+</Text>
+```
+
+### Combining with other style props
+
+```tsx
+<Text>
+  Use <Em fontWeight="bold" color="red.500">caution</Em> when deleting data.
+</Text>
+```
+
+### Nested in headings
+
+```tsx
+<Heading as="h2">
+  Building with <Em>Fidely UI</Em>
+</Heading>
+```
+
+## Props
+
+`Em` extends `HTMLStyledProps<'em'>` and accepts all Panda CSS style props as well as standard HTML `em` attributes.
+
+<ParamField path="color" type="string">
+  Overrides the text color. Accepts Panda CSS color tokens (e.g. `"fg.subtle"`, `"blue.600"`) or CSS color values.
+</ParamField>
+
+<ParamField path="fontWeight" type="string">
+  Overrides the font weight. Accepts Panda CSS font weight tokens.
+</ParamField>
+
+<Note>
+  `Em` renders a semantic `<em>` element, which carries meaning for assistive technologies. Use it when the emphasis is meaningful in context, not just for visual italics. For purely visual italics without semantic meaning, use `<Span fontStyle="italic">` instead.
+</Note>

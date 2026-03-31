@@ -1,0 +1,263 @@
+---
+title: Table
+description: A composable data table with support for striped rows, hover effects, sticky headers, captions, and horizontal scrolling.
+---
+
+The `Table` component renders tabular data using a compound slot-based API. It supports multiple visual variants, size tokens, and accessibility-friendly markup.
+
+## Import
+
+```tsx
+import { Table } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Table.Root>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeadCell>Name</Table.HeadCell>
+      <Table.HeadCell>Role</Table.HeadCell>
+      <Table.HeadCell align="right">Joined</Table.HeadCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>Ada Lovelace</Table.Cell>
+      <Table.Cell>Engineer</Table.Cell>
+      <Table.Cell align="right">1843</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Grace Hopper</Table.Cell>
+      <Table.Cell>Admiral</Table.Cell>
+      <Table.Cell align="right">1944</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table.Root>
+```
+
+## Examples
+
+### Sizes
+
+Use the `size` prop on `Table.Root` to adjust the cell padding.
+
+```tsx
+<Table.Root size="sm">
+  <Table.Header>
+    <Table.Row>
+      <Table.HeadCell>Name</Table.HeadCell>
+      <Table.HeadCell>Status</Table.HeadCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>Alice</Table.Cell>
+      <Table.Cell>Active</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table.Root>
+```
+
+### Striped variant
+
+Use `variant="striped"` to alternate row background colors.
+
+```tsx
+<Table.Root variant="striped">
+  <Table.Header>
+    <Table.Row>
+      <Table.HeadCell>Product</Table.HeadCell>
+      <Table.HeadCell align="right">Price</Table.HeadCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>Widget A</Table.Cell>
+      <Table.Cell align="right">$10.00</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Widget B</Table.Cell>
+      <Table.Cell align="right">$15.00</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Widget C</Table.Cell>
+      <Table.Cell align="right">$8.50</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table.Root>
+```
+
+### Hoverable
+
+Add `hoverable` to highlight a row on mouse-over.
+
+```tsx
+<Table.Root hoverable>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeadCell>User</Table.HeadCell>
+      <Table.HeadCell>Email</Table.HeadCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>Grace Hopper</Table.Cell>
+      <Table.Cell>grace@example.com</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table.Root>
+```
+
+### With caption
+
+Use `Table.Caption` to add an accessible description. Control its position with `captionSide`.
+
+```tsx
+<Table.Root>
+  <Table.Caption captionSide="top">Q3 sales figures</Table.Caption>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeadCell>Region</Table.HeadCell>
+      <Table.HeadCell align="right">Revenue</Table.HeadCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>North America</Table.Cell>
+      <Table.Cell align="right">$1.2M</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table.Root>
+```
+
+### Scroll area
+
+Wrap `Table.Root` with `Table.ScrollArea` to handle overflow on small screens.
+
+```tsx
+<Table.ScrollArea maxWidth="600px">
+  <Table.Root>
+    <Table.Header>
+      <Table.Row>
+        <Table.HeadCell>ID</Table.HeadCell>
+        <Table.HeadCell>Name</Table.HeadCell>
+        <Table.HeadCell>Department</Table.HeadCell>
+        <Table.HeadCell>Location</Table.HeadCell>
+        <Table.HeadCell>Start date</Table.HeadCell>
+      </Table.Row>
+    </Table.Header>
+    <Table.Body>
+      <Table.Row>
+        <Table.Cell>001</Table.Cell>
+        <Table.Cell>Ada Lovelace</Table.Cell>
+        <Table.Cell>Engineering</Table.Cell>
+        <Table.Cell>London</Table.Cell>
+        <Table.Cell>1843-01-01</Table.Cell>
+      </Table.Row>
+    </Table.Body>
+  </Table.Root>
+</Table.ScrollArea>
+```
+
+### Sticky header
+
+Pass `stickyHeader` to keep the header row visible when the table scrolls.
+
+```tsx
+<Table.ScrollArea maxHeight="300px">
+  <Table.Root stickyHeader>
+    <Table.Header>
+      <Table.Row>
+        <Table.HeadCell>Name</Table.HeadCell>
+        <Table.HeadCell>Score</Table.HeadCell>
+      </Table.Row>
+    </Table.Header>
+    <Table.Body>
+      {scores.map((row) => (
+        <Table.Row key={row.id}>
+          <Table.Cell>{row.name}</Table.Cell>
+          <Table.Cell>{row.score}</Table.Cell>
+        </Table.Row>
+      ))}
+    </Table.Body>
+  </Table.Root>
+</Table.ScrollArea>
+```
+
+## Props
+
+### Root
+
+<ParamField path="size" type='"sm" | "md" | "lg"' default="md">
+  Controls the padding of table cells.
+</ParamField>
+
+<ParamField path="variant" type='"subtle" | "outline" | "striped"' default="subtle">
+  Changes the visual style of the table.
+</ParamField>
+
+<ParamField path="hoverable" type="boolean" default="false">
+  Highlights the row under the pointer.
+</ParamField>
+
+<ParamField path="width" type="string | number" default="100%">
+  Sets the width of the table element.
+</ParamField>
+
+<ParamField path="stickyHeader" type="boolean" default="false">
+  Makes the `Table.Header` row stick to the top of the scroll container.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  The table content — `Table.Header`, `Table.Body`, and optionally `Table.Footer`.
+</ParamField>
+
+---
+
+### HeadCell
+
+<ParamField path="align" type='"left" | "center" | "right"' default="left">
+  Horizontal alignment of the header cell content.
+</ParamField>
+
+<ParamField path="width" type="string | number">
+  Explicit width for the column.
+</ParamField>
+
+---
+
+### Cell
+
+<ParamField path="align" type='"left" | "center" | "right"' default="left">
+  Horizontal alignment of the cell content.
+</ParamField>
+
+<ParamField path="colSpan" type="number" default="1">
+  Number of columns this cell should span.
+</ParamField>
+
+<ParamField path="rowSpan" type="number" default="1">
+  Number of rows this cell should span.
+</ParamField>
+
+---
+
+### Caption
+
+<ParamField path="captionSide" type='"top" | "bottom"' default="bottom">
+  Position of the caption relative to the table.
+</ParamField>
+
+---
+
+### ScrollArea
+
+<ParamField path="maxWidth" type="string | number" default="100%">
+  Maximum width of the scroll container before horizontal scrolling activates.
+</ParamField>
+
+<ParamField path="maxHeight" type="string | number">
+  Maximum height of the scroll container before vertical scrolling activates.
+</ParamField>

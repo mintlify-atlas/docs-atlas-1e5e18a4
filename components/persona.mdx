@@ -1,0 +1,120 @@
+---
+title: Persona
+description: A high-level component that combines an avatar, name, and title into a single, ready-to-use person representation.
+---
+
+`Persona` is a convenience component built on top of `Profile` primitives. Pass a `name`, `title`, and optional image `src` to render a fully formed identity block with consistent sizing across avatar and typography.
+
+## Import
+
+```tsx
+import { Persona } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Persona
+  name="Grace Hopper"
+  title="Computer Scientist"
+  img="/grace.jpg"
+/>
+```
+
+## Examples
+
+### Horizontal layout (default)
+
+The avatar sits beside the name and title in a row.
+
+```tsx
+<Persona
+  name="Ada Lovelace"
+  title="Mathematician · Pioneer"
+  img="/ada.jpg"
+  orientation="horizontal"
+/>
+```
+
+### Vertical layout
+
+Use `orientation="vertical"` to stack the avatar above the text.
+
+```tsx
+<Persona
+  name="Alan Turing"
+  title="Cryptographer"
+  img="/alan.jpg"
+  orientation="vertical"
+/>
+```
+
+### Sizes
+
+The `size` prop scales both the avatar and the typography together.
+
+```tsx
+<Persona name="Small User" title="Designer" size="xs" />
+<Persona name="Default User" title="Engineer" size="md" />
+<Persona name="Large User" title="Director" size="xl" />
+<Persona name="Extra Large User" title="CEO" size="2xl" />
+```
+
+### Without an image
+
+When `img` is omitted the avatar renders initials derived from `name`.
+
+```tsx
+<Persona name="Grace Hopper" title="Admiral" />
+```
+
+### Full control with Profile
+
+When you need custom layout, extra elements, or extended styling, use the `Profile` primitives directly instead.
+
+```tsx
+import { Profile, Avatar, Text } from '@fidely-ui/react'
+
+<Profile.Root gap="3" orientation="vertical">
+  <Profile.AvatarWrapper>
+    <Avatar.Root size="lg">
+      <Avatar.Fallback name="Grace Hopper" />
+      <Avatar.Image src="/grace.jpg" alt="Grace Hopper" />
+    </Avatar.Root>
+  </Profile.AvatarWrapper>
+
+  <Profile.Details>
+    <Profile.Name fontSize="lg">Grace Hopper</Profile.Name>
+    <Profile.Title fontSize="sm" color="fg.muted">
+      Computer Scientist
+    </Profile.Title>
+    <Text fontSize="xs">United States Navy, Rear Admiral</Text>
+  </Profile.Details>
+</Profile.Root>
+```
+
+## Props
+
+<ParamField path="name" type="string">
+  The person's full name. Displayed as the primary label and used to derive avatar initials when no image is provided.
+</ParamField>
+
+<ParamField path="title" type="string">
+  A secondary label for the person's role or description.
+</ParamField>
+
+<ParamField path="img" type="string">
+  URL or path of the person's avatar image. Falls back to initials when omitted or when the image fails to load.
+</ParamField>
+
+<ParamField path="size" type='"xs" | "sm" | "md" | "lg" | "xl" | "2xl"' default="md">
+  Controls the avatar dimensions and scales the name and title typography accordingly.
+</ParamField>
+
+<ParamField path="orientation" type='"horizontal" | "vertical"' default="horizontal">
+  Layout direction. `"horizontal"` places the avatar beside the text; `"vertical"` stacks the avatar above it.
+</ParamField>
+
+<Tip>
+  Use `Persona` for standard identity display. For layouts that require additional elements — badges, social links, action buttons — reach for the `Profile` primitives directly.
+</Tip>

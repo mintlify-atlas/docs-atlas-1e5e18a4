@@ -1,0 +1,105 @@
+---
+title: CSS variables
+description: Use token-aware CSS custom properties in Fidely UI to share values, avoid runtime re-renders, and access design tokens from plain CSS.
+---
+
+CSS custom properties (variables) are the standard way to share design values on the web. Panda CSS generates CSS variables for every token in the system, and Fidely UI gives you a convenient way to define and consume them directly on JSX elements via the `css` prop.
+
+Using CSS variables avoids prop interpolations and classname regeneration, which reduces runtime overhead.
+
+## Basic usage
+
+Set arbitrary CSS variables with the `css` prop on any Fidely UI element:
+
+```tsx
+<Box css={{ '--font-size': '18px' }}>
+  <h3 style={{ fontSize: 'calc(var(--font-size) * 2)' }}>Hello</h3>
+  <p style={{ fontSize: 'var(--font-size)' }}>Hello</p>
+</Box>
+```
+
+## Accessing design tokens
+
+Reference any Panda CSS token by its full path. Panda resolves the path to the generated CSS variable at build time:
+
+```tsx
+{/* Color token */}
+<Box css={{ '--color': 'colors.red.9' }}>
+  <p style={{ color: 'var(--color)' }}>Hello World</p>
+</Box>
+
+{/* Size token */}
+<Box css={{ '--size': 'sizes.12' }}>
+  <p style={{ width: 'var(--size)', height: 'var(--size)' }}>Hello World</p>
+</Box>
+```
+
+Token paths follow the pattern `{category}.{scale}`, for example:
+
+| Token path | Resolved CSS variable |
+|---|---|
+| `colors.red.9` | `var(--colors-red-9)` |
+| `colors.gray.12` | `var(--colors-gray-12)` |
+| `sizes.12` | `var(--sizes-12)` |
+| `spacing.4` | `var(--spacing-4)` |
+
+## Responsive CSS variables
+
+CSS variables set via the `css` prop accept the same responsive syntax as any other style prop:
+
+```tsx
+<Box css={{ '--font-size': { base: '16px', lg: '24px' } }}>
+  <h3 style={{ fontSize: 'calc(var(--font-size) * 2)' }}>Hello</h3>
+  <p style={{ fontSize: 'var(--font-size)' }}>Hello</p>
+</Box>
+```
+
+## Color opacity modifier
+
+When assigning a color token to a CSS variable, you can apply opacity using the `{token/opacity}` syntax inside curly braces:
+
+```tsx
+<Box css={{ '--color': '{colors.red.10/80}' }}>
+  <p style={{ color: 'var(--color)' }}>Hello</p>
+</Box>
+```
+
+<Note>
+  The `{}` token reference syntax is required when using the opacity modifier inside a CSS variable assignment.
+</Note>
+
+## Virtual color via `colorPalette`
+
+CSS variables can point to the virtual color palette, making it easy to build theme-aware components:
+
+```tsx
+<Box colorPalette="purple" css={{ '--color': 'colors.colorPalette.8' }}>
+  <p style={{ color: 'var(--color)' }}>Hello</p>
+</Box>
+```
+
+Changing `colorPalette` to any other color name will automatically update `--color` to the corresponding step.
+
+## How Panda generates CSS variables
+
+Panda CSS transforms every token defined in your config into a CSS custom property at build time. For example, a `colors.red.9` token becomes:
+
+```css
+:root {
+  --colors-red-9: #e5484d;
+}
+```
+
+Semantic tokens generate additional variables that change value per color mode:
+
+```css
+:root {
+  --colors-fg-default: var(--colors-gray-12);
+}
+
+.dark {
+  --colors-fg-default: var(--colors-gray-12); /* resolves to dark-mode gray.12 */
+}
+```
+
+You can reference any generated variable directly in `style` attributes, plain CSS files, or anywhere that accepts a CSS value.

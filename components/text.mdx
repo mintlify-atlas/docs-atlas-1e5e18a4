@@ -1,0 +1,110 @@
+---
+title: Text
+description: A typography component for rendering paragraphs and inline text with size, weight, and truncation controls.
+---
+
+`Text` renders a `p` element by default. It uses the `text` recipe from Panda CSS and supports size variants, truncation, line clamping, and full access to typography style props.
+
+## Import
+
+```tsx
+import { Text } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Text>Hello from Fidely UI</Text>
+```
+
+## Examples
+
+### Size
+
+Use the `size` prop to adjust the visual size of the text:
+
+```tsx
+<Stack gap="2">
+  <Text size="xs">Extra small text</Text>
+  <Text size="sm">Small text</Text>
+  <Text size="md">Medium text (default)</Text>
+  <Text size="lg">Large text</Text>
+  <Text size="xl">Extra large text</Text>
+</Stack>
+```
+
+You can also pass a Panda CSS `textStyle` token directly:
+
+```tsx
+<Text textStyle="2xl">Text styled with textStyle token</Text>
+```
+
+### Font weight
+
+```tsx
+<Stack gap="2">
+  <Text fontWeight="normal">Normal weight</Text>
+  <Text fontWeight="medium">Medium weight</Text>
+  <Text fontWeight="semibold">Semibold weight</Text>
+  <Text fontWeight="bold">Bold weight</Text>
+</Stack>
+```
+
+### Truncate
+
+Use `truncate` to clip overflowing text to a single line with an ellipsis:
+
+```tsx
+<Text truncate maxW="200px">
+  This text is very long and will be truncated at the end with an ellipsis.
+</Text>
+```
+
+### Line clamp
+
+Use `lineClamp` to limit the text to a specific number of lines before truncating:
+
+```tsx
+<Text lineClamp={3} maxW="sm">
+  This is a longer piece of text that spans multiple lines. After three lines,
+  the rest will be hidden and replaced with an ellipsis. It is useful for
+  card descriptions and preview text.
+</Text>
+```
+
+### Polymorphic rendering
+
+```tsx
+<Text as="span" color="fg.subtle">Rendered as a span</Text>
+<Text as="label" htmlFor="input-id">Label text</Text>
+```
+
+## Props
+
+<ParamField path="size" type='"xs" | "sm" | "md" | "lg" | "xl" | "2xl"'>
+  Controls the visual size of the text. Adjusts font size and line height without changing the rendered element.
+</ParamField>
+
+<ParamField path="truncate" type="boolean">
+  When true, truncates text that overflows its container to a single line with an ellipsis.
+</ParamField>
+
+<ParamField path="lineClamp" type="number">
+  Truncates text after the specified number of lines, appending an ellipsis.
+</ParamField>
+
+<ParamField path="fontWeight" type="string">
+  The font weight of the text. Accepts Panda CSS font weight tokens such as `"normal"`, `"medium"`, `"semibold"`, and `"bold"`.
+</ParamField>
+
+<ParamField path="as" type="React.ElementType">
+  The HTML element or React component to render as. Defaults to `p`.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  When true, forwards all props and styles to the first child element.
+</ParamField>
+
+<Note>
+  `Text` accepts all Panda CSS style props. Use `color`, `fontSize`, `lineHeight`, `letterSpacing`, and other typography tokens to fine-tune text appearance.
+</Note>

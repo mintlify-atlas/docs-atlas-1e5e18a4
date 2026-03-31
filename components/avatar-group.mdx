@@ -1,0 +1,105 @@
+---
+title: Avatar Group
+description: Displays a collection of avatars in a stacked, overlapping row with configurable spacing and attachment behavior.
+---
+
+`AvatarGroup` wraps multiple `Avatar` components and applies overlap and attachment by default. You can control the spacing and disable either behavior when needed.
+
+## Import
+
+```tsx
+import { Avatar, AvatarGroup } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<AvatarGroup>
+  <Avatar.Root>
+    <Avatar.Fallback name="Ada Lovelace" />
+    <Avatar.Image src="/ada.jpg" alt="Ada Lovelace" />
+  </Avatar.Root>
+  <Avatar.Root>
+    <Avatar.Fallback name="Grace Hopper" />
+    <Avatar.Image src="/grace.jpg" alt="Grace Hopper" />
+  </Avatar.Root>
+  <Avatar.Root>
+    <Avatar.Fallback name="Alan Turing" />
+    <Avatar.Image src="/alan.jpg" alt="Alan Turing" />
+  </Avatar.Root>
+</AvatarGroup>
+```
+
+## Examples
+
+### Adjusted spacing
+
+Pass `spaceX` to control the horizontal overlap between avatars. A negative value increases overlap; a positive value adds spacing.
+
+```tsx
+<AvatarGroup spaceX="-4">
+  <Avatar.Root>
+    <Avatar.Fallback name="User One" />
+  </Avatar.Root>
+  <Avatar.Root>
+    <Avatar.Fallback name="User Two" />
+  </Avatar.Root>
+  <Avatar.Root>
+    <Avatar.Fallback name="User Three" />
+  </Avatar.Root>
+</AvatarGroup>
+```
+
+### No overlap
+
+Set `overlap={false}` and `attach={false}` to render avatars side-by-side without any stacking.
+
+```tsx
+<AvatarGroup overlap={false} attach={false}>
+  <Avatar.Root>
+    <Avatar.Fallback name="User One" />
+  </Avatar.Root>
+  <Avatar.Root>
+    <Avatar.Fallback name="User Two" />
+  </Avatar.Root>
+  <Avatar.Root>
+    <Avatar.Fallback name="User Three" />
+  </Avatar.Root>
+</AvatarGroup>
+```
+
+### With count indicator
+
+Add a final avatar to indicate additional members not shown.
+
+```tsx
+<AvatarGroup>
+  <Avatar.Root>
+    <Avatar.Fallback name="Ada Lovelace" />
+  </Avatar.Root>
+  <Avatar.Root>
+    <Avatar.Fallback name="Grace Hopper" />
+  </Avatar.Root>
+  <Avatar.Root>
+    <Avatar.Fallback>+5</Avatar.Fallback>
+  </Avatar.Root>
+</AvatarGroup>
+```
+
+## Props
+
+<ParamField path="overlap" type="boolean">
+  When `true`, avatars are layered on top of each other using negative margin. `AvatarGroup` sets this to `true` by default.
+</ParamField>
+
+<ParamField path="attached" type="boolean">
+  When `true`, removes the gap between avatars. `AvatarGroup` sets this to `true` by default.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  One or more `Avatar.Root` components.
+</ParamField>
+
+<Tip>
+  `AvatarGroup` is built on top of the `Group` primitive. It supports all `Group` layout props such as `alignItems`, `justifyContent`, and `flexWrap`.
+</Tip>

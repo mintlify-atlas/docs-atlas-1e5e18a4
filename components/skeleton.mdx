@@ -1,0 +1,136 @@
+---
+title: Skeleton
+description: Animated loading placeholders that represent the shape of content while it is being fetched.
+---
+
+Use `Skeleton` to replace UI regions with a pulsing placeholder during loading states. Compose multiple `Skeleton` elements to approximate any content shape.
+
+## Import
+
+```tsx
+import { Skeleton } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Skeleton height="200px" />
+```
+
+## Examples
+
+### Multiple blocks
+
+Stack multiple `Skeleton` elements to suggest the shape of a list or grid.
+
+```tsx
+import { Stack, Skeleton } from '@fidely-ui/react'
+
+<Stack gap="4" maxW="320px">
+  <Skeleton height="200px" />
+  <Skeleton height="200px" />
+  <Skeleton height="200px" />
+</Stack>
+```
+
+### Different shapes
+
+Control border radius with style props to match the content being loaded.
+
+```tsx
+{/* Rectangular block */}
+<Skeleton width="100%" height="160px" borderRadius="md" />
+
+{/* Circular — e.g. for an avatar */}
+<Skeleton width="48px" height="48px" borderRadius="full" />
+
+{/* Pill — e.g. for a badge */}
+<Skeleton width="80px" height="24px" borderRadius="full" />
+
+{/* Text line */}
+<Skeleton width="60%" height="1em" borderRadius="sm" />
+```
+
+### Text lines
+
+Compose multiple slim skeletons to simulate a block of text.
+
+```tsx
+import { Stack, Skeleton } from '@fidely-ui/react'
+
+<Stack gap="2" maxW="320px">
+  <Skeleton height="1em" width="80%" />
+  <Skeleton height="1em" width="90%" />
+  <Skeleton height="1em" width="70%" />
+  <Skeleton height="1em" width="85%" />
+</Stack>
+```
+
+### Within a card
+
+Compose skeletons to represent a loading card layout.
+
+```tsx
+import { Card, Skeleton, Stack } from '@fidely-ui/react'
+
+<Card.Root>
+  <Card.Body>
+    <Skeleton width="48px" height="48px" borderRadius="full" />
+    <Stack gap="2" mt="4">
+      <Skeleton height="1em" width="60%" />
+      <Skeleton height="1em" width="80%" />
+    </Stack>
+  </Card.Body>
+  <Card.Footer>
+    <Skeleton height="36px" width="100px" borderRadius="md" />
+  </Card.Footer>
+</Card.Root>
+```
+
+### Profile card skeleton
+
+Approximate the layout of a profile card.
+
+```tsx
+import { Card, Skeleton, Stack } from '@fidely-ui/react'
+
+<Card.Root maxWidth="320px">
+  <Card.Header>
+    <Skeleton width="64px" height="64px" borderRadius="full" />
+  </Card.Header>
+  <Card.Body>
+    <Skeleton height="1rem" width="40%" borderRadius="sm" mb="2" />
+    <Stack gap="2">
+      <Skeleton height="0.8rem" width="90%" />
+      <Skeleton height="0.8rem" width="75%" />
+      <Skeleton height="0.8rem" width="85%" />
+    </Stack>
+  </Card.Body>
+</Card.Root>
+```
+
+## Props
+
+### Skeleton
+
+`Skeleton` accepts all standard HTML `div` attributes and Panda CSS style props.
+
+<ParamField path="width" type="string | number">
+  Sets the width of the skeleton block. Accepts any design-system token or CSS value.
+</ParamField>
+
+<ParamField path="height" type="string | number">
+  Sets the height of the skeleton block.
+</ParamField>
+
+<ParamField path="borderRadius" type="string">
+  Controls the corner rounding. Use `"full"` for circles, `"md"` for rounded rectangles, or `"sm"` for slight rounding.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  Optional content. When provided, `Skeleton` acts as a container and the shimmer is applied to the wrapper.
+</ParamField>
+
+<Note>
+  `Skeleton` is a simple styled `div`. For text placeholders, compose multiple `Skeleton` blocks with `height="1em"` inside a `Stack`.
+</Note>

@@ -1,0 +1,329 @@
+---
+title: Menu
+description: A list of options that appears when a user interacts with a trigger button, supporting groups, submenus, checkboxes, and radio items.
+---
+
+Menu renders a positioned dropdown of interactive items. It supports keyboard navigation, typeahead, grouping, submenus, checkboxes, and radio selection.
+
+## Import
+
+```tsx
+import { Menu } from '@fidely-ui/react'
+```
+
+Sub-components: `Menu.Root`, `Menu.Trigger`, `Menu.ContextTrigger`, `Menu.TriggerItem`, `Menu.Positioner`, `Menu.Content`, `Menu.Item`, `Menu.ItemText`, `Menu.ItemGroup`, `Menu.ItemGroupLabel`, `Menu.CheckboxItem`, `Menu.RadioItem`, `Menu.RadioItemGroup`, `Menu.Separator`, `Menu.Indicator`, `Menu.ItemIndicator`, `Menu.Arrow`, `Menu.ArrowTip`, `Menu.Context`, `Menu.ItemContext`, `Menu.RootProvider`
+
+## Basic usage
+
+```tsx
+<Menu.Root>
+  <Menu.Trigger asChild>
+    <button>Options</button>
+  </Menu.Trigger>
+  <Menu.Positioner>
+    <Menu.Content>
+      <Menu.Item value="new-tab">New tab</Menu.Item>
+      <Menu.Item value="new-window">New window</Menu.Item>
+      <Menu.Separator />
+      <Menu.Item value="settings">Settings</Menu.Item>
+    </Menu.Content>
+  </Menu.Positioner>
+</Menu.Root>
+```
+
+## Examples
+
+### Item groups
+
+Use `Menu.ItemGroup` and `Menu.ItemGroupLabel` to visually group related items.
+
+```tsx
+<Menu.Root>
+  <Menu.Trigger asChild>
+    <button>Actions</button>
+  </Menu.Trigger>
+  <Menu.Positioner>
+    <Menu.Content>
+      <Menu.ItemGroup>
+        <Menu.ItemGroupLabel>File</Menu.ItemGroupLabel>
+        <Menu.Item value="new">New file</Menu.Item>
+        <Menu.Item value="open">Open...</Menu.Item>
+        <Menu.Item value="save">Save</Menu.Item>
+      </Menu.ItemGroup>
+      <Menu.Separator />
+      <Menu.ItemGroup>
+        <Menu.ItemGroupLabel>Edit</Menu.ItemGroupLabel>
+        <Menu.Item value="cut">Cut</Menu.Item>
+        <Menu.Item value="copy">Copy</Menu.Item>
+        <Menu.Item value="paste">Paste</Menu.Item>
+      </Menu.ItemGroup>
+    </Menu.Content>
+  </Menu.Positioner>
+</Menu.Root>
+```
+
+### Submenu
+
+Nest a second `Menu.Root` inside a parent item using `Menu.TriggerItem`.
+
+```tsx
+<Menu.Root>
+  <Menu.Trigger asChild>
+    <button>More</button>
+  </Menu.Trigger>
+  <Menu.Positioner>
+    <Menu.Content>
+      <Menu.Item value="profile">Profile</Menu.Item>
+      <Menu.Root>
+        <Menu.TriggerItem>Share</Menu.TriggerItem>
+        <Menu.Positioner>
+          <Menu.Content>
+            <Menu.Item value="email">Email</Menu.Item>
+            <Menu.Item value="link">Copy link</Menu.Item>
+          </Menu.Content>
+        </Menu.Positioner>
+      </Menu.Root>
+      <Menu.Separator />
+      <Menu.Item value="logout">Sign out</Menu.Item>
+    </Menu.Content>
+  </Menu.Positioner>
+</Menu.Root>
+```
+
+### Disabled items
+
+Set `disabled` on any `Menu.Item` to prevent selection.
+
+```tsx
+<Menu.Root>
+  <Menu.Trigger asChild>
+    <button>Actions</button>
+  </Menu.Trigger>
+  <Menu.Positioner>
+    <Menu.Content>
+      <Menu.Item value="edit">Edit</Menu.Item>
+      <Menu.Item value="archive" disabled>Archive (unavailable)</Menu.Item>
+      <Menu.Item value="delete">Delete</Menu.Item>
+    </Menu.Content>
+  </Menu.Positioner>
+</Menu.Root>
+```
+
+### Checkbox items
+
+Use `Menu.CheckboxItem` to create toggleable boolean menu options.
+
+```tsx
+function CheckboxMenu() {
+  const [checked, setChecked] = React.useState(false)
+
+  return (
+    <Menu.Root>
+      <Menu.Trigger asChild>
+        <button>View</button>
+      </Menu.Trigger>
+      <Menu.Positioner>
+        <Menu.Content>
+          <Menu.CheckboxItem
+            value="toolbar"
+            checked={checked}
+            onCheckedChange={(e) => setChecked(e.checked)}
+          >
+            <Menu.ItemIndicator>✓</Menu.ItemIndicator>
+            Show toolbar
+          </Menu.CheckboxItem>
+        </Menu.Content>
+      </Menu.Positioner>
+    </Menu.Root>
+  )
+}
+```
+
+### Radio items
+
+Use `Menu.RadioItemGroup` and `Menu.RadioItem` for exclusive selection within a group.
+
+```tsx
+function RadioMenu() {
+  const [value, setValue] = React.useState('system')
+
+  return (
+    <Menu.Root>
+      <Menu.Trigger asChild>
+        <button>Theme</button>
+      </Menu.Trigger>
+      <Menu.Positioner>
+        <Menu.Content>
+          <Menu.RadioItemGroup
+            value={value}
+            onValueChange={(e) => setValue(e.value)}
+          >
+            <Menu.RadioItem value="light">
+              <Menu.ItemIndicator>●</Menu.ItemIndicator>
+              Light
+            </Menu.RadioItem>
+            <Menu.RadioItem value="dark">
+              <Menu.ItemIndicator>●</Menu.ItemIndicator>
+              Dark
+            </Menu.RadioItem>
+            <Menu.RadioItem value="system">
+              <Menu.ItemIndicator>●</Menu.ItemIndicator>
+              System
+            </Menu.RadioItem>
+          </Menu.RadioItemGroup>
+        </Menu.Content>
+      </Menu.Positioner>
+    </Menu.Root>
+  )
+}
+```
+
+### Context menu
+
+Use `Menu.ContextTrigger` to open the menu on right-click.
+
+```tsx
+<Menu.Root>
+  <Menu.ContextTrigger asChild>
+    <div style={{ padding: '2rem', border: '1px dashed' }}>
+      Right-click anywhere in this area
+    </div>
+  </Menu.ContextTrigger>
+  <Menu.Positioner>
+    <Menu.Content>
+      <Menu.Item value="copy">Copy</Menu.Item>
+      <Menu.Item value="paste">Paste</Menu.Item>
+      <Menu.Item value="select-all">Select all</Menu.Item>
+    </Menu.Content>
+  </Menu.Positioner>
+</Menu.Root>
+```
+
+### Placement
+
+Use `positioning.placement` to control where the menu appears relative to its trigger.
+
+```tsx
+<Menu.Root positioning={{ placement: 'right-end' }}>
+  <Menu.Trigger asChild>
+    <button>Right-end menu</button>
+  </Menu.Trigger>
+  <Menu.Positioner>
+    <Menu.Content>
+      <Menu.Item value="item">Item</Menu.Item>
+    </Menu.Content>
+  </Menu.Positioner>
+</Menu.Root>
+```
+
+### Navigation links
+
+Render menu items as links by passing `asChild` and a link element. For client-side routing, set the `navigate` prop on `Menu.Root`.
+
+```tsx
+import { useNavigate } from 'react-router-dom'
+
+function NavMenu() {
+  const navigate = useNavigate()
+
+  return (
+    <Menu.Root navigate={({ value }) => navigate(`/${value}`)}>
+      <Menu.Trigger asChild>
+        <button>Go to</button>
+      </Menu.Trigger>
+      <Menu.Positioner>
+        <Menu.Content>
+          <Menu.Item value="dashboard" asChild>
+            <a href="/dashboard">Dashboard</a>
+          </Menu.Item>
+          <Menu.Item value="settings" asChild>
+            <a href="/settings">Settings</a>
+          </Menu.Item>
+        </Menu.Content>
+      </Menu.Positioner>
+    </Menu.Root>
+  )
+}
+```
+
+<Warning>
+  Do not pass a custom `id` prop to `Menu.Item`. IDs are generated internally, and overriding them breaks keyboard navigation. Use `value` instead.
+</Warning>
+
+## Props
+
+### Menu.Root
+
+<ParamField path="closeOnSelect" type="boolean" default="true">
+  Whether the menu closes when an item is selected.
+</ParamField>
+
+<ParamField path="open" type="boolean">
+  The controlled open state of the menu.
+</ParamField>
+
+<ParamField path="defaultOpen" type="boolean">
+  The initial open state when first rendered (uncontrolled).
+</ParamField>
+
+<ParamField path="onOpenChange" type="(details: OpenChangeDetails) => void">
+  Called when the menu opens or closes.
+</ParamField>
+
+<ParamField path="onSelect" type="(details: SelectionDetails) => void">
+  Called when a menu item is selected.
+</ParamField>
+
+<ParamField path="positioning" type="PositioningOptions">
+  Floating UI options for positioning the menu content.
+</ParamField>
+
+<ParamField path="size" type='"sm" | "md"' default='"md"'>
+  The size of the menu component.
+</ParamField>
+
+<ParamField path="loopFocus" type="boolean" default="false">
+  Whether keyboard navigation loops from the last item back to the first.
+</ParamField>
+
+<ParamField path="typeahead" type="boolean" default="true">
+  Whether pressing printable characters triggers typeahead navigation.
+</ParamField>
+
+<ParamField path="lazyMount" type="boolean" default="false">
+  Whether to defer mounting the menu content until first open.
+</ParamField>
+
+<ParamField path="unmountOnExit" type="boolean" default="false">
+  Whether to unmount menu content when closed.
+</ParamField>
+
+<ParamField path="navigate" type="(details: NavigateDetails) => void">
+  Function to perform client-side navigation when a link item is selected.
+</ParamField>
+
+<ParamField path="onHighlightChange" type="(details: HighlightChangeDetails) => void">
+  Called when the highlighted menu item changes.
+</ParamField>
+
+### Menu.Item
+
+<ParamField path="value" type="string" required>
+  A unique value used to identify the item. Required.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether the menu item is disabled.
+</ParamField>
+
+<ParamField path="closeOnSelect" type="boolean">
+  Override the root `closeOnSelect` for this item.
+</ParamField>
+
+<ParamField path="onSelect" type="VoidFunction">
+  Called when this specific item is selected.
+</ParamField>
+
+<ParamField path="valueText" type="string">
+  Text used for typeahead matching. Defaults to the item's text content.
+</ParamField>

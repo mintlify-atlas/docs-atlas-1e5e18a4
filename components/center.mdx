@@ -1,0 +1,80 @@
+---
+title: Center
+description: A layout component that centers its children both horizontally and vertically.
+---
+
+`Center` uses flexbox to center its children along both axes. It is built on Panda CSS's `center` pattern and supports polymorphic rendering via the `as` prop.
+
+## Import
+
+```tsx
+import { Center } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Center h="200px">
+  Centered content
+</Center>
+```
+
+## Examples
+
+### With explicit height
+
+Set a height to control the area in which children are centered:
+
+```tsx
+<Center h="300px" bg="gray.50" borderRadius="md">
+  <p>Vertically and horizontally centered</p>
+</Center>
+```
+
+### With an image
+
+```tsx
+<Center h="200px" bg="blue.100">
+  <img src="/logo.png" alt="Logo" width={80} />
+</Center>
+```
+
+### Inline
+
+Use the `inline` prop to make `Center` behave as an inline element (`display: inline-flex`) instead of a block element (`display: flex`). This lets it sit alongside other inline content without disrupting flow:
+
+```tsx
+<p>
+  Click the{' '}
+  <Center inline>
+    <button>button</button>
+  </Center>{' '}
+  to continue.
+</p>
+```
+
+### Polymorphic rendering with `as`
+
+```tsx
+<Center as="section" h="400px">
+  <h1>Page hero</h1>
+</Center>
+```
+
+## Props
+
+<ParamField path="inline" type="boolean" default="false">
+  When true, renders with `display: inline-flex` instead of `display: flex`, making the container only as wide as its content.
+</ParamField>
+
+<ParamField path="as" type="React.ElementType">
+  The HTML element or React component to render as. Defaults to `div`.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  When true, forwards all props and styles to the first child element.
+</ParamField>
+
+<Note>
+  `Center` accepts all Panda CSS style props in addition to the props listed above. Use props like `h`, `w`, `bg`, and `p` to control the container's dimensions and appearance.
+</Note>

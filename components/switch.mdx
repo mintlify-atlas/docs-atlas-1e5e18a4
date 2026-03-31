@@ -1,0 +1,179 @@
+---
+title: Switch
+description: A binary toggle control for on/off states, with support for controlled usage, sizes, and color palettes.
+---
+
+`Switch` is a compound component built on Ark UI. It renders a hidden input alongside a visual track (control) and a sliding thumb.
+
+## Import
+
+```tsx
+import { Switch } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Switch.Root>
+  <Switch.HiddenInput />
+  <Switch.Control>
+    <Switch.Thumb />
+  </Switch.Control>
+  <Switch.Label>Enable notifications</Switch.Label>
+</Switch.Root>
+```
+
+## Sizes
+
+Pass `size` to `Switch.Root` to change the scale.
+
+```tsx
+<Switch.Root size="sm">
+  <Switch.HiddenInput />
+  <Switch.Control><Switch.Thumb /></Switch.Control>
+  <Switch.Label>Small</Switch.Label>
+</Switch.Root>
+
+<Switch.Root size="md">
+  <Switch.HiddenInput />
+  <Switch.Control><Switch.Thumb /></Switch.Control>
+  <Switch.Label>Medium</Switch.Label>
+</Switch.Root>
+
+<Switch.Root size="lg">
+  <Switch.HiddenInput />
+  <Switch.Control><Switch.Thumb /></Switch.Control>
+  <Switch.Label>Large</Switch.Label>
+</Switch.Root>
+```
+
+## Color palette
+
+```tsx
+<Switch.Root colorPalette="blue" defaultChecked>
+  <Switch.HiddenInput />
+  <Switch.Control><Switch.Thumb /></Switch.Control>
+  <Switch.Label>Blue</Switch.Label>
+</Switch.Root>
+
+<Switch.Root colorPalette="green" defaultChecked>
+  <Switch.HiddenInput />
+  <Switch.Control><Switch.Thumb /></Switch.Control>
+  <Switch.Label>Green</Switch.Label>
+</Switch.Root>
+```
+
+## Controlled usage
+
+Use `checked` and `onCheckedChange` to manage the switch state from outside the component.
+
+```tsx
+import { useState } from 'react'
+
+function ControlledSwitch() {
+  const [checked, setChecked] = useState(false)
+
+  return (
+    <Switch.Root
+      checked={checked}
+      onCheckedChange={(details) => setChecked(details.checked)}
+    >
+      <Switch.HiddenInput />
+      <Switch.Control>
+        <Switch.Thumb />
+      </Switch.Control>
+      <Switch.Label>Dark mode</Switch.Label>
+    </Switch.Root>
+  )
+}
+```
+
+## Disabled
+
+```tsx
+<Switch.Root disabled>
+  <Switch.HiddenInput />
+  <Switch.Control><Switch.Thumb /></Switch.Control>
+  <Switch.Label>Disabled</Switch.Label>
+</Switch.Root>
+```
+
+## Props
+
+### Root
+
+<ParamField body="checked" type="boolean">
+  Controlled checked state of the switch.
+</ParamField>
+
+<ParamField body="defaultChecked" type="boolean" default="false">
+  Initial checked state for uncontrolled usage.
+</ParamField>
+
+<ParamField body="onCheckedChange" type="(checked: boolean) => void">
+  Callback fired when the switch state changes.
+</ParamField>
+
+<ParamField body="disabled" type="boolean" default="false">
+  Disables interaction with the switch.
+</ParamField>
+
+<ParamField body="required" type="boolean" default="false">
+  Marks the switch as required in a form.
+</ParamField>
+
+<ParamField body="name" type="string">
+  The name attribute of the hidden input for form submission.
+</ParamField>
+
+<ParamField body="value" type="string" default='"on"'>
+  The value submitted with the form when checked.
+</ParamField>
+
+<ParamField body="size" type='"sm" | "md" | "lg"' default='"md"'>
+  Controls the visual scale of the switch.
+</ParamField>
+
+<ParamField body="colorPalette" type='"red" | "blue" | "green" | "purple" | "orange" | "gray"' default='"blue"'>
+  The color palette applied to the switch track.
+</ParamField>
+
+<ParamField body="children" type="ReactNode">
+  Slot content — typically `HiddenInput`, `Control` (with `Thumb`), and `Label`.
+</ParamField>
+
+---
+
+### Control
+
+<ParamField body="children" type="ReactNode">
+  The visual track content, typically `Switch.Thumb`.
+</ParamField>
+
+---
+
+### Thumb
+
+<ParamField body="children" type="ReactNode">
+  Optional custom content inside the thumb.
+</ParamField>
+
+---
+
+### Label
+
+<ParamField body="children" type="ReactNode">
+  The text label displayed beside the switch.
+</ParamField>
+
+---
+
+### HiddenInput
+
+<ParamField body="name" type="string">
+  Name attribute for the hidden input.
+</ParamField>
+
+<ParamField body="value" type="string" default='"on"'>
+  Value submitted when the switch is checked.
+</ParamField>

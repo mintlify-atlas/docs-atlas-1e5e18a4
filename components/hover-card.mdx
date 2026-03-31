@@ -1,0 +1,205 @@
+---
+title: Hover Card
+description: A floating card that appears when the user hovers over a trigger element, used to display supplementary information.
+---
+
+HoverCard displays additional context on hover without requiring a click. It is intended for supplementary, non-essential content only.
+
+<Warning>
+  HoverCard is not accessible to keyboard-only users or screen readers. Do not place essential or interactive content inside it. Use [Popover](/components/popover) for accessible overlays.
+</Warning>
+
+## Import
+
+```tsx
+import { HoverCard } from '@fidely-ui/react'
+```
+
+Sub-components: `HoverCard.Root`, `HoverCard.Trigger`, `HoverCard.Positioner`, `HoverCard.Content`, `HoverCard.Arrow`, `HoverCard.ArrowTip`, `HoverCard.Context`, `HoverCard.RootProvider`
+
+## Basic usage
+
+```tsx
+<HoverCard.Root>
+  <HoverCard.Trigger asChild>
+    <a href="#">@username</a>
+  </HoverCard.Trigger>
+  <HoverCard.Positioner>
+    <HoverCard.Content>
+      <HoverCard.Arrow>
+        <HoverCard.ArrowTip />
+      </HoverCard.Arrow>
+      <div>
+        <strong>Username</strong>
+        <p>Joined March 2024 · 142 posts</p>
+      </div>
+    </HoverCard.Content>
+  </HoverCard.Positioner>
+</HoverCard.Root>
+```
+
+## Examples
+
+### Controlled
+
+Use `open` and `onOpenChange` to control visibility from outside the component.
+
+```tsx
+function ControlledHoverCard() {
+  const [open, setOpen] = React.useState(false)
+
+  return (
+    <HoverCard.Root open={open} onOpenChange={(e) => setOpen(e.open)}>
+      <HoverCard.Trigger asChild>
+        <button>Hover or control me</button>
+      </HoverCard.Trigger>
+      <HoverCard.Positioner>
+        <HoverCard.Content>
+          <p>Controlled: {String(open)}</p>
+        </HoverCard.Content>
+      </HoverCard.Positioner>
+    </HoverCard.Root>
+  )
+}
+```
+
+### Placement
+
+Use `positioning.placement` to control which side the card appears on relative to its trigger.
+
+```tsx
+<HoverCard.Root positioning={{ placement: 'right' }}>
+  <HoverCard.Trigger asChild>
+    <span>Hover me</span>
+  </HoverCard.Trigger>
+  <HoverCard.Positioner>
+    <HoverCard.Content>
+      <HoverCard.Arrow>
+        <HoverCard.ArrowTip />
+      </HoverCard.Arrow>
+      <p>Appears on the right.</p>
+    </HoverCard.Content>
+  </HoverCard.Positioner>
+</HoverCard.Root>
+```
+
+### Open and close delays
+
+Control how long the user must hover before the card opens or closes using `openDelay` and `closeDelay`.
+
+```tsx
+<HoverCard.Root openDelay={200} closeDelay={100}>
+  <HoverCard.Trigger asChild>
+    <span>Quick hover card</span>
+  </HoverCard.Trigger>
+  <HoverCard.Positioner>
+    <HoverCard.Content>
+      <p>Opens after 200ms, closes after 100ms.</p>
+    </HoverCard.Content>
+  </HoverCard.Positioner>
+</HoverCard.Root>
+```
+
+<Tip>
+  The default `openDelay` is `600ms` and `closeDelay` is `300ms`. Reduce them for faster interactions, but keep delays long enough for users to move the pointer from the trigger into the card.
+</Tip>
+
+### Disabled
+
+Use the `disabled` prop to prevent the card from opening on hover.
+
+```tsx
+<HoverCard.Root disabled>
+  <HoverCard.Trigger asChild>
+    <span>Hover has no effect</span>
+  </HoverCard.Trigger>
+  <HoverCard.Positioner>
+    <HoverCard.Content>
+      <p>This will not appear.</p>
+    </HoverCard.Content>
+  </HoverCard.Positioner>
+</HoverCard.Root>
+```
+
+### Custom background
+
+Use the `--hovercard-bg` CSS variable to theme the card and its arrow together.
+
+```tsx
+<HoverCard.Root>
+  <HoverCard.Trigger asChild>
+    <span>Dark card</span>
+  </HoverCard.Trigger>
+  <HoverCard.Positioner>
+    <HoverCard.Content style={{ '--hovercard-bg': '#111' }}>
+      <HoverCard.Arrow>
+        <HoverCard.ArrowTip />
+      </HoverCard.Arrow>
+      <p>Custom background.</p>
+    </HoverCard.Content>
+  </HoverCard.Positioner>
+</HoverCard.Root>
+```
+
+### Using inside a Dialog
+
+When rendering inside a Dialog, do not portal `HoverCard.Positioner` to `document.body`.
+
+```tsx
+{/* Remove any <Portal> wrapper around HoverCard.Positioner */}
+<HoverCard.Positioner>
+  <HoverCard.Content>...</HoverCard.Content>
+</HoverCard.Positioner>
+```
+
+## Props
+
+### HoverCard.Root
+
+<ParamField path="open" type="boolean">
+  The controlled open state of the hover card.
+</ParamField>
+
+<ParamField path="defaultOpen" type="boolean">
+  The initial open state when first rendered (uncontrolled).
+</ParamField>
+
+<ParamField path="onOpenChange" type="(details: OpenChangeDetails) => void">
+  Called when the hover card opens or closes.
+</ParamField>
+
+<ParamField path="openDelay" type="number" default="600">
+  Milliseconds after the pointer enters the trigger before the card opens.
+</ParamField>
+
+<ParamField path="closeDelay" type="number" default="300">
+  Milliseconds after the pointer leaves the trigger or card before it closes.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Prevents the hover card from opening on interaction.
+</ParamField>
+
+<ParamField path="positioning" type="PositioningOptions">
+  Options passed to Floating UI. Accepts `placement`, `offset`, `strategy`, and more.
+</ParamField>
+
+<ParamField path="lazyMount" type="boolean" default="false">
+  Whether to defer mounting the card content until the first open.
+</ParamField>
+
+<ParamField path="unmountOnExit" type="boolean" default="false">
+  Whether to unmount the card content when it closes.
+</ParamField>
+
+<ParamField path="skipAnimationOnMount" type="boolean" default="false">
+  Whether to skip the entry animation on the first open.
+</ParamField>
+
+<ParamField path="onInteractOutside" type="(event: InteractOutsideEvent) => void">
+  Called when an interaction occurs outside the card.
+</ParamField>
+
+<ParamField path="onPointerDownOutside" type="(event: PointerDownOutsideEvent) => void">
+  Called when a pointer-down event occurs outside the card.
+</ParamField>

@@ -1,0 +1,132 @@
+---
+title: Image
+description: A styled image component with object-fit and object-position helpers, plus support for rendering third-party image components via asChild.
+---
+
+The `Image` component wraps a standard `<img>` element with design-system style props and convenience aliases for `objectFit` (`fit`) and `objectPosition` (`align`).
+
+## Import
+
+```tsx
+import { Image } from '@fidely-ui/react'
+```
+
+## Basic usage
+
+```tsx
+<Image src="/hero.jpg" alt="Mountain landscape" />
+```
+
+## Examples
+
+### Object fit
+
+Use the `fit` prop (maps to `object-fit`) to control how the image fills its container.
+
+```tsx
+{/* Default: cover */}
+<Image src="/photo.jpg" alt="Photo" width="300px" height="200px" fit="cover" />
+
+{/* Contain — shows the full image */}
+<Image src="/photo.jpg" alt="Photo" width="300px" height="200px" fit="contain" />
+
+{/* Fill — stretches to fill */}
+<Image src="/photo.jpg" alt="Photo" width="300px" height="200px" fit="fill" />
+```
+
+### Object position (align)
+
+Use the `align` prop (maps to `object-position`) to anchor the visible area of the image.
+
+```tsx
+<Image
+  src="/portrait.jpg"
+  alt="Portrait"
+  width="200px"
+  height="200px"
+  fit="cover"
+  align="top"
+/>
+```
+
+### Custom height
+
+Use the `height` style prop to set a fixed height.
+
+```tsx
+<Image src="/banner.jpg" alt="Banner" height="300px" width="100%" />
+```
+
+### Circular image
+
+Combine `borderRadius` with `fit="cover"` for a circular appearance.
+
+```tsx
+<Image
+  src="/avatar.jpg"
+  alt="User avatar"
+  width="80px"
+  height="80px"
+  fit="cover"
+  borderRadius="full"
+/>
+```
+
+### Aspect ratio
+
+Use `aspectRatio` to maintain a consistent ratio regardless of the container width.
+
+```tsx
+<Image src="/card.jpg" alt="Card image" aspectRatio="16/9" width="100%" />
+```
+
+### HTML width and height
+
+Use `htmlWidth` and `htmlHeight` to set the native `width` and `height` attributes for layout shift prevention.
+
+```tsx
+<Image
+  src="/photo.jpg"
+  alt="Photo"
+  htmlWidth={800}
+  htmlHeight={600}
+/>
+```
+
+### Next.js Image (asChild)
+
+Use `asChild` to delegate rendering to a third-party image component such as `next/image`.
+
+```tsx
+import NextImage from 'next/image'
+
+<Image asChild>
+  <NextImage src="/photo.jpg" alt="Photo" width={800} height={600} />
+</Image>
+```
+
+## Props
+
+<ParamField path="src" type="string">
+  URL or path of the image.
+</ParamField>
+
+<ParamField path="alt" type="string" required>
+  Accessible description of the image. Required for accessibility.
+</ParamField>
+
+<ParamField path="fit" type="string" default="cover">
+  Maps to CSS `object-fit`. Accepts any valid `object-fit` value (`"cover"`, `"contain"`, `"fill"`, `"none"`, `"scale-down"`).
+</ParamField>
+
+<ParamField path="align" type="string">
+  Maps to CSS `object-position`. Controls which part of the image is visible when `fit` clips the image.
+</ParamField>
+
+<ParamField path="asChild" type="boolean" default="false">
+  When `true`, renders the provided child element instead of the built-in `img`, forwarding all props to it.
+</ParamField>
+
+<Note>
+  The `Image` component accepts all native HTML `<img>` attributes — `width`, `height`, `htmlWidth`, `htmlHeight`, `loading`, `decoding`, etc. — in addition to the design-system style props.
+</Note>

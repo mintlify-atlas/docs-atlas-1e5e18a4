@@ -1,0 +1,136 @@
+---
+title: Responsive design
+description: Build responsive layouts with Fidely UI's mobile-first breakpoint system, powered by Panda CSS.
+---
+
+Fidely UI uses a **mobile-first** breakpoint system based on `min-width` media queries. Every style prop accepts responsive values, so you can adapt layouts, typography, and component variants at any breakpoint without writing media queries manually.
+
+## Breakpoints
+
+```ts
+export const breakpoints = {
+  sm:  '640px',
+  md:  '768px',
+  lg:  '1024px',
+  xl:  '1280px',
+  '2xl': '1536px',
+}
+```
+
+Styles without a breakpoint key apply from `base` (0px) upward.
+
+## Responsive syntax
+
+Fidely UI supports three equivalent syntaxes for responsive props. Choose the one that fits your style.
+
+### Object syntax
+
+Pass an object where keys are breakpoint names and values are the styles to apply at that breakpoint and above:
+
+```tsx
+{/* Applies bold only from lg upward */}
+<Text fontWeight={{ base: 'medium', lg: 'bold' }}>Text</Text>
+```
+
+You can also use the breakpoint as a direct prop modifier:
+
+```tsx
+<Text fontWeight="medium" lg={{ fontWeight: 'bold' }}>
+  Text
+</Text>
+```
+
+### Array syntax
+
+Pass an array where each position maps to a breakpoint in order: `base`, `sm`, `md`, `lg`, `xl`. Use `undefined` to skip a breakpoint:
+
+```tsx
+{/* medium at base, bold at lg (skips sm and md) */}
+<Text fontWeight={['medium', undefined, undefined, 'bold']}>Text</Text>
+```
+
+## Breakpoint targeting
+
+### Range — `{from}To{To}`
+
+Apply styles between two breakpoints only:
+
+```tsx
+{/* Bold only between md and xl */}
+<Text fontWeight={{ mdToXl: 'bold' }}>Text</Text>
+```
+
+### Single — `{bp}Only`
+
+Target exactly one breakpoint:
+
+```tsx
+{/* Bold only at the lg breakpoint */}
+<Text fontWeight={{ lgOnly: 'bold' }}>Text</Text>
+```
+
+### Down — `{bp}Down`
+
+Apply styles at a breakpoint and below:
+
+```tsx
+{/* Bold from base up to and including sm */}
+<Text fontWeight={{ smDown: 'bold' }}>Text</Text>
+```
+
+## Hiding elements
+
+Fidely UI provides `hideFrom` and `hideBelow` utilities to show or hide elements at a breakpoint threshold:
+
+```tsx
+{/* Hidden from md upward (visible on mobile) */}
+<HStack hideFrom="md">
+  <Text>Mobile only</Text>
+</HStack>
+
+{/* Hidden below md (visible on desktop) */}
+<HStack hideBelow="md">
+  <Text>Desktop only</Text>
+</HStack>
+```
+
+## Responsive component variants
+
+When applying breakpoints to component variants, prefer explicit range modifiers over `base` to avoid styles leaking across variant boundaries:
+
+```tsx
+{/* OK, but can cause style leaking */}
+<Button variant={{ base: 'solid', md: 'outline' }}>Button</Button>
+
+{/* Preferred */}
+<Button variant={{ smDown: 'solid', md: 'outline' }}>Button</Button>
+```
+
+## Responsive layout example
+
+```tsx
+<Grid
+  gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }}
+  gap="4"
+>
+  <Box bg="bg.subtle" p="4" rounded="md">Card 1</Box>
+  <Box bg="bg.subtle" p="4" rounded="md">Card 2</Box>
+  <Box bg="bg.subtle" p="4" rounded="md">Card 3</Box>
+</Grid>
+```
+
+## Responsive typography example
+
+```tsx
+<Text
+  fontSize={{ base: 'sm', md: 'md', lg: 'lg' }}
+  fontWeight={{ base: 'regular', lg: 'semibold' }}
+  lineHeight={{ base: 'normal', lg: 'tall' }}
+>
+  Responsive paragraph text
+</Text>
+```
+
+<Tip>
+  To customize breakpoint values, refer to the [Panda CSS breakpoints documentation](https://panda-css.com/docs/docs/customization/theme#breakpoints).
+</Tip>
